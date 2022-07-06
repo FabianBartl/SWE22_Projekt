@@ -4,9 +4,9 @@
 
 >*Transformation von Math.NET Inhalten (Matrizen, Formeln usw.) nach Latex*
 
-Das Ergbenis soll ein wiederverwendbare Class-Library (DLL) sein, dass dem Programmierer die Möglichkeit gibt, mathematische C#-Objekte der Math.NET Bibliothek in Latex zu transformieren und als Text oder Bild zu speichern.
+Das Ergbenis soll ein wiederverwendbare Class-Library (DLL) sein, die dem Programmierer die Möglichkeit gibt, mathematische C#-Objekte der Math.NET Bibliothek in Latex zu transformieren und als Text oder Bild zu speichern.
 
-Eventuell möchten wie diese Class-Library dann auch als NuGet-Package zur Verfügung stellen.
+Eventuell möchten wir diese Class-Library dann auch als NuGet-Package zur Verfügung stellen.
 
 **Softwareentwurf:**
 
