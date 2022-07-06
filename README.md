@@ -13,9 +13,13 @@ Das Ergbenis soll ein wiederverwendbare Class-Library (DLL) sein, die dem Progra
 
 Eventuell möchten wir diese Class-Library dann auch als NuGet-Package unter dem Name "MaTeX" zur Verfügung stellen.
 
-**Softwareentwurf:**
+**Erster Softwareentwurf:**
 
-![*coming soon*](img/entwurf.png)
+![](img/Funktionen+Beschreibung.jpeg)
+Funktionen mit Beschreibung
+
+![](img/Pseudocode+Anwendungskonzept.jpeg)
+Pseudocode mit Anwendungskonzept
 
 ## Zeitplan
 
