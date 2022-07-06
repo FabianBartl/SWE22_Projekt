@@ -21,6 +21,11 @@ Funktionen mit Beschreibung
 ![](img/Pseudocode+Anwendungskonzept.jpg)
 Pseudocode mit Anwendungskonzept
 
+**Dependencies:**
+
+- [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
+- [CSharp Math](https://www.nuget.org/packages/CSharpMath)
+
 ## Zeitplan
 
 |             Datum | Bemerkung                                                                           |
