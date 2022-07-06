@@ -1,4 +1,4 @@
-# Softwareentwciklung 2022 - Projekt
+# Softwareentwicklung 2022 - Projekt
 
 ## Zielstellung
 
@@ -6,9 +6,9 @@
 
 Das Ergbenis soll ein wiederverwendbares (Nuget-)Package sein, dass dem Nutzer / Programmierer die Möglichkeit gibt, mathematische C#-Objekte der Math.NET Bibliothek in Latex zu transformieren und als Text oder Bild zu speichern.
 
-<!-- (coming soon) -->
 **Softwareentwurf:**
-![](img/entwurf.png)
+
+![*coming soon*](img/entwurf.png)
 
 ## Zeitplan
 
