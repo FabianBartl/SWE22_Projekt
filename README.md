@@ -1,9 +1,9 @@
 # Softwareentwicklung 2022 - Projekt
 
 [![GitHub License](https://img.shields.io/badge/license-MIT-green)](LICENSE)&nbsp;
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/devlop)&nbsp;
 <!-- [![Nuget Package](https://img.shields.io/nuget/v/matex)](https://www.nuget.org/packages/matex)&nbsp; -->
 <!-- ![Nuget Downloads](https://img.shields.io/nuget/dt/matex)&nbsp; -->
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/devlop)&nbsp;
 
 ## Zielstellung
 
