@@ -15,10 +15,10 @@ Eventuell möchten wir diese Class-Library dann auch als NuGet-Package unter dem
 
 **Erster Softwareentwurf:**
 
-![](img/Funktionen+Beschreibung.jpeg)
+![](img/Funktionen+Beschreibung.jpg)
 Funktionen mit Beschreibung
 
-![](img/Pseudocode+Anwendungskonzept.jpeg)
+![](img/Pseudocode+Anwendungskonzept.jpg)
 Pseudocode mit Anwendungskonzept
 
 ## Zeitplan
