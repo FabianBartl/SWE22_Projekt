@@ -1,6 +1,6 @@
 # Softwareentwciklung 2022 - Projekt
 
-## Ziel
+## Zielstellung
 
 >*Transformation von Math.NET Inhalten (Matrizen, Formeln usw.) nach Latex*
 
