@@ -21,6 +21,8 @@ Funktionen mit Beschreibung
 ![](img/Pseudocode+Anwendungskonzept.jpg)
 Pseudocode mit Anwendungskonzept
 
+<!-- https://github.com/fb89zila/exam-repo_swe-sose21/wiki/Developer -->
+
 **Dependencies:**
 
 - [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
