@@ -1,5 +1,10 @@
 # Softwareentwicklung 2022 - Projekt
 
+[![GitHub License](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/blob/main/LICENSE)](LICENSE)&nbsp;
+[![Nuget Package](https://img.shields.io/nuget/v/matex)](https://www.nuget.org/packages/matex)&nbsp;
+![Nuget Downloads](https://img.shields.io/nuget/dt/matex)&nbsp;
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/devlop)&nbsp;
+
 ## Zielstellung
 
 >*Transformation von Math.NET Inhalten (Matrizen, Formeln usw.) nach Latex*
