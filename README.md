@@ -26,7 +26,7 @@ Pseudocode mit Anwendungskonzept
 **Dependencies:**
 
 - [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
-- [MathNet.Symbolics](https://www.nuget.org/packages/MathNet.Symbolics)
+- [Math.NET Symbolics](https://www.nuget.org/packages/MathNet.Symbolics)
 - [CSharp Math](https://www.nuget.org/packages/CSharpMath)
 
 ## Zeitplan
