@@ -14,13 +14,13 @@ namespace MaTeX
                 {                                                              
                     int m;
                     Vector V=(Vector)o;
-                    string Latex=@"\left( \begin{array}{c}" + "\n";
+                    string Latex=@"\begin{pmatrix}{c}" + "\n";
                     //die einzelnen Zeilen des Vektors werden nun in Latex Schreibweise umgewandelt
                     for (m = 0; m < V.Count; m++)
                     {
-                        Latex=Latex + Convert.ToString(V[m])+ @"\\" + "\n";
+                        Latex=Latex + Convert.ToString(V[m])+ @" \\" + "\n";
                     }
-                return Latex + @"\end{array}\right)$";
+                return Latex + @"\end{pmatrix}";
 
                 //nun Abfrage ob Matrix
                 }else if(o is Matrix)
@@ -28,7 +28,7 @@ namespace MaTeX
                     int m;
                     int n;
                     Matrix M=(Matrix)o;
-                    string Latex=@"$\left( \begin{array}{rrr}" + "\n";
+                    string Latex=@"\begin{bmatrix}{rrr}" + "\n";
                     //die einzelnen Zeilen der Matrix werden nun in Latex Schreibweise umgewandelt
                     for (m = 0; m < M.RowCount; m++)                           
                     {
@@ -38,7 +38,7 @@ namespace MaTeX
                         }
                         Latex=Latex + Convert.ToString(M[m,n]) + @" \\" + "\n";
                     }
-                return Latex + @"\end{array}\right)$";
+                return Latex + @"\end{bmatrix}";
 
                 //zuletzt Abfrage ob String (Term, Gleichung)
                 }else if (o is string)
@@ -54,10 +54,10 @@ namespace MaTeX
                         {
                              neu = neu + Expr.Parse(gleichungen[i]).ToLaTeX() + "=";
                         }
-                        return @"$ " + neu + Expr.Parse(gleichungen[i]).ToLaTeX() + @" $";
+                        return neu + Expr.Parse(gleichungen[i]).ToLaTeX();
                     /* ist dies nicht der Fall, 
                     so ist der String ein Term und kann einfach umgewandelt werden */
-                    }else return @"$ " + Expr.Parse(s).ToLaTeX() + @" $";
+                    }else return Expr.Parse(s).ToLaTeX();
                     
                 //mögliche Erweiterungen
                 }else return null;
@@ -67,12 +67,14 @@ namespace MaTeX
         {
             //zum Probieren
             string S = "3*3+sqrt(sqrt(a))";
-            Matrix A = DenseMatrix.OfArray(new double[,] {
+            Vector A = DenseVector.OfArray(new double[] {1,2,3});
+            Matrix B = DenseMatrix.OfArray(new double[,] {
             {1,1,1},
             {1,2,3},
             {4,3,2}});
-            Vector B = DenseVector.OfArray(new double[] {1,2,3});
             Console.WriteLine(MathToLatex(S));
+            Console.WriteLine(MathToLatex(A));
+            Console.WriteLine(MathToLatex(B));
         }
     }
 }
