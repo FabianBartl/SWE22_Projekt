@@ -20,21 +20,42 @@ namespace MaTeX
         static public TextFormats TextFormat = TextFormats.MD;
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public WriteModes WriteMode = WriteModes.OVERRIDE;
+        static public BracketModes BracketMode = BracketModes.BOTH;
         static public String LatexHeader = @"\documentclass[10pt]{article}"; 
-        static public String DefaultSaveLocation = Path.Combine(Path.GetTempPath(), "MaTeX");
+        static public String SaveLocation = Directory.GetCurrentDirectory();
     }
 
     // Enum's u.a. zur Config-Optionsauswahl
     public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTex header */ TEX_WITH_HEADER };
     public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
-    public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur für Latex Dateien: */ INSERT_AT_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
+    public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur bei TextFormats.TEX_WITH_HEADER */ INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
+    public enum BracketModes { START, END, BOTH, NONE };
 
     // Wrapper Funktionen für z.B. Config-Optionen
     static public class Wrapper
     {
+        // Wrapper für PrettyPrinting-Option
         static public String PrettyPrint(String text) { return PrettyPrint(text, ""); }
         static public String NotPrettyPrint(String text) { return PrettyPrint("", text); }
         static public String PrettyPrint(String text, String alternative) { return Config.PrettyPrinting ? text : alternative; }
+
+        // Wrapper für BracketMode-Option
+        static public String PrintBrackets(String bracketText, BracketModes mode) { return PrintBrackets(bracketText, "", new BracketModes[] {mode}); }
+        static public String NotPrintBrackets(String bracketText, BracketModes mode) { return NotPrintBrackets(bracketText, "", new BracketModes[] {mode}); }
+        static public String PrintBrackets(String bracketText, BracketModes mode, BracketModes mode2) { return PrintBrackets(bracketText, "", new BracketModes[] {mode, mode2}); }
+        static public String NotPrintBrackets(String bracketText, BracketModes mode, BracketModes mode2) { return NotPrintBrackets(bracketText, "", new BracketModes[] {mode, mode2}); }
+        static public String PrintBrackets(String bracketText, String alternative, BracketModes[] mode)
+        {
+            for (int i=0; i < mode.Length; i++)
+                if (mode[i] == Config.BracketMode) return bracketText;
+            return alternative;
+        }
+        static public String NotPrintBrackets(String bracketText, String alternative, BracketModes[] mode)
+        {
+            for (int i=0; i < mode.Length; i++)
+                if (mode[i] != Config.BracketMode) return bracketText;
+            return alternative;
+        }
     }
 
     // Converter Funktionen
@@ -155,6 +176,14 @@ namespace MaTeX
         }
         static public bool AsText(String latex, String filename, TextFormats format)
         {
+            throw new NotImplementedException();
+        }
+        static public bool AsText(String latex, String filename, WriteModes mode)
+        {
+            throw new NotImplementedException();
+        }
+        static public bool AsText(String latex, String filename, WriteModes mode, TextFormats format)
+        {
             // Dateiendung wählen
             if (!filename.Contains("."))
             {
@@ -172,13 +201,14 @@ namespace MaTeX
                         break;
                 }
             }
+
             // Text zusammenstellen
             String _text = "";
             switch (format)
             {
                 case TextFormats.TEX:
                 case TextFormats.TEX_WITH_HEADER:
-                    _text = String.Format("{0}{1}{2}",
+                    _text = String.Format("{0}{1}{2}{3}",
                         (format == TextFormats.TEX_WITH_HEADER) ? (
                             Config.LatexHeader
                             + Wrapper.PrettyPrint("\n")
@@ -186,41 +216,71 @@ namespace MaTeX
                             + Wrapper.PrettyPrint("\n")
                         ) : "",
                         (
-                            @"\begin{equation*}"
-                            + Wrapper.PrettyPrint("\n")
+                            Wrapper.NotPrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, BracketModes.NONE)
                             + latex
                             + Wrapper.PrettyPrint("\n")
-                            + @"\end{equation*}"
-                            + Wrapper.PrettyPrint("\n")
+                            + Wrapper.NotPrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.START, BracketModes.NONE)
                         ),
                         (format == TextFormats.TEX_WITH_HEADER) ? (
                             @"\end{document}"
                             + Wrapper.PrettyPrint("\n")
-                        ) : ""
+                        ) : "",
+                        (
+                            Wrapper.PrettyPrint("\n", " ")
+                        )
                     );
                     break;
                 case TextFormats.MD:
-                    _text = String.Format("{0}{1}{0}",
-                        Wrapper.PrettyPrint("\n$$\n", "$"),
-                        latex
+                    _text = String.Format("{0}{1}{2}{3}",
+                        Wrapper.NotPrintBrackets(Wrapper.PrettyPrint("\n$$\n", "$"), BracketModes.END, BracketModes.NONE),
+                        latex,
+                        Wrapper.NotPrintBrackets(Wrapper.PrettyPrint("\n$$\n", "$"), BracketModes.START, BracketModes.NONE),
+                        Wrapper.PrettyPrint("\n", " ")
                     );
                     break;
                 case TextFormats.TXT:
-                    _text = latex;
+                    _text = latex + Wrapper.PrettyPrint("\n", " ");
                     break;
             }
 
             // Datei speichern
-            String _path = Path.GetFullPath(Path.Combine(Config.DefaultSaveLocation, filename));
-            return WriteFile(_path, _text);
-        }
-        static public bool AsText(String latex, String filename, WriteModes mode)
-        {
-            throw new NotImplementedException();
-        }
-        static public bool AsText(String latex, String filename, WriteModes mode, TextFormats format)
-        {
-            throw new NotImplementedException();
+            String _content, _path = Path.GetFullPath(Path.Combine(Config.SaveLocation, filename));
+            switch (mode)
+            {
+                case WriteModes.OVERRIDE:
+                    if (!WriteFile(_path, _text)) return false;
+                    break;
+                case WriteModes.APPEND:
+                    if (!ReadFile(_path, out _content)) return false;
+                    if (!WriteFile(_path, _content + _text)) return false;
+                    break;
+                case WriteModes.AT_START:
+                    if (!ReadFile(_path, out _content)) return false;
+                    if (!WriteFile(_path, _text + _content)) return false;
+                    break;
+                case WriteModes.INSERT_BEFORE_DOCUMENT_END:
+                case WriteModes.INSERT_AFTER_DOCUMENT_START:
+                    if (format == TextFormats.TEX_WITH_HEADER)
+                    {
+                        if (!ReadFile(_path, out _content)) return false;
+                        String _substr = (mode == WriteModes.INSERT_BEFORE_DOCUMENT_END) ? @"\begin{document}" : @"\end{document}";
+                        int _ind = _content.IndexOf(_substr);
+                        switch (_ind)
+                        {
+                            case -1:
+                                return false;
+                            case 0:
+                                if (!WriteFile(_path, _text)) return false;
+                                break;
+                        }
+                        if (!WriteFile(
+                            _path,
+                            _content.Substring(0, _ind + _substr.Length) + _text + _content.Substring(_ind + _substr.Length + 1)
+                        )) return false;
+                    }
+                    break;
+            }
+            return true;
         }
 
         // Als Bild exportieren
