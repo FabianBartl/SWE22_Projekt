@@ -20,13 +20,14 @@ namespace MaTeX
         static public TextFormats TextFormat = TextFormats.MD;
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public WriteModes WriteMode = WriteModes.OVERRIDE;
+        static public String LatexHeader = @"\documentclass[10pt]{article}"; 
         static public String DefaultSaveLocation = Path.Combine(Path.GetTempPath(), "MaTeX");
     }
 
     // Enum's u.a. zur Config-Optionsauswahl
-    public enum TextFormats { TXT, MD, TEX };
+    public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTex header */ TEX_WITH_HEADER };
     public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
-    public enum WriteModes { OVERRIDE, APPEND, INSERT_AT_START, INSERT_AFTER_HEAD, INSERT_BEFORE_END };
+    public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur für Latex Dateien: */ INSERT_AT_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
 
     // Wrapper Funktionen für z.B. Config-Optionen
     static public class Wrapper
@@ -43,7 +44,7 @@ namespace MaTeX
         // Vector -> Latex
         static public String MathToLatex(Vector vector)
         {                                                            
-            String _latex = @"\begin{pmatrix}{c}" + Wrapper.PrettyPrint("\n");
+            String _latex = @"\begin{pmatrix}" + Wrapper.PrettyPrint("\n");
             // Zeilen des Vektors auflösen
             for (int _row=0; _row < vector.Count; _row++)
             {
@@ -56,7 +57,7 @@ namespace MaTeX
         // Matrix -> Latex
         static public String MathToLatex(Matrix matrix)
         {
-            String _latex = @"\begin{bmatrix}{rrr}" + Wrapper.PrettyPrint("\n");
+            String _latex = @"\begin{bmatrix}" + Wrapper.PrettyPrint("\n");
             // Zeilen der Matrix auflösen
             for (int _row=0, _col=0; _row < matrix.RowCount; _row++)                           
             {
@@ -160,6 +161,7 @@ namespace MaTeX
                 switch (format)
                 {
                     case TextFormats.TEX:
+                    case TextFormats.TEX_WITH_HEADER:
                         filename += ".tex";
                         break;
                     case TextFormats.MD:
@@ -175,14 +177,17 @@ namespace MaTeX
             switch (format)
             {
                 case TextFormats.TEX:
-                    _text += "";
-                    _text += latex;
-                    _text += "";
+                case TextFormats.TEX_WITH_HEADER:
+                    // _text += String.Format("{0}", "1");
+
+                    if (format == TextFormats.TEX_WITH_HEADER) _text += Config.LatexHeader + Wrapper.PrettyPrint("\n") + @"\begin{document}" + Wrapper.PrettyPrint("\n");
+                    _text += @"\begin{equation*}" + Wrapper.PrettyPrint("\n") + latex + Wrapper.PrettyPrint("\n") + @"\end{equation*}" + Wrapper.PrettyPrint("\n");
+                    if (format == TextFormats.TEX_WITH_HEADER) _text += @"\end{document}" + Wrapper.PrettyPrint("\n");
                     break;
                 case TextFormats.MD:
-                    _text += Wrapper.PrettyPrint("$$\n") + Wrapper.NotPrettyPrint("$");
+                    _text += Wrapper.PrettyPrint("\n$$\n", " $");
                     _text += latex;
-                    _text += "";
+                    _text += Wrapper.PrettyPrint("\n$$\n", "$ ");
                     break;
                 case TextFormats.TXT:
                     _text = latex;
