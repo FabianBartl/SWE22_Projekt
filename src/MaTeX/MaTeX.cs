@@ -4,24 +4,43 @@ using Expr = MathNet.Symbolics.SymbolicExpression;
 
 namespace MaTeX
 {
+    static public class Config
+    {
+        static public bool PrettyFormat = false;
+    }
+
+    static public class Wrapper
+    {
+        static public string PrettyFormat(string str) { return Config.PrettyFormat ? str : ""; }
+    }
+
     static public class Conv
     {
         static public string MathToLatex(Vector vec) //Latexumwandlung für Vektoren
         {                                                            
-            string Latex = @"\begin{pmatrix}{c}" + "\n";
+            string Latex = @"\begin{pmatrix}{c}" + Wrapper.PrettyFormat("\n");
             //die einzelnen Zeilen des Vektors werden nun in Latex Schreibweise umgewandelt
-            for (int row=0; row<vec.Count; row++) Latex += Convert.ToString(vec[row]) + @" \\" + "\n";
+            for (int row=0; row<vec.Count; row++)
+            {
+                Latex += Convert.ToString(vec[row]);
+                Latex += Wrapper.PrettyFormat(" ") + @"\\" + Wrapper.PrettyFormat("\n");
+            }
             return Latex + @"\end{pmatrix}";
         }
 
         static public string MathToLatex(Matrix mtr) //Latexumwandlung für Matrizen
         {
-            string Latex = @"\begin{bmatrix}{rrr}" + "\n";
+            string Latex = @"\begin{bmatrix}{rrr}" + Wrapper.PrettyFormat("\n");
             //die einzelnen Zeilen der Matrix werden nun in Latex Schreibweise umgewandelt
             for (int row=0, col=0; row<mtr.RowCount; row++)                           
             {
-                for (col=0; col<mtr.ColumnCount-1; col++) Latex += Convert.ToString(mtr[row,col])+" & ";
-                Latex += Convert.ToString(mtr[row,col]) + @" \\" + "\n";
+                for (col=0; col<mtr.ColumnCount-1; col++)
+                {
+                    Latex += Convert.ToString(mtr[row,col]);
+                    Latex += Wrapper.PrettyFormat(" ") + "&" + Wrapper.PrettyFormat(" ");
+                }
+                Latex += Convert.ToString(mtr[row,col]);
+                Latex += Wrapper.PrettyFormat(" ") + @"\\" + Wrapper.PrettyFormat("\n");
             }
             return Latex + @"\end{bmatrix}";
         }

@@ -15,12 +15,16 @@ namespace MyApp
             string S = "3*3+sqrt(sqrt(a))";
             Vector A = DenseVector.OfArray(new double[] {1,2,3});
             Matrix B = DenseMatrix.OfArray(new double[,] {
-            {1,1,1},
-            {1,2,3},
-            {4,3,2}});
+                {1,1,1},
+                {1,2,3},
+                {4,3,2}
+            });
+
+            Mtx.Config.PrettyFormat = true;
             Console.WriteLine(Mtx.Conv.MathToLatex(S));
             Console.WriteLine(Mtx.Conv.MathToLatex(A));
             Console.WriteLine(Mtx.Conv.MathToLatex(B));
+
         }
     }
 }
