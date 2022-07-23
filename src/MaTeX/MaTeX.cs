@@ -33,14 +33,22 @@ namespace MaTeX
     static public class Wrapper
     {
         // Wrapper für PrettyPrinting-Option
-        static public String PrettyPrint(String text) { return PrettyPrint(text, ""); }
-        static public String NotPrettyPrint(String text) { return PrettyPrint("", text); }
-        static public String PrettyPrint(String text, String alternative) { return Config.PrettyPrinting ? text : alternative; }
+        static public String PrettyPrint(String text)
+        { return PrettyPrint(text, ""); }
+        static public String NotPrettyPrint(String text)
+        { return PrettyPrint("", text); }
+        static public String PrettyPrint(String text, String alternative)
+        {
+            return Config.PrettyPrinting ? text : alternative;
+        }
 
         // Wrapper für BracketMode-Option
-        static public String PrintBrackets(String bracketText, BracketModes currentMode) { return PrintBrackets(bracketText, "", currentMode, Config.BracketMode); }
-        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes compareMode) { return PrintBrackets(bracketText, "", currentMode, new BracketModes[] {compareMode}); }
-        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes[] compareModes) { return PrintBrackets(bracketText, "", currentMode, compareModes); }
+        static public String PrintBrackets(String bracketText, BracketModes currentMode)
+        { return PrintBrackets(bracketText, "", currentMode, Config.BracketMode); }
+        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes compareMode)
+        { return PrintBrackets(bracketText, "", currentMode, new BracketModes[] {compareMode}); }
+        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes[] compareModes)
+        { return PrintBrackets(bracketText, "", currentMode, compareModes); }
         static public String PrintBrackets(String bracketText, String alternative, BracketModes currentMode, BracketModes[] compareModes)
         {
             for (int i=0; i < compareModes.Length; i++)
@@ -169,13 +177,20 @@ namespace MaTeX
         }
 
         // Als Text exportieren
-        static public bool AsText(String latex, String filename) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, TextFormats textFormat) { return AsText(latex, filename, Config.WriteMode, textFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode) { return AsText(latex, filename, writeMode, Config.TextFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, BracketModes bracketMode) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, new BracketModes[] {bracketMode}); }
-        static public bool AsText(String latex, String filename, BracketModes[] bracketModes) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, bracketModes); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat) { return AsText(latex, filename, writeMode, textFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode) { return AsText(latex, filename, writeMode, textFormat, new BracketModes[] {bracketMode}); }
+        static public bool AsText(String latex, String filename)
+        { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, TextFormats textFormat)
+        { return AsText(latex, filename, Config.WriteMode, textFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, WriteModes writeMode)
+        { return AsText(latex, filename, writeMode, Config.TextFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, BracketModes bracketMode)
+        { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, new BracketModes[] {bracketMode}); }
+        static public bool AsText(String latex, String filename, BracketModes[] bracketModes)
+        { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, bracketModes); }
+        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat)
+        { return AsText(latex, filename, writeMode, textFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode)
+        { return AsText(latex, filename, writeMode, textFormat, new BracketModes[] {bracketMode}); }
         static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
         {
             // Dateiendung wählen
