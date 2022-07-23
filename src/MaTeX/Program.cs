@@ -21,11 +21,10 @@ namespace MyApp
                 {4,3,2}
             });
 
-            Mtx.Config.PrettyFormat = (args.Length >= 1 && (args[0] == "-pf" || args[0] == "--PrettyFormat"));
+            Mtx.Config.PrettyPrinting = (args.Length >= 1 && (args[0] == "-pp" || args[0] == "--PrettyPrinting"));
             Console.WriteLine(Mtx.Conv.MathToLatex(S));
             Console.WriteLine(Mtx.Conv.MathToLatex(A));
             Console.WriteLine(Mtx.Conv.MathToLatex(B));
-
         }
     }
 }

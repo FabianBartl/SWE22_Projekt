@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 
 using MathNet.Numerics.LinearAlgebra.Double;
@@ -11,25 +12,34 @@ namespace MaTeX
 {
     static public class Config
     {
-        static public bool PrettyFormat = false;
+        static public bool PrettyPrinting = false;
+        static public ImageFormats ImageFormat = ImageFormats.JPG;
+        static public TextFormats TextFormat = TextFormats.TXT;
+        static public String DefaultSaveLocation = Path.Combine(Path.GetTempPath(), "MaTeX");
+
+        public enum ImageFormats {JPG, PNG, GIF, SVG};
+        public enum TextFormats {TEX, MD, TXT};
     }
 
+    // Wrapper Funktionen für z.B. Config-Optionen
     static public class Wrapper
     {
-        static public String PrettyFormat(String str) { return Config.PrettyFormat ? str : ""; }
+        static public String PrettyPrint(String str) { return Config.PrettyPrinting ? str : ""; }
     }
 
+    // Converter Funktionen
+    // -> "Conv", damit es keine Konflikte mit "Convert" aus "System.Convert" gibt
     static public class Conv
     {
         // Vector -> Latex
         static public String MathToLatex(Vector vec)
         {                                                            
-            String latex = @"\begin{pmatrix}{c}" + Wrapper.PrettyFormat("\n");
+            String latex = @"\begin{pmatrix}{c}" + Wrapper.PrettyPrint("\n");
             // Zeilen des Vektors auflösen
             for (int row=0; row<vec.Count; row++)
             {
                 latex += Convert.ToString(vec[row]);
-                latex += Wrapper.PrettyFormat(" ") + (row != vec.Count-1 ? @"\\" : "") + Wrapper.PrettyFormat("\n");
+                latex += Wrapper.PrettyPrint(" ") + (row != vec.Count-1 ? @"\\" : "") + Wrapper.PrettyPrint("\n");
             }
             return latex + @"\end{pmatrix}";
         }
@@ -37,7 +47,7 @@ namespace MaTeX
         // Matrix -> Latex
         static public String MathToLatex(Matrix mtr)
         {
-            String latex = @"\begin{bmatrix}{rrr}" + Wrapper.PrettyFormat("\n");
+            String latex = @"\begin{bmatrix}{rrr}" + Wrapper.PrettyPrint("\n");
             // Zeilen der Matrix auflösen
             for (int row=0, col=0; row<mtr.RowCount; row++)                           
             {
@@ -45,10 +55,10 @@ namespace MaTeX
                 for (col=0; col<mtr.ColumnCount-1; col++)
                 {
                     latex += Convert.ToString(mtr[row,col]);
-                    latex += Wrapper.PrettyFormat(" ") + "&" + Wrapper.PrettyFormat(" ");
+                    latex += Wrapper.PrettyPrint(" ") + "&" + Wrapper.PrettyPrint(" ");
                 }
                 latex += Convert.ToString(mtr[row,col]);
-                latex += Wrapper.PrettyFormat(" ") + (row != mtr.RowCount-1 ? @"\\" : "") + Wrapper.PrettyFormat("\n");
+                latex += Wrapper.PrettyPrint(" ") + (row != mtr.RowCount-1 ? @"\\" : "") + Wrapper.PrettyPrint("\n");
             }
             return latex + @"\end{bmatrix}";
         }
@@ -64,13 +74,13 @@ namespace MaTeX
                 for (int i=0; i<equations.Count; i++)
                 {
                     latex += MathToLatex(equations[i]);
-                    latex += (i != equations.Count-1 ? Wrapper.PrettyFormat(" ") + "=" + Wrapper.PrettyFormat(" ") : "");
+                    latex += (i != equations.Count-1 ? Wrapper.PrettyPrint(" ") + "=" + Wrapper.PrettyPrint(" ") : "");
                 }
                 return latex;
             }
             // Ausdruck in Latex umwandeln
             latex = Expr.Parse(str).ToLaTeX();
-            return Config.PrettyFormat ? latex : latex.Replace(" ", "");
+            return Config.PrettyPrinting ? latex : latex.Replace(" ", "");
         }
     }
 }
