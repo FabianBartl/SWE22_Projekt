@@ -1,49 +1,39 @@
 ﻿using System;
-using System.IO;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 
 namespace MaTeX
 {
-    class Program
+    static public class Conv
     {
-        static string MathToLatex(Vector v) //Latexumwandlung für Vektoren
+        static public string MathToLatex(Vector vec) //Latexumwandlung für Vektoren
         {                                                            
-            int m;
-            string Latex=@"\begin{pmatrix}{c}" + "\n";
+            string Latex = @"\begin{pmatrix}{c}" + "\n";
             //die einzelnen Zeilen des Vektors werden nun in Latex Schreibweise umgewandelt
-            for (m = 0; m < v.Count; m++)
-            {
-                Latex=Latex + Convert.ToString(v[m])+ @" \\" + "\n";
-            }
-        return Latex + @"\end{pmatrix}";
+            for (int row=0; row<vec.Count; row++) Latex += Convert.ToString(vec[row]) + @" \\" + "\n";
+            return Latex + @"\end{pmatrix}";
         }
 
-        static string MathToLatex(Matrix m) //Latexumwandlung für Matrizen
+        static public string MathToLatex(Matrix mtr) //Latexumwandlung für Matrizen
         {
-            int i;
-            int n;
-            string Latex=@"\begin{bmatrix}{rrr}" + "\n";
+            string Latex = @"\begin{bmatrix}{rrr}" + "\n";
             //die einzelnen Zeilen der Matrix werden nun in Latex Schreibweise umgewandelt
-            for (i = 0; i < m.RowCount; i++)                           
+            for (int row=0, col=0; row<mtr.RowCount; row++)                           
             {
-                for (n = 0; n < m.ColumnCount-1; n++)
-                {
-                    Latex=Latex + Convert.ToString(m[i,n])+" & ";
-                }
-                Latex=Latex + Convert.ToString(m[i,n]) + @" \\" + "\n";
+                for (col=0; col<mtr.ColumnCount-1; col++) Latex += Convert.ToString(mtr[row,col])+" & ";
+                Latex += Convert.ToString(mtr[row,col]) + @" \\" + "\n";
             }
-        return Latex + @"\end{bmatrix}";
+            return Latex + @"\end{bmatrix}";
         }
 
-        static string MathToLatex(String s) //Latexumwandlung für Terme und Gleichungen
+        static public string MathToLatex(String str) //Latexumwandlung für Terme und Gleichungen
         {
-            string neu="";
+            string neu = "";
             int i;
             //zunächst wird abgefragt ob der String eine Gleichung ist
-            if (s.Contains("="))
+            if (str.Contains("="))
             {
-                string[] gleichungen = s.Split("=");
+                string[] gleichungen = str.Split("=");
                 for (i = 0; i < gleichungen.Length-1; i++)
                 {
                      neu = neu + Expr.Parse(gleichungen[i]).ToLaTeX() + "=";
@@ -52,10 +42,14 @@ namespace MaTeX
             /* ist dies nicht der Fall, 
             so ist der String ein Term und kann einfach umgewandelt werden */
             }
-            else return Expr.Parse(s).ToLaTeX();
+            else return Expr.Parse(str).ToLaTeX();
         }
 
-        static void Main(string[] args)
+    }
+
+    class Program
+    {
+        static void Main()
         {
             //zum Probieren
             string S = "3*3+sqrt(sqrt(a))";
@@ -64,9 +58,9 @@ namespace MaTeX
             {1,1,1},
             {1,2,3},
             {4,3,2}});
-            Console.WriteLine(MathToLatex(S));
-            Console.WriteLine(MathToLatex(A));
-            Console.WriteLine(MathToLatex(B));
+            Console.WriteLine(Conv.MathToLatex(S));
+            Console.WriteLine(Conv.MathToLatex(A));
+            Console.WriteLine(Conv.MathToLatex(B));
         }
     }
 }
