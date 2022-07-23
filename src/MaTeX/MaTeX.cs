@@ -1,49 +1,86 @@
 using System;
+using System.IO;
+using System.Collections.Generic;
+
 using MathNet.Numerics.LinearAlgebra.Double;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 
+using CSharpMath;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+
 namespace MaTeX
 {
+    static public class Config
+    {
+        static public bool PrettyPrinting = false;
+        static public ImageFormats ImageFormat = ImageFormats.JPG;
+        static public TextFormats TextFormat = TextFormats.TXT;
+        static public String DefaultSaveLocation = Path.Combine(Path.GetTempPath(), "MaTeX");
+
+        public enum ImageFormats {JPG, PNG, GIF, SVG};
+        public enum TextFormats {TEX, MD, TXT};
+    }
+
+    // Wrapper Funktionen für z.B. Config-Optionen
+    static public class Wrapper
+    {
+        static public String PrettyPrint(String str) { return Config.PrettyPrinting ? str : ""; }
+    }
+
+    // Converter Funktionen
+    // -> "Conv", damit es keine Konflikte mit "Convert" aus "System.Convert" gibt
     static public class Conv
     {
-        static public string MathToLatex(Vector vec) //Latexumwandlung für Vektoren
+        // Vector -> Latex
+        static public String MathToLatex(Vector vec)
         {                                                            
-            string Latex = @"\begin{pmatrix}{c}" + "\n";
-            //die einzelnen Zeilen des Vektors werden nun in Latex Schreibweise umgewandelt
-            for (int row=0; row<vec.Count; row++) Latex += Convert.ToString(vec[row]) + @" \\" + "\n";
-            return Latex + @"\end{pmatrix}";
+            String latex = @"\begin{pmatrix}{c}" + Wrapper.PrettyPrint("\n");
+            // Zeilen des Vektors auflösen
+            for (int row=0; row<vec.Count; row++)
+            {
+                latex += Convert.ToString(vec[row]);
+                latex += Wrapper.PrettyPrint(" ") + (row != vec.Count-1 ? @"\\" : "") + Wrapper.PrettyPrint("\n");
+            }
+            return latex + @"\end{pmatrix}";
         }
 
-        static public string MathToLatex(Matrix mtr) //Latexumwandlung für Matrizen
+        // Matrix -> Latex
+        static public String MathToLatex(Matrix mtr)
         {
-            string Latex = @"\begin{bmatrix}{rrr}" + "\n";
-            //die einzelnen Zeilen der Matrix werden nun in Latex Schreibweise umgewandelt
+            String latex = @"\begin{bmatrix}{rrr}" + Wrapper.PrettyPrint("\n");
+            // Zeilen der Matrix auflösen
             for (int row=0, col=0; row<mtr.RowCount; row++)                           
             {
-                for (col=0; col<mtr.ColumnCount-1; col++) Latex += Convert.ToString(mtr[row,col])+" & ";
-                Latex += Convert.ToString(mtr[row,col]) + @" \\" + "\n";
+                // Spalten der Matrix auflösen
+                for (col=0; col<mtr.ColumnCount-1; col++)
+                {
+                    latex += Convert.ToString(mtr[row,col]);
+                    latex += Wrapper.PrettyPrint(" ") + "&" + Wrapper.PrettyPrint(" ");
+                }
+                latex += Convert.ToString(mtr[row,col]);
+                latex += Wrapper.PrettyPrint(" ") + (row != mtr.RowCount-1 ? @"\\" : "") + Wrapper.PrettyPrint("\n");
             }
-            return Latex + @"\end{bmatrix}";
+            return latex + @"\end{bmatrix}";
         }
 
-        static public string MathToLatex(String str) //Latexumwandlung für Terme und Gleichungen
+        // Term, Gleichung -> Latex
+        static public String MathToLatex(String str)
         {
-            string neu = "";
-            int i;
-            //zunächst wird abgefragt ob der String eine Gleichung ist
+            String latex = "";
+            // Gleichungen rekursiv auflösen
             if (str.Contains("="))
             {
-                string[] gleichungen = str.Split("=");
-                for (i = 0; i < gleichungen.Length-1; i++)
+                List<String> equations = new List<String>(str.Split("="));
+                for (int i=0; i<equations.Count; i++)
                 {
-                     neu = neu + Expr.Parse(gleichungen[i]).ToLaTeX() + "=";
+                    latex += MathToLatex(equations[i]);
+                    latex += (i != equations.Count-1 ? Wrapper.PrettyPrint(" ") + "=" + Wrapper.PrettyPrint(" ") : "");
                 }
-                return neu + Expr.Parse(gleichungen[i]).ToLaTeX();
-            /* ist dies nicht der Fall, 
-            so ist der String ein Term und kann einfach umgewandelt werden */
+                return latex;
             }
-            else return Expr.Parse(str).ToLaTeX();
+            // Ausdruck in Latex umwandeln
+            latex = Expr.Parse(str).ToLaTeX();
+            return Config.PrettyPrinting ? latex : latex.Replace(" ", "");
         }
-
     }
 }
