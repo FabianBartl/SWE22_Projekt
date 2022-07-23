@@ -29,12 +29,16 @@ namespace MyApp
 
             Console.Write(S_latex + Mtx.Wrapper.PrettyPrint("\n"));
             Console.Write(V_latex + Mtx.Wrapper.PrettyPrint("\n"));
-            Console.Write(M_latex + Mtx.Wrapper.PrettyPrint("\n"));
+            Console.Write(M_latex + "\n");
 
             Mtx.Config.DefaultSaveLocation = @"C:\Users\fabia\Downloads";
-            Mtx.Export.AsText(S_latex, "S_AsText.md", Mtx.TextFormats.TXT);
-            Mtx.Export.AsText(V_latex, "V_AsText", Mtx.TextFormats.MD);
-            Mtx.Export.AsText(M_latex, "M_AsText", Mtx.TextFormats.TEX);
+            bool S_check = Mtx.Export.AsText(S_latex, "S_AsText.md", Mtx.TextFormats.TXT);
+            bool V_check = Mtx.Export.AsText(V_latex, "V_AsText"   , Mtx.TextFormats.MD);
+            bool M_check = Mtx.Export.AsText(M_latex, "M_AsText"   , Mtx.TextFormats.TEX);
+
+            Console.WriteLine("S: " + Convert.ToString(S_check));
+            Console.WriteLine("V: " + Convert.ToString(V_check));
+            Console.WriteLine("M: " + Convert.ToString(M_check));
         }
     }
 }

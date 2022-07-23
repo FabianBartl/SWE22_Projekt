@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Collections.Generic;
 
 using MathNet.Numerics.LinearAlgebra.Double;
@@ -18,17 +19,21 @@ namespace MaTeX
         static public bool PrettyPrinting = false;
         static public TextFormats TextFormat = TextFormats.MD;
         static public ImageFormats ImageFormat = ImageFormats.JPG;
+        static public WriteModes WriteMode = WriteModes.OVERRIDE;
         static public String DefaultSaveLocation = Path.Combine(Path.GetTempPath(), "MaTeX");
     }
 
-    // Enum's u.a. für Config's
+    // Enum's u.a. zur Config-Optionsauswahl
     public enum TextFormats { TXT, MD, TEX };
     public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
+    public enum WriteModes { OVERRIDE, APPEND, INSERT_AT_START, INSERT_AFTER_HEAD, INSERT_BEFORE_END };
 
     // Wrapper Funktionen für z.B. Config-Optionen
     static public class Wrapper
     {
-        static public String PrettyPrint(String str) { return Config.PrettyPrinting ? str : ""; }
+        static public String PrettyPrint(String text) { return PrettyPrint(text, ""); }
+        static public String NotPrettyPrint(String text) { return PrettyPrint("", text); }
+        static public String PrettyPrint(String text, String alternative) { return !Config.PrettyPrinting ? text : alternative; }
     }
 
     // Converter Funktionen
@@ -68,13 +73,13 @@ namespace MaTeX
         }
 
         // Term, Gleichung -> Latex
-        static public String MathToLatex(String str)
+        static public String MathToLatex(String text)
         {
             String _latex = "";
             // Gleichungen rekursiv auflösen
-            if (str.Contains("="))
+            if (text.Contains("="))
             {
-                List<String> _equations = new List<String>(str.Split("="));
+                List<String> _equations = new List<String>(text.Split("="));
                 for (int i=0; i < _equations.Count; i++)
                 {
                     _latex += MathToLatex(_equations[i]);
@@ -83,7 +88,7 @@ namespace MaTeX
                 return _latex;
             }
             // Ausdruck in Latex umwandeln
-            _latex = Expr.Parse(str).ToLaTeX();
+            _latex = Expr.Parse(text).ToLaTeX();
             return Config.PrettyPrinting ? _latex : _latex.Replace(" ", "");
         }
     }
@@ -91,8 +96,63 @@ namespace MaTeX
     // Funktionen zum Exportieren des Latex als Text oder Bild
     static public class Export
     {
+        // Private Wrapper-Funktionen für Dateioperationen
+        // Datei schreiben
+        static private bool WriteFile(String file, String buffer)
+        {
+            String _path = Path.GetFullPath(file);
+            using (FileStream _fileStream = File.Create(_path))
+            {
+                Byte[] _byteCode = new UTF8Encoding(true).GetBytes(buffer);
+                _fileStream.Write(_byteCode, 0, _byteCode.Length);
+                return true;
+            }
+        }
+
+        static private bool WriteFile(String file, String buffer, bool ignoreExceptions)
+        {
+            try
+            {
+                return WriteFile(file, buffer); //immer "true"
+            }
+            catch (Exception _exc)
+            {
+                if (!ignoreExceptions) throw _exc;
+                return false;
+            }
+        }
+
+        // Datei lesen
+        static private bool ReadFile(String file, out String buffer)
+        {
+            String _path = Path.GetFullPath(file);
+            using (StreamReader _streamReader = File.OpenText(_path))
+            {
+                String _line; buffer = "";
+                while ((_line = _streamReader.ReadLine()) != null) buffer += _line + "\n";
+                return true;
+            }
+        } 
+        static private bool ReadFile(String file, out String buffer, bool ignoreExceptions)
+        {
+            try
+            {
+                return ReadFile(file, out buffer); //immer "true"
+            }
+            catch (Exception _exc)
+            {
+                if (!ignoreExceptions) throw _exc;
+                buffer = null;
+                return false;
+            }
+        } 
+
         // Als Text exportieren
-        static public void AsText(String latex, String filename, TextFormats format=TextFormats.TXT)
+        static public bool AsText(String latex, String filename)
+        {
+            throw new NotImplementedException();
+        }
+        static public bool AsText(String latex, String filename, TextFormats format)
         {
             // Dateiendung wählen
             if (!filename.Contains("."))
@@ -110,13 +170,40 @@ namespace MaTeX
                         break;
                 }
             }
+            // Text zusammenstellen
+            String _text = "";
+            switch (format)
+            {
+                case TextFormats.TEX:
+                    _text += "";
+                    _text += latex;
+                    _text += "";
+                    break;
+                case TextFormats.MD:
+                    _text += Wrapper.PrettyPrint("$$\n") + Wrapper.NotPrettyPrint("$");
+                    _text += latex;
+                    _text += "";
+                    break;
+                case TextFormats.TXT:
+                    _text = latex;
+                    break;
+            }
 
             // Datei speichern
-            
+            String _path = Path.GetFullPath(Path.Combine(Config.DefaultSaveLocation, filename));
+            return WriteFile(_path, _text);
+        }
+        static public bool AsText(String latex, String filename, WriteModes mode)
+        {
+            throw new NotImplementedException();
+        }
+        static public bool AsText(String latex, String filename, WriteModes mode, TextFormats format)
+        {
+            throw new NotImplementedException();
         }
 
         // Als Bild exportieren
-        static public void AsImage(String latex, String filename, ImageFormats fmt=ImageFormats.JPG)
+        static public bool AsImage(String latex, String filename, ImageFormats fmt=ImageFormats.JPG)
         {
             throw new NotImplementedException();
         }
