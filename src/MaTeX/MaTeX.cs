@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 using MathNet.Numerics.LinearAlgebra.Double;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 
@@ -11,57 +13,60 @@ namespace MaTeX
 
     static public class Wrapper
     {
-        static public string PrettyFormat(string str) { return Config.PrettyFormat ? str : ""; }
+        static public String PrettyFormat(String str) { return Config.PrettyFormat ? str : ""; }
     }
 
     static public class Conv
     {
-        static public string MathToLatex(Vector vec) //Latexumwandlung für Vektoren
+        // Vector -> Latex
+        static public String MathToLatex(Vector vec)
         {                                                            
-            string Latex = @"\begin{pmatrix}{c}" + Wrapper.PrettyFormat("\n");
-            //die einzelnen Zeilen des Vektors werden nun in Latex Schreibweise umgewandelt
+            String latex = @"\begin{pmatrix}{c}" + Wrapper.PrettyFormat("\n");
+            // Zeilen des Vektors auflösen
             for (int row=0; row<vec.Count; row++)
             {
-                Latex += Convert.ToString(vec[row]);
-                Latex += Wrapper.PrettyFormat(" ") + @"\\" + Wrapper.PrettyFormat("\n");
+                latex += Convert.ToString(vec[row]);
+                latex += Wrapper.PrettyFormat(" ") + (row != vec.Count-1 ? @"\\" : "") + Wrapper.PrettyFormat("\n");
             }
-            return Latex + @"\end{pmatrix}";
+            return latex + @"\end{pmatrix}";
         }
 
-        static public string MathToLatex(Matrix mtr) //Latexumwandlung für Matrizen
+        // Matrix -> Latex
+        static public String MathToLatex(Matrix mtr)
         {
-            string Latex = @"\begin{bmatrix}{rrr}" + Wrapper.PrettyFormat("\n");
-            //die einzelnen Zeilen der Matrix werden nun in Latex Schreibweise umgewandelt
+            String latex = @"\begin{bmatrix}{rrr}" + Wrapper.PrettyFormat("\n");
+            // Zeilen der Matrix auflösen
             for (int row=0, col=0; row<mtr.RowCount; row++)                           
             {
+                // Spalten der Matrix auflösen
                 for (col=0; col<mtr.ColumnCount-1; col++)
                 {
-                    Latex += Convert.ToString(mtr[row,col]);
-                    Latex += Wrapper.PrettyFormat(" ") + "&" + Wrapper.PrettyFormat(" ");
+                    latex += Convert.ToString(mtr[row,col]);
+                    latex += Wrapper.PrettyFormat(" ") + "&" + Wrapper.PrettyFormat(" ");
                 }
-                Latex += Convert.ToString(mtr[row,col]);
-                Latex += Wrapper.PrettyFormat(" ") + @"\\" + Wrapper.PrettyFormat("\n");
+                latex += Convert.ToString(mtr[row,col]);
+                latex += Wrapper.PrettyFormat(" ") + (row != mtr.RowCount-1 ? @"\\" : "") + Wrapper.PrettyFormat("\n");
             }
-            return Latex + @"\end{bmatrix}";
+            return latex + @"\end{bmatrix}";
         }
 
-        static public string MathToLatex(String str) //Latexumwandlung für Terme und Gleichungen
+        // Term, Gleichung -> Latex
+        static public String MathToLatex(String str)
         {
-            string neu = "";
-            int i;
-            //zunächst wird abgefragt ob der String eine Gleichung ist
+            // Gleichungen rekursiv auflösen
             if (str.Contains("="))
             {
-                string[] gleichungen = str.Split("=");
-                for (i = 0; i < gleichungen.Length-1; i++)
+                String latex = "";
+                List<String> equations = new List<String>(str.Split("="));
+                for (int i=0; i<equations.Count; i++)
                 {
-                     neu = neu + Expr.Parse(gleichungen[i]).ToLaTeX() + "=";
+                    latex += MathToLatex(equations[i]);
+                    latex += (i != equations.Count-1 ? Wrapper.PrettyFormat(" ") + "=" + Wrapper.PrettyFormat(" ") : "");
                 }
-                return neu + Expr.Parse(gleichungen[i]).ToLaTeX();
-            /* ist dies nicht der Fall, 
-            so ist der String ein Term und kann einfach umgewandelt werden */
+                return latex;
             }
-            else return Expr.Parse(str).ToLaTeX();
+            // Ausdruck in Latex umwandeln
+            return Expr.Parse(str).ToLaTeX();
         }
 
     }
