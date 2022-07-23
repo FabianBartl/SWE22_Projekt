@@ -18,7 +18,7 @@ namespace MaTeX
         static public TextFormats TextFormat = TextFormats.MD;
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public WriteModes WriteMode = WriteModes.OVERRIDE;
-        static public BracketModes BracketMode = BracketModes.BOTH;
+        static public BracketModes[] BracketMode = new BracketModes[] {BracketModes.BEGIN, BracketModes.END};
         static public String LatexHeader = @"\documentclass[10pt]{article}"; 
         static public String SaveLocation = Directory.GetCurrentDirectory();
     }
@@ -27,7 +27,7 @@ namespace MaTeX
     public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTex header */ TEX_WITH_HEADER };
     public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
     public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur bei TextFormats.TEX */ INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
-    public enum BracketModes { START, END, BOTH, NONE };
+    public enum BracketModes { BEGIN, END };
 
     // Wrapper Funktionen für z.B. Config-Optionen
     static public class Wrapper
@@ -39,9 +39,14 @@ namespace MaTeX
 
         // Wrapper für BracketMode-Option
         static public String PrintBrackets(String bracketText, BracketModes currentMode) { return PrintBrackets(bracketText, "", currentMode, Config.BracketMode); }
-        static public String PrintBrackets(String bracketText, String alternative, BracketModes currentMode) { return PrintBrackets(bracketText, alternative, currentMode, Config.BracketMode); }
-        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes compareMode) { return PrintBrackets(bracketText, "", currentMode, compareMode); }
-        static public String PrintBrackets(String bracketText, String alternative, BracketModes currentMode, BracketModes compareMode) { return currentMode == compareMode ? bracketText : alternative ; }
+        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes compareMode) { return PrintBrackets(bracketText, "", currentMode, new BracketModes[] {compareMode}); }
+        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes[] compareModes) { return PrintBrackets(bracketText, "", currentMode, compareModes); }
+        static public String PrintBrackets(String bracketText, String alternative, BracketModes currentMode, BracketModes[] compareModes)
+        {
+            for (int i=0; i < compareModes.Length; i++)
+                if (compareModes[i] == currentMode) return bracketText;
+            return alternative;
+        }
     }
 
     // Converter Funktionen
@@ -153,15 +158,17 @@ namespace MaTeX
                 buffer = null;
                 return false;
             }
-        } 
+        }
 
         // Als Text exportieren
         static public bool AsText(String latex, String filename) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, Config.BracketMode); }
         static public bool AsText(String latex, String filename, TextFormats textFormat) { return AsText(latex, filename, Config.WriteMode, textFormat, Config.BracketMode); }
         static public bool AsText(String latex, String filename, WriteModes writeMode) { return AsText(latex, filename, writeMode, Config.TextFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, BracketModes bracketMode) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, bracketMode); }
+        static public bool AsText(String latex, String filename, BracketModes bracketMode) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, new BracketModes[] {bracketMode}); }
+        static public bool AsText(String latex, String filename, BracketModes[] bracketModes) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, bracketModes); }
         static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat) { return AsText(latex, filename, writeMode, textFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode)
+        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode) { return AsText(latex, filename, writeMode, textFormat, new BracketModes[] {bracketMode}); }
+        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
         {
             // Dateiendung wählen
             if (!filename.Contains("."))
@@ -195,10 +202,10 @@ namespace MaTeX
                             + Wrapper.PrettyPrint("\n")
                         ) : "",
                         (
-                            Wrapper.PrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.START, bracketMode)
+                            Wrapper.PrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.BEGIN, bracketModes)
                             + latex
                             + Wrapper.PrettyPrint("\n")
-                            + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketMode)
+                            + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
                         ),
                         (textFormat == TextFormats.TEX_WITH_HEADER) ? (
                             @"\end{document}"
@@ -211,9 +218,9 @@ namespace MaTeX
                     break;
                 case TextFormats.MD:
                     _text = String.Format("{0}",
-                        Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.START, bracketMode)
+                        Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.BEGIN, bracketModes)
                         + latex
-                        + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketMode)
+                        + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
                         + Wrapper.PrettyPrint("\n", " ")
                     );
                     break;
@@ -257,13 +264,13 @@ namespace MaTeX
                             case WriteModes.INSERT_BEFORE_DOCUMENT_END:
                                 if (!WriteFile(
                                     _path,
-                                    _content.Substring(0, _beginInd + _beginStr.Length) + _text + _content.Substring(_beginInd + _beginStr.Length + 1)
+                                    _content.Substring(0, _endInd - 1) + _text + _content.Substring(_endInd)
                                 )) return false;
                                 break;
                             case WriteModes.INSERT_AFTER_DOCUMENT_START:
                                 if (!WriteFile(
                                     _path,
-                                    _content.Substring(0, _endInd - 1) + _text + _content.Substring(_endInd)
+                                    _content.Substring(0, _beginInd + _beginStr.Length) + _text + _content.Substring(_beginInd + _beginStr.Length + 1)
                                 )) return false;
                                 break;
                         }
@@ -274,7 +281,8 @@ namespace MaTeX
         }
 
         // Als Bild exportieren
-        static public bool AsImage(String latex, String filename, ImageFormats fmt=ImageFormats.JPG)
+        static public bool AsImage(String latex, String filename) { return AsImage(latex, filename, ImageFormats.JPG); }
+        static public bool AsImage(String latex, String filename, ImageFormats imageFormat)
         {
             throw new NotImplementedException();
         }

@@ -16,6 +16,7 @@ namespace MyApp
             Mtx.Config.SaveLocation = Path.GetFullPath("tmp");
             
             // ---
+
             /*
             String S = "f=0=3*3+sqrt(sqrt(a))";
             Vector V = DenseVector.OfArray(new double[] {1,2,3});
@@ -41,8 +42,10 @@ namespace MyApp
             Console.WriteLine("V: " + Convert.ToString(V_check));
             Console.WriteLine("M: " + Convert.ToString(M_check));
             */
+
             // ---
 
+            /*
             Vector y = DenseVector.OfArray(new double[] {4,7,1});
             Matrix I = DenseMatrix.OfArray(new double[,] {
                 {1,0,0},
@@ -64,9 +67,82 @@ namespace MyApp
             String latex = A_latex + "-" + y_latex + I_latex + "=" + R_latex;
             Console.WriteLine(latex);
 
-            Console.WriteLine("R: " + Convert.ToString(Mtx.Export.AsText(y_latex,                 "R_AsText", Mtx.WriteModes.OVERRIDE,                    Mtx.TextFormats.TEX_WITH_HEADER, Mtx.BracketModes.START)));
-            Console.WriteLine("R: " + Convert.ToString(Mtx.Export.AsText(A_latex + "-",           "R_AsText", Mtx.WriteModes.INSERT_AFTER_DOCUMENT_START, Mtx.TextFormats.TEX,             Mtx.BracketModes.NONE)));
-            Console.WriteLine("R: " + Convert.ToString(Mtx.Export.AsText(I_latex + "=" + R_latex, "R_AsText", Mtx.WriteModes.INSERT_BEFORE_DOCUMENT_END,  Mtx.TextFormats.TEX,             Mtx.BracketModes.END)));
+            Console.WriteLine("R: " + (Mtx.Export.AsText(
+                y_latex,
+                "R_AsText",
+                Mtx.WriteModes.OVERRIDE,
+                Mtx.TextFormats.TEX_WITH_HEADER,
+                Mtx.BracketModes.BEGIN
+            )));
+            Console.WriteLine("R: " + (Mtx.Export.AsText(
+                A_latex + "-",
+                "R_AsText",
+                Mtx.WriteModes.INSERT_AFTER_DOCUMENT_START,
+                Mtx.TextFormats.TEX,
+                Mtx.BracketModes.NONE
+            )));
+            Console.WriteLine("R: " + (Mtx.Export.AsText(
+                I_latex + "=" + R_latex,
+                "R_AsText",
+                Mtx.WriteModes.INSERT_BEFORE_DOCUMENT_END,
+                Mtx.TextFormats.TEX,
+                Mtx.BracketModes.END
+            // )));
+            // */
+
+            // ---
+
+            // /*
+            Mtx.Config.BracketMode = new Mtx.BracketModes[] {};
+            String FileName = "debug.tex";
+
+            Console.WriteLine(Mtx.Export.AsText(
+                Mtx.Wrapper.PrettyPrint("\n")
+                    + @"\text{OVERRIDE TEX_WITH_HEADER}"
+                    + Mtx.Wrapper.PrettyPrint("\n"),
+                FileName,
+                Mtx.WriteModes.OVERRIDE,
+                Mtx.TextFormats.TEX_WITH_HEADER
+            ));
+
+            Console.WriteLine(Mtx.Export.AsText(
+                Mtx.Wrapper.PrettyPrint("\n")
+                    + @"\text{APPEND TXT}"
+                    + Mtx.Wrapper.PrettyPrint("\n"),
+                FileName,
+                Mtx.WriteModes.APPEND,
+                Mtx.TextFormats.TXT
+            ));
+
+            Console.WriteLine(Mtx.Export.AsText(
+                Mtx.Wrapper.PrettyPrint("\n")
+                    + @"\text{AT_START TXT}"
+                    + Mtx.Wrapper.PrettyPrint("\n"),
+                FileName,
+                Mtx.WriteModes.AT_START,
+                Mtx.TextFormats.TXT
+            ));
+
+            Console.WriteLine(Mtx.Export.AsText(
+                Mtx.Wrapper.PrettyPrint("\n")
+                    + @"\text{INSERT_AFTER_DOCUMENT_START TEX}"
+                    + Mtx.Wrapper.PrettyPrint("\n"),
+                FileName,
+                Mtx.WriteModes.INSERT_AFTER_DOCUMENT_START,
+                Mtx.TextFormats.TEX,
+                Mtx.BracketModes.BEGIN
+            ));
+
+            Console.WriteLine(Mtx.Export.AsText(
+                Mtx.Wrapper.PrettyPrint("\n")
+                    + @"\text{INSERT_BEFORE_DOCUMENT_END TEX}"
+                    + Mtx.Wrapper.PrettyPrint("\n"),
+                FileName,
+                Mtx.WriteModes.INSERT_BEFORE_DOCUMENT_END,
+                Mtx.TextFormats.TEX,
+                Mtx.BracketModes.END                
+            ));
+            // */
         }
     }
 }
