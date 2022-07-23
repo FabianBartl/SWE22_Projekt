@@ -201,7 +201,7 @@ namespace MaTeX
                     break;
                 case TextFormats.MD:
                     _text = String.Format("{0}{1}{0}",
-                        Wrapper.PrettyPrint("\n$$\n", " $"),
+                        Wrapper.PrettyPrint("\n$$\n", "$"),
                         latex
                     );
                     break;
