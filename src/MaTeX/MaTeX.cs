@@ -40,22 +40,10 @@ namespace MaTeX
         static public String PrettyPrint(String text, String alternative) { return Config.PrettyPrinting ? text : alternative; }
 
         // Wrapper für BracketMode-Option
-        static public String PrintBrackets(String bracketText, BracketModes mode) { return PrintBrackets(bracketText, "", new BracketModes[] {mode}); }
-        static public String NotPrintBrackets(String bracketText, BracketModes mode) { return NotPrintBrackets(bracketText, "", new BracketModes[] {mode}); }
-        static public String PrintBrackets(String bracketText, BracketModes mode, BracketModes mode2) { return PrintBrackets(bracketText, "", new BracketModes[] {mode, mode2}); }
-        static public String NotPrintBrackets(String bracketText, BracketModes mode, BracketModes mode2) { return NotPrintBrackets(bracketText, "", new BracketModes[] {mode, mode2}); }
-        static public String PrintBrackets(String bracketText, String alternative, BracketModes[] mode)
-        {
-            for (int i=0; i < mode.Length; i++)
-                if (mode[i] == Config.BracketMode) return bracketText;
-            return alternative;
-        }
-        static public String NotPrintBrackets(String bracketText, String alternative, BracketModes[] mode)
-        {
-            for (int i=0; i < mode.Length; i++)
-                if (mode[i] != Config.BracketMode) return bracketText;
-            return alternative;
-        }
+        static public String PrintBrackets(String bracketText, BracketModes currentMode) { return PrintBrackets(bracketText, "", currentMode, Config.BracketMode); }
+        static public String PrintBrackets(String bracketText, String alternative, BracketModes currentMode) { return PrintBrackets(bracketText, alternative, currentMode, Config.BracketMode); }
+        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes compareMode) { return PrintBrackets(bracketText, "", currentMode, compareMode); }
+        static public String PrintBrackets(String bracketText, String alternative, BracketModes currentMode, BracketModes compareMode) { return currentMode == compareMode ? bracketText : alternative ; }
     }
 
     // Converter Funktionen
@@ -170,15 +158,17 @@ namespace MaTeX
         } 
 
         // Als Text exportieren
-        static public bool AsText(String latex, String filename) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat); }
-        static public bool AsText(String latex, String filename, TextFormats format) { return AsText(latex, filename, Config.WriteMode, format); }
-        static public bool AsText(String latex, String filename, WriteModes mode) { return AsText(latex, filename, mode, Config.TextFormat); }
-        static public bool AsText(String latex, String filename, WriteModes mode, TextFormats format)
+        static public bool AsText(String latex, String filename) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, TextFormats textFormat) { return AsText(latex, filename, Config.WriteMode, textFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, WriteModes writeMode) { return AsText(latex, filename, writeMode, Config.TextFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, BracketModes bracketMode) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, bracketMode); }
+        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat) { return AsText(latex, filename, writeMode, textFormat, Config.BracketMode); }
+        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode)
         {
             // Dateiendung wählen
             if (!filename.Contains("."))
             {
-                switch (format)
+                switch (textFormat)
                 {
                     case TextFormats.TEX:
                     case TextFormats.TEX_WITH_HEADER:
@@ -195,24 +185,24 @@ namespace MaTeX
 
             // Text zusammenstellen
             String _text = "";
-            switch (format)
+            switch (textFormat)
             {
                 case TextFormats.TEX:
                 case TextFormats.TEX_WITH_HEADER:
                     _text = String.Format("{0}{1}{2}{3}",
-                        (format == TextFormats.TEX_WITH_HEADER) ? (
+                        (textFormat == TextFormats.TEX_WITH_HEADER) ? (
                             Config.LatexHeader
                             + Wrapper.PrettyPrint("\n")
                             + @"\begin{document}"
                             + Wrapper.PrettyPrint("\n")
                         ) : "",
                         (
-                            Wrapper.NotPrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, BracketModes.NONE)
+                            Wrapper.PrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.START, bracketMode)
                             + latex
                             + Wrapper.PrettyPrint("\n")
-                            + Wrapper.NotPrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.START, BracketModes.NONE)
+                            + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.START, bracketMode)
                         ),
-                        (format == TextFormats.TEX_WITH_HEADER) ? (
+                        (textFormat == TextFormats.TEX_WITH_HEADER) ? (
                             @"\end{document}"
                             + Wrapper.PrettyPrint("\n")
                         ) : "",
@@ -222,11 +212,11 @@ namespace MaTeX
                     );
                     break;
                 case TextFormats.MD:
-                    _text = String.Format("{0}{1}{2}{3}",
-                        Wrapper.NotPrintBrackets(Wrapper.PrettyPrint("\n$$\n", "$"), BracketModes.END, BracketModes.NONE),
-                        latex,
-                        Wrapper.NotPrintBrackets(Wrapper.PrettyPrint("\n$$\n", "$"), BracketModes.START, BracketModes.NONE),
-                        Wrapper.PrettyPrint("\n", " ")
+                    _text = String.Format("{0}",
+                        Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.START, bracketMode)
+                        + latex
+                        + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketMode)
+                        + Wrapper.PrettyPrint("\n", " ")
                     );
                     break;
                 case TextFormats.TXT:
@@ -236,7 +226,7 @@ namespace MaTeX
 
             // Datei speichern
             String _content, _path = Path.GetFullPath(Path.Combine(Config.SaveLocation, filename));
-            switch (mode)
+            switch (writeMode)
             {
                 case WriteModes.OVERRIDE:
                     if (!WriteFile(_path, _text)) return false;
@@ -251,10 +241,10 @@ namespace MaTeX
                     break;
                 case WriteModes.INSERT_BEFORE_DOCUMENT_END:
                 case WriteModes.INSERT_AFTER_DOCUMENT_START:
-                    if (format == TextFormats.TEX_WITH_HEADER)
+                    if (textFormat != TextFormats.TEX_WITH_HEADER)
                     {
                         if (!ReadFile(_path, out _content)) return false;
-                        String _substr = (mode == WriteModes.INSERT_BEFORE_DOCUMENT_END) ? @"\begin{document}" : @"\end{document}";
+                        String _substr = (writeMode == WriteModes.INSERT_BEFORE_DOCUMENT_END) ? @"\begin{document}" : @"\end{document}";
                         int _ind = _content.IndexOf(_substr);
                         switch (_ind)
                         {
@@ -266,7 +256,8 @@ namespace MaTeX
                         }
                         if (!WriteFile(
                             _path,
-                            _content.Substring(0, _ind + _substr.Length) + _text + _content.Substring(_ind + _substr.Length + 1)
+                            (writeMode == WriteModes.INSERT_BEFORE_DOCUMENT_END) ? (_content.Substring(0, _ind + _substr.Length) + _text) : (_text + _content.Substring(0, _ind + _substr.Length))
+                            + _content.Substring(_ind + _substr.Length + 1)
                         )) return false;
                     }
                     break;
