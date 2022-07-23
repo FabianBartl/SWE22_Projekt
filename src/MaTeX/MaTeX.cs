@@ -60,8 +60,10 @@ namespace MaTeX
             // Zeilen des Vektors auflösen
             for (int _row=0; _row < vector.Count; _row++)
             {
-                _latex += Convert.ToString(vector[_row]);
-                _latex += Wrapper.PrettyPrint(" ") + (_row != vector.Count-1 ? @"\\" : "") + Wrapper.PrettyPrint("\n");
+                _latex += Convert.ToString(vector[_row])
+                    + Wrapper.PrettyPrint(" ")
+                    + (_row != vector.Count-1 ? @"\\" : "")
+                    + Wrapper.PrettyPrint("\n");
             }
             return _latex + @"\end{pmatrix}";
         }
@@ -76,11 +78,15 @@ namespace MaTeX
                 // Spalten der Matrix auflösen
                 for (_col=0; _col < matrix.ColumnCount-1; _col++)
                 {
-                    _latex += Convert.ToString(matrix[_row,_col]);
-                    _latex += Wrapper.PrettyPrint(" ") + "&" + Wrapper.PrettyPrint(" ");
+                    _latex += Convert.ToString(matrix[_row,_col])
+                        + Wrapper.PrettyPrint(" ")
+                        + "&"
+                        + Wrapper.PrettyPrint(" ");
                 }
-                _latex += Convert.ToString(matrix[_row,_col]);
-                _latex += Wrapper.PrettyPrint(" ") + (_row != matrix.RowCount-1 ? @"\\" : "") + Wrapper.PrettyPrint("\n");
+                _latex += Convert.ToString(matrix[_row,_col])
+                    + Wrapper.PrettyPrint(" ")
+                    + (_row != matrix.RowCount-1 ? @"\\" : "")
+                    + Wrapper.PrettyPrint("\n");
             }
             return _latex + @"\end{bmatrix}";
         }
@@ -95,8 +101,10 @@ namespace MaTeX
                 List<String> _equations = new List<String>(text.Split("="));
                 for (int i=0; i < _equations.Count; i++)
                 {
-                    _latex += MathToLatex(_equations[i]);
-                    _latex += (i != _equations.Count-1 ? Wrapper.PrettyPrint(" ") + "=" + Wrapper.PrettyPrint(" ") : "");
+                    _latex += MathToLatex(_equations[i])
+                        + (i != _equations.Count-1 ? Wrapper.PrettyPrint(" ")
+                        + "="
+                        + Wrapper.PrettyPrint(" ") : "");
                 }
                 return _latex;
             }
@@ -197,19 +205,19 @@ namespace MaTeX
                     _text = String.Format("{0}{1}{2}{3}",
                         (textFormat == TextFormats.TEX_WITH_HEADER) ? (
                             Config.LatexHeader
-                            + Wrapper.PrettyPrint("\n")
-                            + @"\begin{document}"
-                            + Wrapper.PrettyPrint("\n")
+                                + Wrapper.PrettyPrint("\n")
+                                + @"\begin{document}"
+                                + Wrapper.PrettyPrint("\n")
                         ) : "",
                         (
                             Wrapper.PrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.BEGIN, bracketModes)
-                            + latex
-                            + Wrapper.PrettyPrint("\n")
-                            + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
+                                + latex
+                                + Wrapper.PrettyPrint("\n")
+                                + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
                         ),
                         (textFormat == TextFormats.TEX_WITH_HEADER) ? (
                             @"\end{document}"
-                            + Wrapper.PrettyPrint("\n")
+                                + Wrapper.PrettyPrint("\n")
                         ) : "",
                         (
                             Wrapper.PrettyPrint("\n", " ")
@@ -219,9 +227,9 @@ namespace MaTeX
                 case TextFormats.MD:
                     _text = String.Format("{0}",
                         Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.BEGIN, bracketModes)
-                        + latex
-                        + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
-                        + Wrapper.PrettyPrint("\n", " ")
+                            + latex
+                            + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
+                            + Wrapper.PrettyPrint("\n", " ")
                     );
                     break;
                 case TextFormats.TXT:
@@ -264,13 +272,17 @@ namespace MaTeX
                             case WriteModes.INSERT_BEFORE_DOCUMENT_END:
                                 if (!WriteFile(
                                     _path,
-                                    _content.Substring(0, _endInd - 1) + _text + _content.Substring(_endInd)
+                                    _content.Substring(0, _endInd - 1)
+                                        + _text
+                                        + _content.Substring(_endInd)
                                 )) return false;
                                 break;
                             case WriteModes.INSERT_AFTER_DOCUMENT_START:
                                 if (!WriteFile(
                                     _path,
-                                    _content.Substring(0, _beginInd + _beginStr.Length) + _text + _content.Substring(_beginInd + _beginStr.Length + 1)
+                                    _content.Substring(0, _beginInd + _beginStr.Length)
+                                        + _text
+                                        + _content.Substring(_beginInd + _beginStr.Length + 1)
                                 )) return false;
                                 break;
                         }

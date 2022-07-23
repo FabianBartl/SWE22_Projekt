@@ -45,7 +45,9 @@ namespace MyApp
 
             // ---
 
-            /*
+            // /*
+            Mtx.Config.BracketMode = new Mtx.BracketModes[] {};
+            
             Vector y = DenseVector.OfArray(new double[] {4,7,1});
             Matrix I = DenseMatrix.OfArray(new double[,] {
                 {1,0,0},
@@ -67,32 +69,35 @@ namespace MyApp
             String latex = A_latex + "-" + y_latex + I_latex + "=" + R_latex;
             Console.WriteLine(latex);
 
+            String FileName = "R_AsText";
             Console.WriteLine("R: " + (Mtx.Export.AsText(
                 y_latex,
-                "R_AsText",
+                FileName,
                 Mtx.WriteModes.OVERRIDE,
                 Mtx.TextFormats.TEX_WITH_HEADER,
                 Mtx.BracketModes.BEGIN
             )));
             Console.WriteLine("R: " + (Mtx.Export.AsText(
-                A_latex + "-",
-                "R_AsText",
+                A_latex
+                    + "-",
+                FileName,
                 Mtx.WriteModes.INSERT_AFTER_DOCUMENT_START,
-                Mtx.TextFormats.TEX,
-                Mtx.BracketModes.NONE
+                Mtx.TextFormats.TEX
             )));
             Console.WriteLine("R: " + (Mtx.Export.AsText(
-                I_latex + "=" + R_latex,
-                "R_AsText",
+                I_latex
+                    + "="
+                    + R_latex,
+                FileName,
                 Mtx.WriteModes.INSERT_BEFORE_DOCUMENT_END,
                 Mtx.TextFormats.TEX,
                 Mtx.BracketModes.END
             // )));
-            // */
+            */
 
             // ---
 
-            // /*
+            /*
             Mtx.Config.BracketMode = new Mtx.BracketModes[] {};
             String FileName = "debug.tex";
 
@@ -142,7 +147,7 @@ namespace MyApp
                 Mtx.TextFormats.TEX,
                 Mtx.BracketModes.END                
             ));
-            // */
+            */
         }
     }
 }
