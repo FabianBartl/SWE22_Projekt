@@ -34,7 +34,7 @@ namespace MaTeX
     {
         static public String PrettyPrint(String text) { return PrettyPrint(text, ""); }
         static public String NotPrettyPrint(String text) { return PrettyPrint("", text); }
-        static public String PrettyPrint(String text, String alternative) { return !Config.PrettyPrinting ? text : alternative; }
+        static public String PrettyPrint(String text, String alternative) { return Config.PrettyPrinting ? text : alternative; }
     }
 
     // Converter Funktionen
@@ -178,16 +178,32 @@ namespace MaTeX
             {
                 case TextFormats.TEX:
                 case TextFormats.TEX_WITH_HEADER:
-                    // _text += String.Format("{0}", "1");
-
-                    if (format == TextFormats.TEX_WITH_HEADER) _text += Config.LatexHeader + Wrapper.PrettyPrint("\n") + @"\begin{document}" + Wrapper.PrettyPrint("\n");
-                    _text += @"\begin{equation*}" + Wrapper.PrettyPrint("\n") + latex + Wrapper.PrettyPrint("\n") + @"\end{equation*}" + Wrapper.PrettyPrint("\n");
-                    if (format == TextFormats.TEX_WITH_HEADER) _text += @"\end{document}" + Wrapper.PrettyPrint("\n");
+                    _text = String.Format("{0}{1}{2}",
+                        (format == TextFormats.TEX_WITH_HEADER) ? (
+                            Config.LatexHeader
+                            + Wrapper.PrettyPrint("\n")
+                            + @"\begin{document}"
+                            + Wrapper.PrettyPrint("\n")
+                        ) : "",
+                        (
+                            @"\begin{equation*}"
+                            + Wrapper.PrettyPrint("\n")
+                            + latex
+                            + Wrapper.PrettyPrint("\n")
+                            + @"\end{equation*}"
+                            + Wrapper.PrettyPrint("\n")
+                        ),
+                        (format == TextFormats.TEX_WITH_HEADER) ? (
+                            @"\end{document}"
+                            + Wrapper.PrettyPrint("\n")
+                        ) : ""
+                    );
                     break;
                 case TextFormats.MD:
-                    _text += Wrapper.PrettyPrint("\n$$\n", " $");
-                    _text += latex;
-                    _text += Wrapper.PrettyPrint("\n$$\n", "$ ");
+                    _text = String.Format("{0}{1}{0}",
+                        Wrapper.PrettyPrint("\n$$\n", " $"),
+                        latex
+                    );
                     break;
                 case TextFormats.TXT:
                     _text = latex;
