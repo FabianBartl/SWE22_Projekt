@@ -26,7 +26,7 @@ namespace MaTeX
     // Enum's u.a. zur Config-Optionsauswahl
     public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTex header */ TEX_WITH_HEADER };
     public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
-    public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur bei TextFormats.TEX_WITH_HEADER */ INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
+    public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur bei TextFormats.TEX */ INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
     public enum BracketModes { START, END, BOTH, NONE };
 
     // Wrapper Funktionen für z.B. Config-Optionen
@@ -198,7 +198,7 @@ namespace MaTeX
                             Wrapper.PrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.START, bracketMode)
                             + latex
                             + Wrapper.PrettyPrint("\n")
-                            + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.START, bracketMode)
+                            + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketMode)
                         ),
                         (textFormat == TextFormats.TEX_WITH_HEADER) ? (
                             @"\end{document}"
@@ -239,12 +239,12 @@ namespace MaTeX
                     break;
                 case WriteModes.INSERT_BEFORE_DOCUMENT_END:
                 case WriteModes.INSERT_AFTER_DOCUMENT_START:
-                    if (textFormat != TextFormats.TEX_WITH_HEADER)
+                    if (textFormat == TextFormats.TEX)
                     {
                         if (!ReadFile(_path, out _content)) return false;
-                        String _substr = (writeMode == WriteModes.INSERT_BEFORE_DOCUMENT_END) ? @"\begin{document}" : @"\end{document}";
-                        int _ind = _content.IndexOf(_substr);
-                        switch (_ind)
+                        String _beginStr = @"\begin{document}", _endStr = @"\end{document}";
+                        int _beginInd = _content.IndexOf(_beginStr), _endInd = _content.LastIndexOf(_endStr);
+                        switch (_beginInd)
                         {
                             case -1:
                                 return false;
@@ -252,11 +252,21 @@ namespace MaTeX
                                 if (!WriteFile(_path, _text)) return false;
                                 break;
                         }
-                        if (!WriteFile(
-                            _path,
-                            (writeMode == WriteModes.INSERT_BEFORE_DOCUMENT_END) ? (_content.Substring(0, _ind + _substr.Length) + _text) : (_text + _content.Substring(0, _ind + _substr.Length))
-                            + _content.Substring(_ind + _substr.Length + 1)
-                        )) return false;
+                        switch (writeMode)
+                        {
+                            case WriteModes.INSERT_BEFORE_DOCUMENT_END:
+                                if (!WriteFile(
+                                    _path,
+                                    _content.Substring(0, _beginInd + _beginStr.Length) + _text + _content.Substring(_beginInd + _beginStr.Length + 1)
+                                )) return false;
+                                break;
+                            case WriteModes.INSERT_AFTER_DOCUMENT_START:
+                                if (!WriteFile(
+                                    _path,
+                                    _content.Substring(0, _endInd - 1) + _text + _content.Substring(_endInd)
+                                )) return false;
+                                break;
+                        }
                     }
                     break;
             }
