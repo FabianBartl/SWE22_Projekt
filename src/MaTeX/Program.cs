@@ -92,8 +92,8 @@ namespace MyApp
                 Mtx.WriteModes.INSERT_BEFORE_DOCUMENT_END,
                 Mtx.TextFormats.TEX,
                 Mtx.BracketModes.END
-            // )));
-            */
+            )));
+            // */
 
             // ---
 
