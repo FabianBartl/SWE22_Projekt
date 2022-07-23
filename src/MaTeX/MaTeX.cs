@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 
-using CSharpMath;
-
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 
 
