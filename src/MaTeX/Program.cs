@@ -22,9 +22,9 @@ namespace MyApp
             });
 
             Mtx.Config.PrettyPrinting = (args.Length >= 1 && (args[0] == "-pp" || args[0] == "--PrettyPrinting"));
-            Console.WriteLine(Mtx.Conv.MathToLatex(S));
-            Console.WriteLine(Mtx.Conv.MathToLatex(A));
-            Console.WriteLine(Mtx.Conv.MathToLatex(B));
+            Console.Write(Mtx.Conv.MathToLatex(S) + Mtx.Wrapper.PrettyPrint("\n"));
+            Console.Write(Mtx.Conv.MathToLatex(A) + Mtx.Wrapper.PrettyPrint("\n"));
+            Console.Write(Mtx.Conv.MathToLatex(B) + Mtx.Wrapper.PrettyPrint("\n"));
         }
     }
 }
