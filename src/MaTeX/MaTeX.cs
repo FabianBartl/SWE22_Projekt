@@ -6,7 +6,6 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 
 using CSharpMath;
-using CSharpMath.SkiaSharp;
 
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 
@@ -17,14 +16,14 @@ namespace MaTeX
     static public class Config
     {
         static public bool PrettyPrinting = false;
-        static public TextFormats TextFormat = TextFormats.TXT;
+        static public TextFormats TextFormat = TextFormats.MD;
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public String DefaultSaveLocation = Path.Combine(Path.GetTempPath(), "MaTeX");
     }
 
     // Enum's u.a. für Config's
-    public enum TextFormats { TEX, MD, TXT };
-    public enum ImageFormats { JPG, PNG, GIF, SVG };
+    public enum TextFormats { TXT, MD, TEX };
+    public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
 
     // Wrapper Funktionen für z.B. Config-Optionen
     static public class Wrapper
@@ -92,14 +91,34 @@ namespace MaTeX
     // Funktionen zum Exportieren des Latex als Text oder Bild
     static public class Export
     {
-        static public void AsText(String latex, TextFormats format)
+        // Als Text exportieren
+        static public void AsText(String latex, String filename, TextFormats format=TextFormats.TXT)
         {
+            // Dateiendung wählen
+            if (!filename.Contains("."))
+            {
+                switch (format)
+                {
+                    case TextFormats.TEX:
+                        filename += ".tex";
+                        break;
+                    case TextFormats.MD:
+                        filename += ".md";
+                        break;
+                    case TextFormats.TXT:
+                        filename += ".txt";
+                        break;
+                }
+            }
 
+            // Datei speichern
+            
         }
 
-        static public void AsImage(ImageFormats fmt)
+        // Als Bild exportieren
+        static public void AsImage(String latex, String filename, ImageFormats fmt=ImageFormats.JPG)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
