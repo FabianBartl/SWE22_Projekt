@@ -170,18 +170,9 @@ namespace MaTeX
         } 
 
         // Als Text exportieren
-        static public bool AsText(String latex, String filename)
-        {
-            throw new NotImplementedException();
-        }
-        static public bool AsText(String latex, String filename, TextFormats format)
-        {
-            throw new NotImplementedException();
-        }
-        static public bool AsText(String latex, String filename, WriteModes mode)
-        {
-            throw new NotImplementedException();
-        }
+        static public bool AsText(String latex, String filename) { return AsText(latex, filename, Config.WriteMode, Config.TextFormat); }
+        static public bool AsText(String latex, String filename, TextFormats format) { return AsText(latex, filename, Config.WriteMode, format); }
+        static public bool AsText(String latex, String filename, WriteModes mode) { return AsText(latex, filename, mode, Config.TextFormat); }
         static public bool AsText(String latex, String filename, WriteModes mode, TextFormats format)
         {
             // Dateiendung wählen
