@@ -21,7 +21,7 @@ namespace MyApp
                 {4,3,2}
             });
 
-            Mtx.Config.PrettyFormat = true;
+            Mtx.Config.PrettyFormat = (args.Length >= 1 && (args[0] == "-pf" || args[0] == "--PrettyFormat"));
             Console.WriteLine(Mtx.Conv.MathToLatex(S));
             Console.WriteLine(Mtx.Conv.MathToLatex(A));
             Console.WriteLine(Mtx.Conv.MathToLatex(B));

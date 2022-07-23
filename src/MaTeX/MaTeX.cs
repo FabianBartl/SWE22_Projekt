@@ -53,10 +53,10 @@ namespace MaTeX
         // Term, Gleichung -> Latex
         static public String MathToLatex(String str)
         {
+            String latex = "";
             // Gleichungen rekursiv auflösen
             if (str.Contains("="))
             {
-                String latex = "";
                 List<String> equations = new List<String>(str.Split("="));
                 for (int i=0; i<equations.Count; i++)
                 {
@@ -66,8 +66,8 @@ namespace MaTeX
                 return latex;
             }
             // Ausdruck in Latex umwandeln
-            return Expr.Parse(str).ToLaTeX();
+            latex = Expr.Parse(str).ToLaTeX();
+            return Config.PrettyFormat ? latex : latex.Replace(" ", "");
         }
-
     }
 }
