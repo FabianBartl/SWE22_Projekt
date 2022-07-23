@@ -7,27 +7,21 @@
 
 ## Zielstellung
 
->*Transformation von Math.NET Inhalten (Matrizen, Formeln usw.) nach Latex*
+>*Transformation von Math.NET Inhalten (Matrizen, Vektoren, Terme usw.) nach Latex*
 
-Das Ergbenis soll ein wiederverwendbare Class-Library (DLL) sein, die dem Programmierer die Möglichkeit gibt, mathematische C#-Objekte der Math.NET Bibliothek in Latex zu transformieren und als Text oder Bild zu speichern.
+Das Ergbenis soll ein wiederverwendbare Class-Library (DLL) sein, die dem Programmierer die Möglichkeit gibt, mathematische C#-Objekte der Math.NET Bibliothek in Latex zu transformieren und als Text zu speichern.
 
 Eventuell möchten wir diese Class-Library dann auch als NuGet-Package unter dem Name "MaTeX" zur Verfügung stellen.
 
-**Erster Softwareentwurf:**
-
-![](img/Funktionen+Beschreibung.jpg)
-Funktionen mit Beschreibung
-
-![](img/Pseudocode+Anwendungskonzept.jpg)
-Pseudocode mit Anwendungskonzept
-
-<!-- https://github.com/fb89zila/exam-repo_swe-sose21/wiki/Developer -->
+**Aktuelle CodeMap:**
+![](https://raw.githubusercontent.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/5373114a404d7207134cce353d0bb2ccec7d3d35/src/ConsoleApp1/CodeMap.png?token=AR2F4PDDVVWHFJE6KX4R2O3C3RVEW)
 
 **Dependencies:**
 
+- [CSharpMath](https://www.nuget.org/packages/CSharpMath)
 - [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
 - [Math.NET Symbolics](https://www.nuget.org/packages/MathNet.Symbolics)
-- [CSharp Math](https://www.nuget.org/packages/CSharpMath)
+- [Microsoft.CodeAnalysis.CSharp.Scripting](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Scripting)
 
 ## Zeitplan
 
