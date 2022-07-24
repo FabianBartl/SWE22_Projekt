@@ -13,8 +13,9 @@ Das Ergbenis soll ein wiederverwendbare Class-Library (DLL) sein, die dem Progra
 
 Eventuell möchten wir diese Class-Library dann auch als NuGet-Package unter dem Name "MaTeX" zur Verfügung stellen.
 
-**Aktuelle CodeMap:**
-![](https://raw.githubusercontent.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/5373114a404d7207134cce353d0bb2ccec7d3d35/src/ConsoleApp1/CodeMap.png?token=AR2F4PDDVVWHFJE6KX4R2O3C3RVEW)
+**Aktuelle MaTeX CodeMap:**
+
+![](img/MaTeX_CodeMap.png)
 
 **Dependencies:**
 
