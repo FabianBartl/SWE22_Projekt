@@ -106,13 +106,11 @@ namespace MaTeX
             // Gleichungen rekursiv auflösen
             if (text.Contains("="))
             {
-                List<String> _equations = new List<String>(text.Split("="));
-                for (int i=0; i < _equations.Count; i++)
+                String[] _equations = text.Split("=");
+                for (int i=0; i < _equations.Length; i++)
                 {
-                    _latex += MathToLatex(_equations[i])
-                        + (i != _equations.Count-1 ? Wrapper.PrettyPrint(" ")
-                        + "="
-                        + Wrapper.PrettyPrint(" ") : "");
+                    _latex += MathToLatex(_equations[i]);
+                    _latex += (i != _equations.Length - 1) ? Wrapper.PrettyPrint(" ") + "=" + Wrapper.PrettyPrint(" ") : "";
                 }
                 return _latex;
             }
