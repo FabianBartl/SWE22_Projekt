@@ -66,7 +66,10 @@ namespace MyApp
             String A_latex = Mtx.Conv.MathToLatex(A);
             String R_latex = Mtx.Conv.MathToLatex("R");
 
-            String latex = A_latex + "-" + y_latex + @"\cdot" + I_latex + "=" + R_latex;
+            String latex = A_latex
+                + "-" + Mtx.Wrapper.PrettyPrint("\n")
+                + y_latex + @"\cdot" + Mtx.Wrapper.PrettyPrint("\n")
+                + I_latex + "=" + R_latex;
             Console.WriteLine(latex);
 
             String FileName = "R_AsText";
