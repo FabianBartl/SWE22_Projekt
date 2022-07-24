@@ -66,32 +66,16 @@ namespace MyApp
             String A_latex = Mtx.Conv.MathToLatex(A);
             String R_latex = Mtx.Conv.MathToLatex("R");
 
-            String latex = A_latex + "-" + y_latex + I_latex + "=" + R_latex;
+            String latex = A_latex + "-" + y_latex + @"\cdot" + I_latex + "=" + R_latex;
             Console.WriteLine(latex);
 
             String FileName = "R_AsText";
             Console.WriteLine("R: " + (Mtx.Export.AsText(
-                y_latex,
+                latex,
                 FileName,
                 Mtx.WriteModes.OVERRIDE,
                 Mtx.TextFormats.TEX_WITH_HEADER,
-                Mtx.BracketModes.BEGIN
-            )));
-            Console.WriteLine("R: " + (Mtx.Export.AsText(
-                A_latex
-                    + "-",
-                FileName,
-                Mtx.WriteModes.INSERT_AFTER_DOCUMENT_START,
-                Mtx.TextFormats.TEX
-            )));
-            Console.WriteLine("R: " + (Mtx.Export.AsText(
-                I_latex
-                    + "="
-                    + R_latex,
-                FileName,
-                Mtx.WriteModes.INSERT_BEFORE_DOCUMENT_END,
-                Mtx.TextFormats.TEX,
-                Mtx.BracketModes.END
+                new Mtx.BracketModes[] {Mtx.BracketModes.BEGIN, Mtx.BracketModes.END}
             )));
             // */
 
@@ -110,23 +94,23 @@ namespace MyApp
                 Mtx.TextFormats.TEX_WITH_HEADER
             ));
 
-            Console.WriteLine(Mtx.Export.AsText(
-                Mtx.Wrapper.PrettyPrint("\n")
-                    + @"\text{APPEND TXT}"
-                    + Mtx.Wrapper.PrettyPrint("\n"),
-                FileName,
-                Mtx.WriteModes.APPEND,
-                Mtx.TextFormats.TXT
-            ));
+            // Console.WriteLine(Mtx.Export.AsText(
+            //     Mtx.Wrapper.PrettyPrint("\n")
+            //         + @"\text{APPEND TXT}"
+            //         + Mtx.Wrapper.PrettyPrint("\n"),
+            //     FileName,
+            //     Mtx.WriteModes.APPEND,
+            //     Mtx.TextFormats.TXT
+            // ));
 
-            Console.WriteLine(Mtx.Export.AsText(
-                Mtx.Wrapper.PrettyPrint("\n")
-                    + @"\text{AT_START TXT}"
-                    + Mtx.Wrapper.PrettyPrint("\n"),
-                FileName,
-                Mtx.WriteModes.AT_START,
-                Mtx.TextFormats.TXT
-            ));
+            // Console.WriteLine(Mtx.Export.AsText(
+            //     Mtx.Wrapper.PrettyPrint("\n")
+            //         + @"\text{AT_START TXT}"
+            //         + Mtx.Wrapper.PrettyPrint("\n"),
+            //     FileName,
+            //     Mtx.WriteModes.AT_START,
+            //     Mtx.TextFormats.TXT
+            // ));
 
             Console.WriteLine(Mtx.Export.AsText(
                 Mtx.Wrapper.PrettyPrint("\n")
