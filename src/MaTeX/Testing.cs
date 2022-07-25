@@ -1,6 +1,8 @@
 using Xunit;
 using System;
 using System.IO;
+using System.Text;
+using System.Threading;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 public class Testings
@@ -64,39 +66,6 @@ public class Testings
         );
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(Term));
     }
-
-    private bool FileCompare(string file1, string file2)
-    {
-        int file1Byte;
-        int file2Byte;
-        FileStream fileStream1;
-        FileStream fileStream2;
-
-        if (file1 == file2) return true;
-
-        fileStream1 = new FileStream(file1, FileMode.Open);
-        fileStream2 = new FileStream(file2, FileMode.Open);
-
-        if (fileStream1.Length != fileStream2.Length)
-        {
-            fileStream1.Close();
-            fileStream2.Close();
-            return false;
-        }
-
-        do
-        {
-            file1Byte = fileStream1.ReadByte();
-            file2Byte = fileStream2.ReadByte();
-        }
-        while ((file1Byte == file2Byte) && (file1Byte != -1));
-
-        fileStream1.Close();
-        fileStream2.Close();
-
-        return ((file1Byte - file2Byte) == 0);
-    }
-
     
     [Theory]
     [InlineData("R_AsText.tex")]
@@ -137,7 +106,6 @@ public class Testings
                     + "-" + MaTeX.Wrapper.PrettyPrint("\n")
                     + y_latex + @"\cdot" + MaTeX.Wrapper.PrettyPrint("\n")
                     + I_latex + "=" + R_latex;
-                Console.WriteLine(latex);
 
                 MaTeX.Export.AsText(
                     latex,
@@ -173,14 +141,14 @@ public class Testings
             case "debug.tex":
                 MaTeX.Config.BracketMode = new MaTeX.BracketModes[] {};
 
-                Console.WriteLine(MaTeX.Export.AsText(
+                MaTeX.Export.AsText(
                     MaTeX.Wrapper.PrettyPrint("\n")
                         + @"\text{OVERRIDE TEX_DOCUMENT}"
                         + MaTeX.Wrapper.PrettyPrint("\n"),
                     fileName,
                     MaTeX.WriteModes.OVERRIDE,
                     MaTeX.TextFormats.TEX_DOCUMENT
-                ));
+                );
                 
                 MaTeX.Export.AsText(
                     MaTeX.Wrapper.PrettyPrint("\n")
@@ -207,5 +175,65 @@ public class Testings
         string path = Path.Combine(Directory.GetParent(@"bin").FullName, textFormat);
         Assert.True(FileCompare(path, comparePath));
         File.Delete(path);
+    }
+
+    // Hilffunktionen
+    // Zwei Dateien vergleichen
+    private bool FileCompare(string file1, string file2)
+    {
+        string file1Content;
+        string file2Content;
+        
+        FileRead(file1, out file1Content, true);
+        FileRead(file2, out file2Content, true);
+
+        return file1Content == file2Content;
+    }
+
+    // Datei lesen
+    private bool FileRead(string file, out string buffer)
+    {
+        string path = Path.GetFullPath(file);
+        using (StreamReader streamReader = File.OpenText(path))
+        {
+            string line; buffer = "";
+            while ((line = streamReader.ReadLine()) != null) buffer += line + "\n";
+            return true;
+        }
+    }
+    private bool FileRead(string file, out string buffer, bool waitAtException)
+    {
+        if (!waitAtException) return FileRead(file, out buffer);
+        for (int i=0; i < 10; i++)
+        {
+            try { return FileRead(file, out buffer); }
+            catch (System.IO.IOException) { Thread.Sleep(100); }
+            Console.Write(String.Format("{0} ", i));
+        }
+        buffer = null;
+        return false;
+    }
+
+    // Datei schreiben
+    private bool FileWrite(string file, string buffer)
+    {
+        string path = Path.GetFullPath(file);
+        using (FileStream fileStream = File.Create(path))
+        {
+            Byte[] bytes = new UTF8Encoding(true).GetBytes(buffer);
+            fileStream.Write(bytes, 0, bytes.Length);
+            return true;
+        }
+    }
+    private bool FileWrite(string file, string buffer, bool waitAtException)
+    {
+        if (!waitAtException) return FileWrite(file, buffer);
+        for (int i=0; i < 10; i++)
+        {
+            try { return FileWrite(file, buffer); }
+            catch (System.IO.IOException) { Thread.Sleep(100); }
+            Console.Write(String.Format("{0} ", i));
+        }
+        return false;
     }
 }
