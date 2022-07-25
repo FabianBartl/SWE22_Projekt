@@ -19,14 +19,14 @@ namespace MaTeX
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public WriteModes WriteMode = WriteModes.OVERRIDE;
         static public BracketModes[] BracketMode = new BracketModes[] {BracketModes.BEGIN, BracketModes.END};
-        static public String LatexHeader = @"\documentclass[10pt]{article}"; 
+        static public String LatexHeader = @"\documentclass[10pt]{article}";
         static public String SaveLocation = Directory.GetCurrentDirectory();
     }
 
     // Enum's u.a. zur Config-Optionsauswahl
-    public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTex header */ TEX_WITH_HEADER };
+    public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTex Header und Document  */ TEX_DOCUMENT };
     public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
-    public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur bei TextFormats.TEX */ INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
+    public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur für TextFormats.TEX */ INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
     public enum BracketModes { BEGIN, END };
 
     // Wrapper Funktionen für z.B. Config-Optionen
@@ -199,7 +199,7 @@ namespace MaTeX
                 switch (textFormat)
                 {
                     case TextFormats.TEX:
-                    case TextFormats.TEX_WITH_HEADER:
+                    case TextFormats.TEX_DOCUMENT:
                         filename += ".tex";
                         break;
                     case TextFormats.MD:
@@ -216,9 +216,9 @@ namespace MaTeX
             switch (textFormat)
             {
                 case TextFormats.TEX:
-                case TextFormats.TEX_WITH_HEADER:
+                case TextFormats.TEX_DOCUMENT:
                     _text = String.Format("{0}{1}{2}{3}",
-                        (textFormat == TextFormats.TEX_WITH_HEADER) ? (
+                        (textFormat == TextFormats.TEX_DOCUMENT) ? (
                             Config.LatexHeader
                                 + Wrapper.PrettyPrint("\n")
                                 + @"\begin{document}"
@@ -230,7 +230,7 @@ namespace MaTeX
                                 + Wrapper.PrettyPrint("\n")
                                 + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
                         ),
-                        (textFormat == TextFormats.TEX_WITH_HEADER) ? (
+                        (textFormat == TextFormats.TEX_DOCUMENT) ? (
                             @"\end{document}"
                                 + Wrapper.PrettyPrint("\n")
                         ) : "",
