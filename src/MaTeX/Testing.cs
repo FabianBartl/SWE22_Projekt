@@ -76,11 +76,11 @@ public class Testings
     public void AsText_Latex_File(string textFormat)
     {
         MaTeX.Config.SaveLocation = Directory.GetParent(@"bin").FullName;
-        File.Create(textFormat);
+        File.Create(textFormat).Dispose();
         MaTeX.Config.PrettyPrinting = true;
         
         string fileName = textFormat;
-        string comparePath = Path.GetFullPath("TestFiles/" + fileName);
+        string comparePath = Path.GetFullPath(fileName);
 
         switch (textFormat)
         {
