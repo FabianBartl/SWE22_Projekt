@@ -5,11 +5,12 @@
 - [Funktionen](#funktionen)
   - [`Conv.MathToLatex()`](#convmathtolatex)
   - [`Export.AsText()`](#exportastext)
-  - [`Export.AsImage()`](#exportasimage)
+  - [`Export.AsImage()` *(Coming Soon)*](#exportasimage-coming-soon)
   - [`Wrapper.PrettyPrint()`](#wrapperprettyprint)
   - [`Wrapper.PrintBrackets()`](#wrapperprintbrackets)
 - [Objekte](#objekte)
   - [`TextFormats`](#textformats)
+  - [`ImageFormats`](#imageformats)
   - [`WriteModes`](#writemodes)
   - [`BracketModes`](#bracketmodes)
 - [Konfiguration](#konfiguration)
@@ -45,6 +46,7 @@ string MathToLatex(object obj)
 **Beispiel:**
 
 ```cs
+// Objekte definieren
 string S = "0 = 3*2-sqrt(x)";
 Vector V = DenseVector.OfArray(new double[] {4,7,1});
 Matrix M = DenseMatrix.OfArray(new double[,] {
@@ -53,10 +55,12 @@ Matrix M = DenseMatrix.OfArray(new double[,] {
     {4,0,1}
 });
 
+// LaTeX-Code genrerieren
 string S_latex = Conv.MathToLatex(S);
 string V_latex = Conv.MathToLatex(V);
 string M_latex = Conv.MathToLatex(M);
 
+// LaTeX-Code anzeigen
 Console.WriteLine(S_latex + "\n");
 Console.WriteLine(V_latex + "\n");
 Console.WriteLine(M_latex + "\n");
@@ -135,9 +139,85 @@ bool AsText(string latex, string filename, WriteModes writeMode, TextFormats tex
 | Schließende Klammer | `new BracketModes[] {BracketModes.END}`                     | `                 0=6-\sqrt{x}\end{equation*}` | ` 0=6-\sqrt{x}$`                       |
 | Beide Klammern      | `new BracketModes[] {BracketModes.BEGIN, BracketModes.END}` | `\begin{equation*}0=6-\sqrt{x}\end{equation*}` | `$0=6-\sqrt{x}$`                       |
 
-### `Export.AsImage()`
+**Beispiel:**
 
->Rendert LaTeX-Code in Form von `string`'s und speichert ihn als Bild.
+>Objekte `S`, `V`, `M` und deren LaTeX-Code `S_latex`, `V_latex`, `M_latex` aus dem [MathToLatex](#convmathtolatex)-Beispiel verwenden
+
+```cs
+string FileName = "Beispiel_ExportAsText";
+
+// Export (I)
+Export.AsText(
+    S_latex,
+    FileName,
+    WriteModes.OVERRIDE, // (Default)
+    TextFormats.TEX_DOCUMENT,
+    new BracketModes[] {BracketModes.BEGIN, BracketModes.END} // (Default)
+);
+
+// Export (II)
+Export.AsText(
+    M_latex + @"\cdot",
+    FileName,
+    WriteModes.INSERT_BEFORE_DOCUMENT_END,
+    TextFormats.TEX, // (Default)
+    new BracketModes[] {BracketModes.BEGIN}
+);
+
+// Export (III)
+Export.AsText(
+    V_latex,
+    FileName,
+    WriteModes.INSERT_BEFORE_DOCUMENT_END,
+    TextFormats.TEX, // (Default)
+    new BracketModes[] {BracketModes.END}
+);
+```
+
+```cs
+// oder mit Export (II) und (III) kombiniert
+Export.AsText(
+    M_latex + @"\cdot" + V_latex,
+    FileName,
+    WriteModes.INSERT_BEFORE_DOCUMENT_END,
+    TextFormats.TEX, // (Default)
+    new BracketModes[] {BracketModes.BEGIN, BracketModes.END} // (Default)
+);
+```
+
+Mit `Default` markierte Parameter sind optional und können über die jeweilige [`Config`-Option](#alle-config-optionen) global konfiguriert werden.
+
+**Ausgabe:** *[Beispiel_ExportAsText.tex](Beispiel_ExportAsText.tex)*
+
+```latex
+\documentclass[10pt]{article}   % Export (I)
+                                %  |
+\begin{document}                %  |
+                                %  |
+\begin{equation*}               %  |
+0 = 6 - \sqrt{x}                %  |
+\end{equation*}                 %  |
+
+\begin{equation*}               % Export (II)
+\begin{bmatrix}                 %  |
+1 & 5 & 0 \\                    %  |
+0 & 3 & 0 \\                    %  |
+4 & 0 & 1                       %  |
+\end{bmatrix}\cdot              %  |
+
+\begin{pmatrix}                 % Export (III)
+4 \\                            %  |
+7 \\                            %  |
+1                               %  |
+\end{pmatrix}                   %  |
+\end{equation*}                 %  |
+
+\end{document}                  % Export (I)
+```
+
+### `Export.AsImage()` *(Coming Soon)*
+
+>Rendert LaTeX-Code in Form von `string`'s und speichert es als Bild.
 
 ```cs
 bool AsImage(string latex, string filename, ImageFormats imageFormat)
@@ -182,6 +262,12 @@ string PrintBrackets(string bracketText, string alternative, BracketModes curren
 enum TextFormats { TXT, MD, TEX, TEX_DOCUMENT }
 ```
 
+### `ImageFormats`
+
+```cs
+enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG }
+```
+
 ### `WriteModes`
 
 ```cs
@@ -222,7 +308,8 @@ Die in dieser Kurzform fehlenden Paramter sind `writeMode` und `bracketModes`. B
 | ---------------------- | -------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `PrettyPrinting`       | `bool`         | `true`                                                      | Fügt beim generieren von LaTeX-Code mit `Conv.MathToLatex()` oder beim Schreiben mit `Export.AsText()` Leerzeichen- und zeilen ein, wenn `true`. |
 | `IgnoreFileExceptions` | `bool`         | `false`                                                     | `Export.AsText()` wirft keine `Exception` wenn bei Lese- oder Schreiboperationen ein Fehler auftritt, sondern gibt `false` zurück, wenn `true`.  |
-| `TextFormat`           | `TextFormats`  | `TextFormats.MD`                                            | Legt das Standard Dateiformat für `Export.AsText()` fest und die Dateiendung, wenn diese nicht schon durch `filename` gesetzt wurde.             |
+| `TextFormat`           | `TextFormats`  | `TextFormats.TEX`                                           | Legt das Standard Dateiformat für `Export.AsText()` fest und die Dateiendung, wenn diese nicht schon durch `filename` gesetzt wurde.             |
+| `ImageFormat`          | `ImageFormats` | `ImageFormats.JPG`                                          | Legt das Standard Dateiformat für `Export.AsImage()` fest.                                                                                       |
 | `WriteMode`            | `WriteModes`   | `WriteModes.OVERRIDE`                                       | Legt den Standard Schreibmodus für `Export.AsText()` fest.                                                                                       |
 | `BracketMode`          | `BracketModes` | `new BracketModes[] {BracketModes.BEGIN, BracketModes.END}` | Legt die Standard Klammermodi für `Export.AsText()` fest.                                                                                        | 
 | `LatexHeader`          | `string`       | `@"\documentclass[10pt]{article}"`                          | Legt den Standard LaTeX-Header fest und wird bei `Export.AsText()` mit `TextFormats.TEX_DOCUMENT` vor `\document{begin}` geschrieben.            |

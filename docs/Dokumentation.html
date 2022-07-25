@@ -2,7 +2,7 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>Dokumentation</title>
+        <title>Dokumentation &lt;&excl;-- omit in toc --&gt;</title>
         <style>
 /* From extension vscode.github */
 /*---------------------------------------------------------------------------------------------
@@ -45,15 +45,14 @@
         
     </head>
     <body class="vscode-body vscode-light">
-        <h1 id="dokumentation">Dokumentation</h1>
-<ul>
-<li><a href="#dokumentation">Dokumentation</a>
+        <h1 id="dokumentation-">Dokumentation <!-- omit in toc --></h1>
 <ul>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#funktionen">Funktionen</a>
 <ul>
 <li><a href="#convmathtolatex"><code>Conv.MathToLatex()</code></a></li>
 <li><a href="#exportastext"><code>Export.AsText()</code></a></li>
+<li><a href="#exportasimage-coming-soon"><code>Export.AsImage()</code> <em>(Coming Soon)</em></a></li>
 <li><a href="#wrapperprettyprint"><code>Wrapper.PrettyPrint()</code></a></li>
 <li><a href="#wrapperprintbrackets"><code>Wrapper.PrintBrackets()</code></a></li>
 </ul>
@@ -61,6 +60,7 @@
 <li><a href="#objekte">Objekte</a>
 <ul>
 <li><a href="#textformats"><code>TextFormats</code></a></li>
+<li><a href="#imageformats"><code>ImageFormats</code></a></li>
 <li><a href="#writemodes"><code>WriteModes</code></a></li>
 <li><a href="#bracketmodes"><code>BracketModes</code></a></li>
 </ul>
@@ -68,8 +68,6 @@
 <li><a href="#konfiguration">Konfiguration</a>
 <ul>
 <li><a href="#alle-config-optionen">Alle <code>Config</code>-Optionen</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -98,7 +96,8 @@
 <li><code>Vector</code></li>
 </ul>
 <p><strong>Beispiel:</strong></p>
-<pre><code class="language-cs"><div><span class="hljs-built_in">string</span> S = <span class="hljs-string">&quot;0 = 3*2-sqrt(x)&quot;</span>;
+<pre><code class="language-cs"><div><span class="hljs-comment">// Objekte definieren</span>
+<span class="hljs-built_in">string</span> S = <span class="hljs-string">&quot;0 = 3*2-sqrt(x)&quot;</span>;
 Vector V = DenseVector.OfArray(<span class="hljs-keyword">new</span> <span class="hljs-built_in">double</span>[] {<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>});
 Matrix M = DenseMatrix.OfArray(<span class="hljs-keyword">new</span> <span class="hljs-built_in">double</span>[,] {
     {<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>},
@@ -106,10 +105,12 @@ Matrix M = DenseMatrix.OfArray(<span class="hljs-keyword">new</span> <span class
     {<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}
 });
 
+<span class="hljs-comment">// LaTeX-Code genrerieren</span>
 <span class="hljs-built_in">string</span> S_latex = Conv.MathToLatex(S);
 <span class="hljs-built_in">string</span> V_latex = Conv.MathToLatex(V);
 <span class="hljs-built_in">string</span> M_latex = Conv.MathToLatex(M);
 
+<span class="hljs-comment">// LaTeX-Code anzeigen</span>
 Console.WriteLine(S_latex + <span class="hljs-string">&quot;\n&quot;</span>);
 Console.WriteLine(V_latex + <span class="hljs-string">&quot;\n&quot;</span>);
 Console.WriteLine(M_latex + <span class="hljs-string">&quot;\n&quot;</span>);
@@ -139,7 +140,7 @@ Console.WriteLine(M_latex + <span class="hljs-string">&quot;\n&quot;</span>);
 <ul>
 <li><code>filename</code> darf nur den Dateinamen, keinen Dateipfad enthalten.</li>
 <li>Der Standard Dateipfad kann in <code>Config.SaveLocation</code> festgelegt werden.</li>
-<li>Wenn <code>filename</code> keine Dateiendung enthält, wird diese durch <code>textFormat</code> ausgewählt:</li>
+<li>Wenn <code>filename</code> keine Dateiendung enthält, wird diese durch <code>textFormat</code> festgelegt:</li>
 </ul>
 <table>
 <thead>
@@ -276,6 +277,120 @@ Console.WriteLine(M_latex + <span class="hljs-string">&quot;\n&quot;</span>);
 </tr>
 </tbody>
 </table>
+<p><strong>Beispiel:</strong></p>
+<blockquote>
+<p>Objekte <code>S</code>, <code>V</code>, <code>M</code> und deren LaTeX-Code <code>S_latex</code>, <code>V_latex</code>, <code>M_latex</code> aus dem <a href="#convmathtolatex">MathToLatex</a>-Beispiel verwenden</p>
+</blockquote>
+<pre><code class="language-cs"><div><span class="hljs-built_in">string</span> FileName = <span class="hljs-string">&quot;Beispiel_ExportAsText&quot;</span>;
+
+<span class="hljs-comment">// Export (I)</span>
+Export.AsText(
+    S_latex,
+    FileName,
+    WriteModes.OVERRIDE, <span class="hljs-comment">// (Default)</span>
+    TextFormats.TEX_DOCUMENT,
+    <span class="hljs-keyword">new</span> BracketModes[] {BracketModes.BEGIN, BracketModes.END} <span class="hljs-comment">// (Default)</span>
+);
+
+<span class="hljs-comment">// Export (II)</span>
+Export.AsText(
+    M_latex + <span class="hljs-string">@&quot;\cdot&quot;</span>,
+    FileName,
+    WriteModes.INSERT_BEFORE_DOCUMENT_END,
+    TextFormats.TEX, <span class="hljs-comment">// (Default)</span>
+    <span class="hljs-keyword">new</span> BracketModes[] {BracketModes.BEGIN}
+);
+
+<span class="hljs-comment">// Export (III)</span>
+Export.AsText(
+    V_latex,
+    FileName,
+    WriteModes.INSERT_BEFORE_DOCUMENT_END,
+    TextFormats.TEX, <span class="hljs-comment">// (Default)</span>
+    <span class="hljs-keyword">new</span> BracketModes[] {BracketModes.END}
+);
+</div></code></pre>
+<pre><code class="language-cs"><div><span class="hljs-comment">// oder mit Export (II) und (III) kombiniert</span>
+Export.AsText(
+    M_latex + <span class="hljs-string">@&quot;\cdot&quot;</span> + V_latex,
+    FileName,
+    WriteModes.INSERT_BEFORE_DOCUMENT_END,
+    TextFormats.TEX, <span class="hljs-comment">// (Default)</span>
+    <span class="hljs-keyword">new</span> BracketModes[] {BracketModes.BEGIN, BracketModes.END} <span class="hljs-comment">// (Default)</span>
+);
+</div></code></pre>
+<p>Mit <code>Default</code> markierte Parameter sind optional und können über die jeweilige <a href="#alle-config-optionen"><code>Config</code>-Option</a> global konfiguriert werden.</p>
+<p><strong>Ausgabe:</strong> <em><a href="Beispiel_ExportAsText.tex">Beispiel_ExportAsText.tex</a></em></p>
+<pre><code class="language-latex"><div><span class="hljs-keyword">\documentclass</span>[10pt]{article}   <span class="hljs-comment">% Export (I)</span>
+                                <span class="hljs-comment">%  |</span>
+<span class="hljs-keyword">\begin</span>{document}                <span class="hljs-comment">%  |</span>
+                                <span class="hljs-comment">%  |</span>
+<span class="hljs-keyword">\begin</span>{equation*}               <span class="hljs-comment">%  |</span>
+0 = 6 - <span class="hljs-keyword">\sqrt</span>{x}                <span class="hljs-comment">%  |</span>
+<span class="hljs-keyword">\end</span>{equation*}                 <span class="hljs-comment">%  |</span>
+
+<span class="hljs-keyword">\begin</span>{equation*}               <span class="hljs-comment">% Export (II)</span>
+<span class="hljs-keyword">\begin</span>{bmatrix}                 <span class="hljs-comment">%  |</span>
+1 <span class="hljs-built_in">&amp;</span> 5 <span class="hljs-built_in">&amp;</span> 0 <span class="hljs-keyword">\\</span>                    <span class="hljs-comment">%  |</span>
+0 <span class="hljs-built_in">&amp;</span> 3 <span class="hljs-built_in">&amp;</span> 0 <span class="hljs-keyword">\\</span>                    <span class="hljs-comment">%  |</span>
+4 <span class="hljs-built_in">&amp;</span> 0 <span class="hljs-built_in">&amp;</span> 1                       <span class="hljs-comment">%  |</span>
+<span class="hljs-keyword">\end</span>{bmatrix}<span class="hljs-keyword">\cdot</span>              <span class="hljs-comment">%  |</span>
+
+<span class="hljs-keyword">\begin</span>{pmatrix}                 <span class="hljs-comment">% Export (III)</span>
+4 <span class="hljs-keyword">\\</span>                            <span class="hljs-comment">%  |</span>
+7 <span class="hljs-keyword">\\</span>                            <span class="hljs-comment">%  |</span>
+1                               <span class="hljs-comment">%  |</span>
+<span class="hljs-keyword">\end</span>{pmatrix}                   <span class="hljs-comment">%  |</span>
+<span class="hljs-keyword">\end</span>{equation*}                 <span class="hljs-comment">%  |</span>
+
+<span class="hljs-keyword">\end</span>{document}                  <span class="hljs-comment">% Export (I)</span>
+</div></code></pre>
+<h3 id="exportasimage-coming-soon"><code>Export.AsImage()</code> <em>(Coming Soon)</em></h3>
+<blockquote>
+<p>Rendert LaTeX-Code in Form von <code>string</code>'s und speichert es als Bild.</p>
+</blockquote>
+<pre><code class="language-cs"><div><span class="hljs-function"><span class="hljs-built_in">bool</span> <span class="hljs-title">AsImage</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> latex, <span class="hljs-built_in">string</span> filename, ImageFormats imageFormat</span>)
+</span></div></code></pre>
+<p><strong>Unterstützte Dateinamen:</strong></p>
+<ul>
+<li><code>filename</code> darf nur den Dateinamen, keinen Dateipfad enthalten.</li>
+<li>Der Standard Dateipfad kann in <code>Config.SaveLocation</code> festgelegt werden.</li>
+<li>Die Dateiendung wird durch <code>imageFormat</code> festgelegt:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><code>ImageFormats</code></th>
+<th>Dateiendung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ImageFormats.JPG</code></td>
+<td><code>.jpg</code></td>
+</tr>
+<tr>
+<td><code>ImageFormats.JEPG</code></td>
+<td><code>.jepg</code></td>
+</tr>
+<tr>
+<td><code>ImageFormats.BMP</code></td>
+<td><code>.bmp</code></td>
+</tr>
+<tr>
+<td><code>ImageFormats.PNG</code></td>
+<td><code>.png</code></td>
+</tr>
+<tr>
+<td><code>ImageFormats.GIF</code></td>
+<td><code>.gif</code></td>
+</tr>
+<tr>
+<td><code>ImageFormats.SVG</code></td>
+<td><code>.svg</code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="wrapperprettyprint"><code>Wrapper.PrettyPrint()</code></h3>
 <blockquote>
 <p>Gibt <code>text</code> aus, wenn <code>Config.PrettyPrinting</code> mit <code>true</code> konfiguriert ist, sonst <code>alternative</code>.</p>
@@ -291,6 +406,9 @@ Console.WriteLine(M_latex + <span class="hljs-string">&quot;\n&quot;</span>);
 <h2 id="objekte">Objekte</h2>
 <h3 id="textformats"><code>TextFormats</code></h3>
 <pre><code class="language-cs"><div><span class="hljs-built_in">enum</span> TextFormats { TXT, MD, TEX, TEX_DOCUMENT }
+</div></code></pre>
+<h3 id="imageformats"><code>ImageFormats</code></h3>
+<pre><code class="language-cs"><div><span class="hljs-built_in">enum</span> ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG }
 </div></code></pre>
 <h3 id="writemodes"><code>WriteModes</code></h3>
 <pre><code class="language-cs"><div><span class="hljs-built_in">enum</span> WriteModes { OVERRIDE, APPEND, AT_START, INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END }
@@ -337,8 +455,14 @@ Console.WriteLine(M_latex + <span class="hljs-string">&quot;\n&quot;</span>);
 <tr>
 <td><code>TextFormat</code></td>
 <td><code>TextFormats</code></td>
-<td><code>TextFormats.MD</code></td>
+<td><code>TextFormats.TEX</code></td>
 <td>Legt das Standard Dateiformat für <code>Export.AsText()</code> fest und die Dateiendung, wenn diese nicht schon durch <code>filename</code> gesetzt wurde.</td>
+</tr>
+<tr>
+<td><code>ImageFormat</code></td>
+<td><code>ImageFormats</code></td>
+<td><code>ImageFormats.JPG</code></td>
+<td>Legt das Standard Dateiformat für <code>Export.AsImage()</code> fest.</td>
 </tr>
 <tr>
 <td><code>WriteMode</code></td>

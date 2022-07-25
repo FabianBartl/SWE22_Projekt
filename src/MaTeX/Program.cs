@@ -17,7 +17,7 @@ namespace MyApp
             
             // ---
 
-            // /*
+            /*
             string S = "0 = 3*2-sqrt(x)";
             Vector V = DenseVector.OfArray(new double[] {4,7,1});
             Matrix M = DenseMatrix.OfArray(new double[,] {
@@ -41,6 +41,49 @@ namespace MyApp
             Console.WriteLine("S: " + Convert.ToString(S_check));
             Console.WriteLine("V: " + Convert.ToString(V_check));
             Console.WriteLine("M: " + Convert.ToString(M_check));
+            */
+
+            // ---
+
+            // /*
+            Config.SaveLocation = Path.GetFullPath(@"../../docs");
+
+            string S = "0 = 3*2-sqrt(x)";
+            Vector V = DenseVector.OfArray(new double[] {4,7,1});
+            Matrix M = DenseMatrix.OfArray(new double[,] {
+                {1,5,0},
+                {0,3,0},
+                {4,0,1}
+            });
+
+            string S_latex = Conv.MathToLatex(S);
+            string V_latex = Conv.MathToLatex(V);
+            string M_latex = Conv.MathToLatex(M);
+
+            Console.WriteLine(S_latex + "\n");
+            Console.WriteLine(M_latex + @"\cdot" + V_latex);
+
+            string FileName = "Beispiel_ExportAsText";
+            Export.AsText(
+                S_latex,
+                FileName,
+                WriteModes.OVERRIDE,
+                TextFormats.TEX_DOCUMENT
+            );
+            Export.AsText(
+                M_latex + @"\cdot",
+                FileName,
+                WriteModes.INSERT_BEFORE_DOCUMENT_END,
+                TextFormats.TEX,
+                new BracketModes[] {BracketModes.BEGIN}
+            );
+            Export.AsText(
+                V_latex,
+                FileName,
+                WriteModes.INSERT_BEFORE_DOCUMENT_END,
+                TextFormats.TEX,
+                new BracketModes[] {BracketModes.END}
+            );
             // */
 
             // ---
