@@ -142,28 +142,28 @@ private bool FileCompare(string file1, string file2)
                 latex,
                 FileName,
                 MaTeX.WriteModes.OVERRIDE,
-                MaTeX.TextFormats.TEX_WITH_HEADER,
+                MaTeX.TextFormats.TEX_DOCUMENT,
                 new MaTeX.BracketModes[] {MaTeX.BracketModes.BEGIN, MaTeX.BracketModes.END}
             );
         }else if (textformat=="S_AsText.txt")
         {
-            String S = "f=0=3*3+sqrt(sqrt(a))";
+            String S = "0 = 3*2-sqrt(x)";
             String S_latex = MaTeX.Conv.MathToLatex(S);
             MaTeX.Export.AsText(S_latex, "S_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TXT);
         }else if (textformat=="V_AsText.md")
         {
-            Vector V = DenseVector.OfArray(new double[] {1,2,3});
+            Vector V = DenseVector.OfArray(new double[] {4,7,1});
             String V_latex = MaTeX.Conv.MathToLatex(V);
             MaTeX.Export.AsText(V_latex, "V_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.MD);
         }else if (textformat=="M_AsText.ltx")
         {
              Matrix M = DenseMatrix.OfArray(new double[,] {
-                {1,1,1,5},
-                {1,2,3,5},
-                {4,3,2,5}
+                {1,5,0},
+                {0,3,0},
+                {4,0,1}
             });
             String M_latex = MaTeX.Conv.MathToLatex(M);
-            MaTeX.Export.AsText(M_latex, "M_AsText.ltx", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TEX_WITH_HEADER);
+            MaTeX.Export.AsText(M_latex, "M_AsText.ltx", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TEX_DOCUMENT);
         }else if (textformat=="debug.tex")
         {
             MaTeX.Config.BracketMode = new MaTeX.BracketModes[] {};
@@ -171,11 +171,11 @@ private bool FileCompare(string file1, string file2)
 
             Console.WriteLine(MaTeX.Export.AsText(
                 MaTeX.Wrapper.PrettyPrint("\n")
-                    + @"\text{OVERRIDE TEX_WITH_HEADER}"
+                    + @"\text{OVERRIDE TEX_DOCUMENT}"
                     + MaTeX.Wrapper.PrettyPrint("\n"),
                 FileName,
                 MaTeX.WriteModes.OVERRIDE,
-                MaTeX.TextFormats.TEX_WITH_HEADER
+                MaTeX.TextFormats.TEX_DOCUMENT
             ));
               
             MaTeX.Export.AsText(
