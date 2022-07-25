@@ -5,10 +5,10 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
-        dotnet-version: [ '5.0.x' ]
+        dotnet-version: [ '5.0.x', '6.0.x' ]
 
     steps:
       - uses: actions/checkout@v3
@@ -17,9 +17,9 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore .\src\MaTeX\
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build .\src\MaTeX\ --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test .\src\MaTeX\ --no-restore --verbosity normal
   
