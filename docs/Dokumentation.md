@@ -18,7 +18,7 @@
 
 ## Installation
 
-Die Datei [MaTeX.cs](../src/MaTeX/MaTeX.cs) im Projektordner speichern. Und mit `using MaTeX;` importieren.
+Die Datei [MaTeX.cs](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/blob/main/src/MaTeX/MaTeX.cs) im Projektordner speichern. Und mit `using MaTeX;` importieren.
 
 ## Funktionen
 
