@@ -1,6 +1,7 @@
 using Xunit;
 using System;
 using System.IO;
+using System.Threading;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 public class Testings
@@ -112,11 +113,11 @@ private bool FileCompare(string file1, string file2)
     public void AsText_Latex_File(string textformat)
     {
         MaTeX.Config.SaveLocation = System.IO.Directory.GetParent(@"bin").FullName;
-        File.Create(textformat);
+        File.Create(textformat).Dispose();
         MaTeX.Config.PrettyPrinting=true;
         if (textformat=="R_AsText.tex")
         {
-            comparepath=Path.GetFullPath("TestFiles/R_AsText.tex");
+            comparepath=Path.GetFullPath("R_AsText.tex");
             Vector y = DenseVector.OfArray(new double[] {4,7,1});
             Matrix I = DenseMatrix.OfArray(new double[,] {
                 {1,0,0},
@@ -150,19 +151,19 @@ private bool FileCompare(string file1, string file2)
             );
         }else if (textformat=="S_AsText.txt")
         {
-            comparepath=Path.GetFullPath("TestFiles/S_AsText.txt");
+            comparepath=Path.GetFullPath("S_AsText.txt");
             String S = "0 = 3*2-sqrt(x)";
             String S_latex = MaTeX.Conv.MathToLatex(S);
             MaTeX.Export.AsText(S_latex, "S_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TXT);
         }else if (textformat=="V_AsText.md")
         {
-            comparepath=Path.GetFullPath("TestFiles/V_AsText.md");
+            comparepath=Path.GetFullPath("V_AsText.md");
             Vector V = DenseVector.OfArray(new double[] {4,7,1});
             String V_latex = MaTeX.Conv.MathToLatex(V);
             MaTeX.Export.AsText(V_latex, "V_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.MD);
         }else if (textformat=="M_AsText.ltx")
         {
-            comparepath=Path.GetFullPath("TestFiles/M_AsText.ltx");
+            comparepath=Path.GetFullPath("M_AsText.ltx");
              Matrix M = DenseMatrix.OfArray(new double[,] {
                 {1,5,0},
                 {0,3,0},
@@ -172,7 +173,7 @@ private bool FileCompare(string file1, string file2)
             MaTeX.Export.AsText(M_latex, "M_AsText.ltx", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TEX_DOCUMENT);
         }else if (textformat=="debug.tex")
         {
-            comparepath=Path.GetFullPath("TestFiles/debug.tex");
+            comparepath=Path.GetFullPath("debug.tex");
             MaTeX.Config.BracketMode = new MaTeX.BracketModes[] {};
             String FileName = "debug.tex";
 
