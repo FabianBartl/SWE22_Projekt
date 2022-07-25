@@ -65,40 +65,39 @@ public class Testings
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(Term));
     }
 
-private bool FileCompare(string file1, string file2)
-{
-    int file1byte;
-    int file2byte;
-    FileStream fs1;
-    FileStream fs2;
-
-    if (file1 == file2) return true;
-
-    fs1 = new FileStream(file1, FileMode.Open);
-    fs2 = new FileStream(file2, FileMode.Open);
-
-    if (fs1.Length != fs2.Length)
+    private bool FileCompare(string file1, string file2)
     {
+        int file1byte;
+        int file2byte;
+        FileStream fs1;
+        FileStream fs2;
+
+        if (file1 == file2) return true;
+
+        fs1 = new FileStream(file1, FileMode.Open);
+        fs2 = new FileStream(file2, FileMode.Open);
+
+        if (fs1.Length != fs2.Length)
+        {
+            fs1.Close();
+            fs2.Close();
+            return false;
+        }
+
+        do
+        {
+            file1byte = fs1.ReadByte();
+            file2byte = fs2.ReadByte();
+        }
+        while ((file1byte == file2byte) && (file1byte != -1));
+
         fs1.Close();
         fs2.Close();
-        return false;
+
+        return ((file1byte - file2byte) == 0);
     }
-
-    do
-    {
-        file1byte = fs1.ReadByte();
-        file2byte = fs2.ReadByte();
-    }
-    while ((file1byte == file2byte) && (file1byte != -1));
-
-    fs1.Close();
-    fs2.Close();
-
-    return ((file1byte - file2byte) == 0);
-}
 
     
-    string comparepath;
     [Theory]
     [InlineData("R_AsText.tex")]
     [InlineData("S_AsText.txt")]
@@ -107,14 +106,16 @@ private bool FileCompare(string file1, string file2)
     [InlineData("debug.tex")]
     public void AsText_Latex_File(string textformat)
     {
-        MaTeX.Config.SaveLocation = System.IO.Directory.GetParent(@"bin").FullName;
+        MaTeX.Config.SaveLocation = Directory.GetParent(@"bin").FullName;
         File.Create(textformat);
         MaTeX.Config.PrettyPrinting = true;
+        
+        string FileName = textformat;
+        string comparepath = Path.GetFullPath("TestFiles/" + FileName);
 
-        switch (textFormat)
+        switch (textformat)
         {
             case "R_AsText.tex":
-                comparepath = Path.GetFullPath("TestFiles/R_AsText.tex");
                 Vector y = DenseVector.OfArray(new double[] {4,7,1});
                 Matrix I = DenseMatrix.OfArray(new double[,] {
                     {1,0,0},
@@ -138,7 +139,6 @@ private bool FileCompare(string file1, string file2)
                     + I_latex + "=" + R_latex;
                 Console.WriteLine(latex);
 
-                string FileName = textformat;
                 MaTeX.Export.AsText(
                     latex,
                     FileName,
@@ -149,20 +149,17 @@ private bool FileCompare(string file1, string file2)
                 break;
             
             case "S_AsText.txt":
-                comparepath=Path.GetFullPath("TestFiles/S_AsText.txt");
                 String S = "0 = 3*2-sqrt(x)";
                 String S_latex = MaTeX.Conv.MathToLatex(S);
                 MaTeX.Export.AsText(S_latex, "S_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TXT);
                 break;
 
             case "V_AsText.md":
-                comparepath=Path.GetFullPath("TestFiles/V_AsText.md");
                 Vector V = DenseVector.OfArray(new double[] {4,7,1});
                 String V_latex = MaTeX.Conv.MathToLatex(V);
                 MaTeX.Export.AsText(V_latex, "V_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.MD);
                 break;
             case "M_AsText.ltx":
-                comparepath=Path.GetFullPath("TestFiles/M_AsText.ltx");
                 Matrix M = DenseMatrix.OfArray(new double[,] {
                     {1,5,0},
                     {0,3,0},
@@ -173,9 +170,7 @@ private bool FileCompare(string file1, string file2)
                 break;
 
             case "debug.tex":
-                comparepath=Path.GetFullPath("TestFiles/debug.tex");
                 MaTeX.Config.BracketMode = new MaTeX.BracketModes[] {};
-                String FileName = "debug.tex";
 
                 Console.WriteLine(MaTeX.Export.AsText(
                     MaTeX.Wrapper.PrettyPrint("\n")
@@ -207,7 +202,8 @@ private bool FileCompare(string file1, string file2)
                 );
                 break;
         }
-        string path = Path.Combine(System.IO.Directory.GetParent(@"bin").FullName,textformat);
+        
+        string path = Path.Combine(Directory.GetParent(@"bin").FullName, textformat);
         Assert.True(FileCompare(path, comparepath));
         File.Delete(path);
     }
