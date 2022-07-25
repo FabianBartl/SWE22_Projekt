@@ -16,7 +16,7 @@ namespace MaTeX
     {
         static public bool PrettyPrinting = false;
         static public bool IgnoreFileExceptions = false; // "false" wird empfohlen!
-        static public TextFormats TextFormat = TextFormats.MD;
+        static public TextFormats TextFormat = TextFormats.TEX;
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public WriteModes WriteMode = WriteModes.OVERRIDE;
         static public BracketModes[] BracketMode = new BracketModes[] {BracketModes.BEGIN, BracketModes.END};
@@ -206,15 +206,15 @@ namespace MaTeX
                     _text = string.Format("{0}{1}{2}{3}",
                         (textFormat == TextFormats.TEX_DOCUMENT) ? (
                             Config.LatexHeader
-                                + Wrapper.PrettyPrint("\n")
+                                + Wrapper.PrettyPrint("\n\n")
                                 + @"\begin{document}"
-                                + Wrapper.PrettyPrint("\n")
+                                + Wrapper.PrettyPrint("\n\n")
                         ) : "",
                         (
                             Wrapper.PrintBrackets(@"\begin{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.BEGIN, bracketModes)
                                 + latex
                                 + Wrapper.PrettyPrint("\n")
-                                + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
+                                + Wrapper.PrintBrackets(@"\end{equation*}" + Wrapper.PrettyPrint("\n\n"), BracketModes.END, bracketModes)
                         ),
                         (textFormat == TextFormats.TEX_DOCUMENT) ? (
                             @"\end{document}"
@@ -229,7 +229,7 @@ namespace MaTeX
                     _text = string.Format("{0}",
                         Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.BEGIN, bracketModes)
                             + latex
-                            + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
+                            + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n\n"), BracketModes.END, bracketModes)
                             + Wrapper.PrettyPrint("\n", " ")
                     );
                     break;
@@ -274,6 +274,7 @@ namespace MaTeX
                                 if (!WriteFile(
                                     _path,
                                     _content.Substring(0, _endInd - 1)
+                                        + Wrapper.PrettyPrint("\n")
                                         + _text
                                         + _content.Substring(_endInd),
                                     Config.IgnoreFileExceptions
