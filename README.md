@@ -17,9 +17,9 @@ Das Ergbenis soll ein wiederverwendbare Klassenbibliothek sein, die dem Programm
 
 ![](img/MaTeX_CodeMap.png)
 
-### [Dokumentation](/docs/Dokumentation.md)
+### [Dokumentation](https://ifi-softwareentwicklung-sose2022.github.io/SWE22_Projekt)
 
-### Dependencies
+### [Dependencies](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/network/dependencies)
 
 - [CSharpMath](https://www.nuget.org/packages/CSharpMath)
 - [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
