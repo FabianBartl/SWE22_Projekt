@@ -68,7 +68,7 @@ namespace MaTeX
             // Zeilen des Vektors auflösen
             for (int _row=0; _row < vector.Count; _row++)
             {
-                _latex += Convert.Tostring(vector[_row])
+                _latex += Convert.ToString(vector[_row])
                     + Wrapper.PrettyPrint(" ")
                     + (_row != vector.Count-1 ? @"\\" : "")
                     + Wrapper.PrettyPrint("\n");
@@ -86,12 +86,12 @@ namespace MaTeX
                 // Spalten der Matrix auflösen
                 for (_col=0; _col < matrix.ColumnCount-1; _col++)
                 {
-                    _latex += Convert.Tostring(matrix[_row,_col])
+                    _latex += Convert.ToString(matrix[_row,_col])
                         + Wrapper.PrettyPrint(" ")
                         + "&"
                         + Wrapper.PrettyPrint(" ");
                 }
-                _latex += Convert.Tostring(matrix[_row,_col])
+                _latex += Convert.ToString(matrix[_row,_col])
                     + Wrapper.PrettyPrint(" ")
                     + (_row != matrix.RowCount-1 ? @"\\" : "")
                     + Wrapper.PrettyPrint("\n");

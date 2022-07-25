@@ -38,9 +38,9 @@ namespace MyApp
             bool V_check = Export.AsText(V_latex, "V_AsText",     WriteModes.OVERRIDE, TextFormats.MD);
             bool M_check = Export.AsText(M_latex, "M_AsText.ltx", WriteModes.OVERRIDE, TextFormats.TEX_DOCUMENT);
 
-            Console.WriteLine("S: " + Convert.Tostring(S_check));
-            Console.WriteLine("V: " + Convert.Tostring(V_check));
-            Console.WriteLine("M: " + Convert.Tostring(M_check));
+            Console.WriteLine("S: " + Convert.ToString(S_check));
+            Console.WriteLine("V: " + Convert.ToString(V_check));
+            Console.WriteLine("M: " + Convert.ToString(M_check));
             // */
 
             // ---

@@ -16,7 +16,7 @@
 
 ## Installation
 
-Die Datei [MaTeX.cs](MaTeX.cs) im Projektordner speichern. Und mit `using MaTeX;` importieren.
+Die Datei [MaTeX.cs](../src/MaTeX/MaTeX.cs) im Projektordner speichern. Und mit `using MaTeX;` importieren.
 
 ## Funktionen
 
@@ -157,11 +157,15 @@ enum BracketModes { BEGIN, END }
 
 ## `Config`-Optionen
 
-In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in `Wrapper`-Funktionen verwendet.
+In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in `Wrapper`-Funktionen verwendet. Sie können aber auch einfach mit `Config.[OPTION]` abgefragt oder geändert werden.
 
 **Vervollständigung fehlender Parameter:**
 
-Hier wird eine definiert Kurzform der `Export.AsText()`-Funktion verwendet, nämlich: `bool AsText(string latex, string filename, TextFormats textFormat)`.
+Hier wird eine definierte Kurzform der `Export.AsText()`-Funktion verwendet, nämlich:
+
+```cs
+bool AsText(string latex, string filename, TextFormats textFormat)
+```
 
 ```cs
 Export.AsText(
@@ -170,3 +174,5 @@ Export.AsText(
     TextFormats.TEX_DOCUMENT
 );
 ```
+
+Die in dieser Kurzform fehlenden Paramter sind `writeMode` und `bracketModes`. Beim Aufruf der vollständigen `Export.AsText()`-Funktion werden für diese fehlenden Parameter die konfigurierten Werte `Config.WriteMode` und `Config.BracketModes` eingesetzt.

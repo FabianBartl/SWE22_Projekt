@@ -15,6 +15,7 @@ namespace MaTeX
     static public class Config
     {
         static public bool PrettyPrinting = false;
+        static public bool IgnoreFileExceptions = false; // "false" wird empfohlen!
         static public TextFormats TextFormat = TextFormats.MD;
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public WriteModes WriteMode = WriteModes.OVERRIDE;
@@ -68,7 +69,7 @@ namespace MaTeX
             // Zeilen des Vektors auflösen
             for (int _row=0; _row < vector.Count; _row++)
             {
-                _latex += Convert.Tostring(vector[_row])
+                _latex += Convert.ToString(vector[_row])
                     + Wrapper.PrettyPrint(" ")
                     + (_row != vector.Count-1 ? @"\\" : "")
                     + Wrapper.PrettyPrint("\n");
@@ -86,12 +87,12 @@ namespace MaTeX
                 // Spalten der Matrix auflösen
                 for (_col=0; _col < matrix.ColumnCount-1; _col++)
                 {
-                    _latex += Convert.Tostring(matrix[_row,_col])
+                    _latex += Convert.ToString(matrix[_row,_col])
                         + Wrapper.PrettyPrint(" ")
                         + "&"
                         + Wrapper.PrettyPrint(" ");
                 }
-                _latex += Convert.Tostring(matrix[_row,_col])
+                _latex += Convert.ToString(matrix[_row,_col])
                     + Wrapper.PrettyPrint(" ")
                     + (_row != matrix.RowCount-1 ? @"\\" : "")
                     + Wrapper.PrettyPrint("\n");
@@ -140,13 +141,13 @@ namespace MaTeX
 
         static private bool WriteFile(string file, string buffer, bool ignoreExceptions)
         {
+            if (ignoreExceptions) return WriteFile(file, buffer);
             try
             {
                 return WriteFile(file, buffer); //immer "true"
             }
-            catch (Exception _exc)
+            catch (Exception)
             {
-                if (!ignoreExceptions) throw _exc;
                 return false;
             }
         }
@@ -164,13 +165,13 @@ namespace MaTeX
         } 
         static private bool ReadFile(string file, out string buffer, bool ignoreExceptions)
         {
+            if (ignoreExceptions) return ReadFile(file, out buffer);
             try
             {
                 return ReadFile(file, out buffer); //immer "true"
             }
-            catch (Exception _exc)
+            catch (Exception)
             {
-                if (!ignoreExceptions) throw _exc;
                 buffer = null;
                 return false;
             }
@@ -257,21 +258,21 @@ namespace MaTeX
             switch (writeMode)
             {
                 case WriteModes.OVERRIDE:
-                    if (!WriteFile(_path, _text)) return false;
+                    if (!WriteFile(_path, _text, Config.IgnoreFileExceptions)) return false;
                     break;
                 case WriteModes.APPEND:
-                    if (!ReadFile(_path, out _content)) return false;
-                    if (!WriteFile(_path, _content + _text)) return false;
+                    if (!ReadFile(_path, out _content, Config.IgnoreFileExceptions)) return false;
+                    if (!WriteFile(_path, _content + _text, Config.IgnoreFileExceptions)) return false;
                     break;
                 case WriteModes.AT_START:
-                    if (!ReadFile(_path, out _content)) return false;
-                    if (!WriteFile(_path, _text + _content)) return false;
+                    if (!ReadFile(_path, out _content, Config.IgnoreFileExceptions)) return false;
+                    if (!WriteFile(_path, _text + _content, Config.IgnoreFileExceptions)) return false;
                     break;
                 case WriteModes.INSERT_BEFORE_DOCUMENT_END:
                 case WriteModes.INSERT_AFTER_DOCUMENT_START:
                     if (textFormat == TextFormats.TEX)
                     {
-                        if (!ReadFile(_path, out _content)) return false;
+                        if (!ReadFile(_path, out _content, Config.IgnoreFileExceptions)) return false;
                         string _beginStr = @"\begin{document}", _endStr = @"\end{document}";
                         int _beginInd = _content.IndexOf(_beginStr), _endInd = _content.LastIndexOf(_endStr);
                         switch (_beginInd)
@@ -279,7 +280,7 @@ namespace MaTeX
                             case -1:
                                 return false;
                             case 0:
-                                if (!WriteFile(_path, _text)) return false;
+                                if (!WriteFile(_path, _text, Config.IgnoreFileExceptions)) return false;
                                 break;
                         }
                         switch (writeMode)
@@ -289,7 +290,8 @@ namespace MaTeX
                                     _path,
                                     _content.Substring(0, _endInd - 1)
                                         + _text
-                                        + _content.Substring(_endInd)
+                                        + _content.Substring(_endInd),
+                                    Config.IgnoreFileExceptions
                                 )) return false;
                                 break;
                             case WriteModes.INSERT_AFTER_DOCUMENT_START:
@@ -297,7 +299,8 @@ namespace MaTeX
                                     _path,
                                     _content.Substring(0, _beginInd + _beginStr.Length)
                                         + _text
-                                        + _content.Substring(_beginInd + _beginStr.Length + 1)
+                                        + _content.Substring(_beginInd + _beginStr.Length + 1),
+                                    Config.IgnoreFileExceptions
                                 )) return false;
                                 break;
                         }
