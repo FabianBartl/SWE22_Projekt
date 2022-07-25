@@ -19,8 +19,8 @@ namespace MaTeX
         static public ImageFormats ImageFormat = ImageFormats.JPG;
         static public WriteModes WriteMode = WriteModes.OVERRIDE;
         static public BracketModes[] BracketMode = new BracketModes[] {BracketModes.BEGIN, BracketModes.END};
-        static public String LatexHeader = @"\documentclass[10pt]{article}"; 
-        static public String SaveLocation = Directory.GetCurrentDirectory();
+        static public string LatexHeader = @"\documentclass[10pt]{article}"; 
+        static public string SaveLocation = Directory.GetCurrentDirectory();
     }
 
     // Enum's u.a. zur Config-Optionsauswahl
@@ -33,23 +33,23 @@ namespace MaTeX
     static public class Wrapper
     {
         // Wrapper für PrettyPrinting-Option
-        static public String PrettyPrint(String text)
+        static public string PrettyPrint(string text)
         { return PrettyPrint(text, ""); }
-        static public String NotPrettyPrint(String text)
+        static public string NotPrettyPrint(string text)
         { return PrettyPrint("", text); }
-        static public String PrettyPrint(String text, String alternative)
+        static public string PrettyPrint(string text, string alternative)
         {
             return Config.PrettyPrinting ? text : alternative;
         }
 
         // Wrapper für BracketMode-Option
-        static public String PrintBrackets(String bracketText, BracketModes currentMode)
+        static public string PrintBrackets(string bracketText, BracketModes currentMode)
         { return PrintBrackets(bracketText, "", currentMode, Config.BracketMode); }
-        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes compareMode)
+        static public string PrintBrackets(string bracketText, BracketModes currentMode, BracketModes compareMode)
         { return PrintBrackets(bracketText, "", currentMode, new BracketModes[] {compareMode}); }
-        static public String PrintBrackets(String bracketText, BracketModes currentMode, BracketModes[] compareModes)
+        static public string PrintBrackets(string bracketText, BracketModes currentMode, BracketModes[] compareModes)
         { return PrintBrackets(bracketText, "", currentMode, compareModes); }
-        static public String PrintBrackets(String bracketText, String alternative, BracketModes currentMode, BracketModes[] compareModes)
+        static public string PrintBrackets(string bracketText, string alternative, BracketModes currentMode, BracketModes[] compareModes)
         {
             for (int i=0; i < compareModes.Length; i++)
                 if (compareModes[i] == currentMode) return bracketText;
@@ -62,13 +62,13 @@ namespace MaTeX
     static public class Conv
     {
         // Vector -> Latex
-        static public String MathToLatex(Vector vector)
+        static public string MathToLatex(Vector vector)
         {                                                            
-            String _latex = @"\begin{pmatrix}" + Wrapper.PrettyPrint("\n");
+            string _latex = @"\begin{pmatrix}" + Wrapper.PrettyPrint("\n");
             // Zeilen des Vektors auflösen
             for (int _row=0; _row < vector.Count; _row++)
             {
-                _latex += Convert.ToString(vector[_row])
+                _latex += Convert.Tostring(vector[_row])
                     + Wrapper.PrettyPrint(" ")
                     + (_row != vector.Count-1 ? @"\\" : "")
                     + Wrapper.PrettyPrint("\n");
@@ -77,21 +77,21 @@ namespace MaTeX
         }
 
         // Matrix -> Latex
-        static public String MathToLatex(Matrix matrix)
+        static public string MathToLatex(Matrix matrix)
         {
-            String _latex = @"\begin{bmatrix}" + Wrapper.PrettyPrint("\n");
+            string _latex = @"\begin{bmatrix}" + Wrapper.PrettyPrint("\n");
             // Zeilen der Matrix auflösen
             for (int _row=0, _col=0; _row < matrix.RowCount; _row++)                           
             {
                 // Spalten der Matrix auflösen
                 for (_col=0; _col < matrix.ColumnCount-1; _col++)
                 {
-                    _latex += Convert.ToString(matrix[_row,_col])
+                    _latex += Convert.Tostring(matrix[_row,_col])
                         + Wrapper.PrettyPrint(" ")
                         + "&"
                         + Wrapper.PrettyPrint(" ");
                 }
-                _latex += Convert.ToString(matrix[_row,_col])
+                _latex += Convert.Tostring(matrix[_row,_col])
                     + Wrapper.PrettyPrint(" ")
                     + (_row != matrix.RowCount-1 ? @"\\" : "")
                     + Wrapper.PrettyPrint("\n");
@@ -100,13 +100,13 @@ namespace MaTeX
         }
 
         // Term, Gleichung -> Latex
-        static public String MathToLatex(String text)
+        static public string MathToLatex(string text)
         {
-            String _latex = "";
+            string _latex = "";
             // Gleichungen rekursiv auflösen
             if (text.Contains("="))
             {
-                List<String> _equations = new List<String>(text.Split("="));
+                List<string> _equations = new List<string>(text.Split("="));
                 for (int i=0; i < _equations.Count; i++)
                 {
                     _latex += MathToLatex(_equations[i])
@@ -127,9 +127,9 @@ namespace MaTeX
     {
         // Private Wrapper-Funktionen für Dateioperationen
         // Datei schreiben
-        static private bool WriteFile(String file, String buffer)
+        static private bool WriteFile(string file, string buffer)
         {
-            String _path = Path.GetFullPath(file);
+            string _path = Path.GetFullPath(file);
             using (FileStream _fileStream = File.Create(_path))
             {
                 Byte[] _byteCode = new UTF8Encoding(true).GetBytes(buffer);
@@ -138,7 +138,7 @@ namespace MaTeX
             }
         }
 
-        static private bool WriteFile(String file, String buffer, bool ignoreExceptions)
+        static private bool WriteFile(string file, string buffer, bool ignoreExceptions)
         {
             try
             {
@@ -152,17 +152,17 @@ namespace MaTeX
         }
 
         // Datei lesen
-        static private bool ReadFile(String file, out String buffer)
+        static private bool ReadFile(string file, out string buffer)
         {
-            String _path = Path.GetFullPath(file);
+            string _path = Path.GetFullPath(file);
             using (StreamReader _streamReader = File.OpenText(_path))
             {
-                String _line; buffer = "";
+                string _line; buffer = "";
                 while ((_line = _streamReader.ReadLine()) != null) buffer += _line + "\n";
                 return true;
             }
         } 
-        static private bool ReadFile(String file, out String buffer, bool ignoreExceptions)
+        static private bool ReadFile(string file, out string buffer, bool ignoreExceptions)
         {
             try
             {
@@ -177,21 +177,21 @@ namespace MaTeX
         }
 
         // Als Text exportieren
-        static public bool AsText(String latex, String filename)
+        static public bool AsText(string latex, string filename)
         { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, TextFormats textFormat)
+        static public bool AsText(string latex, string filename, TextFormats textFormat)
         { return AsText(latex, filename, Config.WriteMode, textFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode)
+        static public bool AsText(string latex, string filename, WriteModes writeMode)
         { return AsText(latex, filename, writeMode, Config.TextFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, BracketModes bracketMode)
+        static public bool AsText(string latex, string filename, BracketModes bracketMode)
         { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, new BracketModes[] {bracketMode}); }
-        static public bool AsText(String latex, String filename, BracketModes[] bracketModes)
+        static public bool AsText(string latex, string filename, BracketModes[] bracketModes)
         { return AsText(latex, filename, Config.WriteMode, Config.TextFormat, bracketModes); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat)
+        static public bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat)
         { return AsText(latex, filename, writeMode, textFormat, Config.BracketMode); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode)
+        static public bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode)
         { return AsText(latex, filename, writeMode, textFormat, new BracketModes[] {bracketMode}); }
-        static public bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
+        static public bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
         {
             // Dateiendung wählen
             if (!filename.Contains("."))
@@ -212,12 +212,12 @@ namespace MaTeX
             }
 
             // Text zusammenstellen
-            String _text = "";
+            string _text = "";
             switch (textFormat)
             {
                 case TextFormats.TEX:
                 case TextFormats.TEX_DOCUMENT:
-                    _text = String.Format("{0}{1}{2}{3}",
+                    _text = string.Format("{0}{1}{2}{3}",
                         (textFormat == TextFormats.TEX_DOCUMENT) ? (
                             Config.LatexHeader
                                 + Wrapper.PrettyPrint("\n")
@@ -240,7 +240,7 @@ namespace MaTeX
                     );
                     break;
                 case TextFormats.MD:
-                    _text = String.Format("{0}",
+                    _text = string.Format("{0}",
                         Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.BEGIN, bracketModes)
                             + latex
                             + Wrapper.PrintBrackets("\n$$\n", "$" + Wrapper.PrettyPrint("\n"), BracketModes.END, bracketModes)
@@ -253,7 +253,7 @@ namespace MaTeX
             }
 
             // Datei speichern
-            String _content, _path = Path.GetFullPath(Path.Combine(Config.SaveLocation, filename));
+            string _content, _path = Path.GetFullPath(Path.Combine(Config.SaveLocation, filename));
             switch (writeMode)
             {
                 case WriteModes.OVERRIDE:
@@ -272,7 +272,7 @@ namespace MaTeX
                     if (textFormat == TextFormats.TEX)
                     {
                         if (!ReadFile(_path, out _content)) return false;
-                        String _beginStr = @"\begin{document}", _endStr = @"\end{document}";
+                        string _beginStr = @"\begin{document}", _endStr = @"\end{document}";
                         int _beginInd = _content.IndexOf(_beginStr), _endInd = _content.LastIndexOf(_endStr);
                         switch (_beginInd)
                         {
@@ -308,8 +308,8 @@ namespace MaTeX
         }
 
         // Als Bild exportieren
-        static public bool AsImage(String latex, String filename) { return AsImage(latex, filename, ImageFormats.JPG); }
-        static public bool AsImage(String latex, String filename, ImageFormats imageFormat)
+        static public bool AsImage(string latex, string filename) { return AsImage(latex, filename, ImageFormats.JPG); }
+        static public bool AsImage(string latex, string filename, ImageFormats imageFormat)
         {
             throw new NotImplementedException();
         }

@@ -10,7 +10,7 @@ namespace MyApp
 {
     class Program
     {
-        static void Main(String[] args)
+        static void Main(string[] args)
         {
             Config.PrettyPrinting = (args.Length >= 1 && (args[0] == "-pp" || args[0] == "--PrettyPrinting"));
             Config.SaveLocation = Path.GetFullPath("tmp");
@@ -18,7 +18,7 @@ namespace MyApp
             // ---
 
             // /*
-            String S = "0 = 3*2-sqrt(x)";
+            string S = "0 = 3*2-sqrt(x)";
             Vector V = DenseVector.OfArray(new double[] {4,7,1});
             Matrix M = DenseMatrix.OfArray(new double[,] {
                 {1,5,0},
@@ -26,9 +26,9 @@ namespace MyApp
                 {4,0,1}
             });
 
-            String S_latex = Conv.MathToLatex(S);
-            String V_latex = Conv.MathToLatex(V);
-            String M_latex = Conv.MathToLatex(M);
+            string S_latex = Conv.MathToLatex(S);
+            string V_latex = Conv.MathToLatex(V);
+            string M_latex = Conv.MathToLatex(M);
 
             Console.Write(S_latex + Wrapper.PrettyPrint("\n"));
             Console.Write(V_latex + Wrapper.PrettyPrint("\n"));
@@ -38,9 +38,9 @@ namespace MyApp
             bool V_check = Export.AsText(V_latex, "V_AsText",     WriteModes.OVERRIDE, TextFormats.MD);
             bool M_check = Export.AsText(M_latex, "M_AsText.ltx", WriteModes.OVERRIDE, TextFormats.TEX_DOCUMENT);
 
-            Console.WriteLine("S: " + Convert.ToString(S_check));
-            Console.WriteLine("V: " + Convert.ToString(V_check));
-            Console.WriteLine("M: " + Convert.ToString(M_check));
+            Console.WriteLine("S: " + Convert.Tostring(S_check));
+            Console.WriteLine("V: " + Convert.Tostring(V_check));
+            Console.WriteLine("M: " + Convert.Tostring(M_check));
             // */
 
             // ---
@@ -61,18 +61,18 @@ namespace MyApp
                 {2,9,9}
             });
 
-            String y_latex = Conv.MathToLatex(y);
-            String I_latex = Conv.MathToLatex(I);
-            String A_latex = Conv.MathToLatex(A);
-            String R_latex = Conv.MathToLatex("R");
+            string y_latex = Conv.MathToLatex(y);
+            string I_latex = Conv.MathToLatex(I);
+            string A_latex = Conv.MathToLatex(A);
+            string R_latex = Conv.MathToLatex("R");
 
-            String latex = A_latex
+            string latex = A_latex
                 + "-" + Wrapper.PrettyPrint("\n")
                 + y_latex + @"\cdot" + Wrapper.PrettyPrint("\n")
                 + I_latex + "=" + R_latex;
             Console.WriteLine(latex);
 
-            String FileName = "R_AsText";
+            string FileName = "R_AsText";
             Console.WriteLine("R: " + (Export.AsText(
                 latex,
                 FileName,
@@ -86,7 +86,7 @@ namespace MyApp
 
             /*
             Config.BracketMode = new BracketModes[] {};
-            String FileName = "debug.tex";
+            string FileName = "debug.tex";
 
             Console.WriteLine(Export.AsText(
                 Wrapper.PrettyPrint("\n")

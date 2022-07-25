@@ -22,10 +22,10 @@ Die Datei [MaTeX.cs](MaTeX.cs) im Projektordner speichern. Und mit `using MaTeX;
 
 ### `Conv.MathToLatex()`
 
->Wandelt *Terme* bzw. *Gleichungen* in Form von `String`'s sowie verschiedene C#-Objekte aus `MathNet.Numerics.LinearAlgebra` in LaTeX-Schreibweise um.
+>Wandelt *Terme* bzw. *Gleichungen* in Form von `string`'s sowie verschiedene C#-Objekte aus `MathNet.Numerics.LinearAlgebra` in LaTeX-Schreibweise um.
 
 ```cs
-String MathToLatex(object obj)
+string MathToLatex(object obj)
 ```
 
 **Unterstützte *Terme* bzw. *Gleichungen*:**
@@ -44,7 +44,7 @@ String MathToLatex(object obj)
 **Beispiel:**
 
 ```cs
-String S = "0 = 3*2-sqrt(x)";
+string S = "0 = 3*2-sqrt(x)";
 Vector V = DenseVector.OfArray(new double[] {4,7,1});
 Matrix M = DenseMatrix.OfArray(new double[,] {
     {1,5,0},
@@ -52,9 +52,9 @@ Matrix M = DenseMatrix.OfArray(new double[,] {
     {4,0,1}
 });
 
-String S_latex = Conv.MathToLatex(S);
-String V_latex = Conv.MathToLatex(V);
-String M_latex = Conv.MathToLatex(M);
+string S_latex = Conv.MathToLatex(S);
+string V_latex = Conv.MathToLatex(V);
+string M_latex = Conv.MathToLatex(M);
 
 Console.WriteLine(S_latex + "\n");
 Console.WriteLine(V_latex + "\n");
@@ -81,10 +81,10 @@ Console.WriteLine(M_latex + "\n");
 
 ### `Export.AsText()`
 
->Speichert LaTeX-Code in Form von `String`'s in unterschiedlichen Dateiformaten aus `TextFormats` in der Datei `filename` ab. Dabei kann der Schreibmodus aus `WriteModes` gewählt werden. Zusätzlich können Klammermodi aus `BracketModes` für *Markdown* bzw. *LaTeX* Formate verwendet werden.
+>Speichert LaTeX-Code in Form von `string`'s in unterschiedlichen Dateiformaten aus `TextFormats` in der Datei `filename` ab. Dabei kann der Schreibmodus aus `WriteModes` gewählt werden. Zusätzlich können Klammermodi aus `BracketModes` für *Markdown* bzw. *LaTeX* Formate verwendet werden.
 
 ```cs
-bool AsText(String latex, String filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
+bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
 ```
 
 **Unterstützte Schreibmodi aus `WriteModes`:**
@@ -124,7 +124,7 @@ bool AsText(String latex, String filename, WriteModes writeMode, TextFormats tex
 >Gibt `text` aus, wenn `Config.PrettyPrinting` mit `true` konfiguriert ist, sonst `alternative`.
 
 ```cs
-String PrettyPrint(String text, String alternative)
+string PrettyPrint(string text, string alternative)
 ```
 
 ### `Wrapper.PrintBrackets()`
@@ -132,7 +132,7 @@ String PrettyPrint(String text, String alternative)
 >Gibt `bracketText` aus, wenn der Klammermodus `currentMode` im Array der akzeptierten Klammermodi `compareModes` enthalten ist, sont `alternative`.
 
 ```cs
-String PrintBrackets(String bracketText, String alternative, BracketModes currentMode, BracketModes[] compareModes)
+string PrintBrackets(string bracketText, string alternative, BracketModes currentMode, BracketModes[] compareModes)
 ```
 
 ## Objekte
@@ -161,7 +161,7 @@ In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. 
 
 **Vervollständigung fehlender Parameter:**
 
-Hier wird eine definiert Kurzform der `Export.AsText()`-Funktion verwendet, nämlich: `bool AsText(String latex, String filename, TextFormats textFormat)`.
+Hier wird eine definiert Kurzform der `Export.AsText()`-Funktion verwendet, nämlich: `bool AsText(string latex, string filename, TextFormats textFormat)`.
 
 ```cs
 Export.AsText(
