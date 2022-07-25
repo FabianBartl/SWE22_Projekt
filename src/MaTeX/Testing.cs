@@ -101,21 +101,22 @@ private bool FileCompare(string file1, string file2)
     return ((file1byte - file2byte) == 0);
 }
 
+    
+    string comparepath;
     [Theory]
-    [InlineData("R_AsText.tex", @"D:\Schule\Studium\Software\SWE22_Projekt\src\MaTeX\TestFiles\R_AsText.tex")]
-    [InlineData("S_AsText.txt", @"D:\Schule\Studium\Software\SWE22_Projekt\src\MaTeX\TestFiles\S_AsText.txt")]
-    [InlineData("V_AsText.md", @"D:\Schule\Studium\Software\SWE22_Projekt\src\MaTeX\TestFiles\V_AsText.md")]
-    [InlineData("M_AsText.ltx", @"D:\Schule\Studium\Software\SWE22_Projekt\src\MaTeX\TestFiles\M_AsText.ltx")]
-    [InlineData("debug.tex", @"D:\Schule\Studium\Software\SWE22_Projekt\src\MaTeX\TestFiles\debug.tex")]
-
-
-    public void AsText_Latex_File(string textformat, string comparepath)
+    [InlineData("R_AsText.tex")]
+    [InlineData("S_AsText.txt")]
+    [InlineData("V_AsText.md")]
+    [InlineData("M_AsText.ltx")]
+    [InlineData("debug.tex")]
+    public void AsText_Latex_File(string textformat)
     {
+        MaTeX.Config.SaveLocation = System.IO.Directory.GetParent(@"bin").FullName;
         File.Create(textformat);
-        MaTeX.Config.SaveLocation = Path.GetFullPath(@"D:\Schule\Studium\Software\SWE22_Projekt\src\MaTeX");
         MaTeX.Config.PrettyPrinting=true;
         if (textformat=="R_AsText.tex")
         {
+            comparepath=Path.GetFullPath("TestFiles/R_AsText.tex");
             Vector y = DenseVector.OfArray(new double[] {4,7,1});
             Matrix I = DenseMatrix.OfArray(new double[,] {
                 {1,0,0},
@@ -149,16 +150,19 @@ private bool FileCompare(string file1, string file2)
             );
         }else if (textformat=="S_AsText.txt")
         {
+            comparepath=Path.GetFullPath("TestFiles/S_AsText.txt");
             String S = "0 = 3*2-sqrt(x)";
             String S_latex = MaTeX.Conv.MathToLatex(S);
             MaTeX.Export.AsText(S_latex, "S_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TXT);
         }else if (textformat=="V_AsText.md")
         {
+            comparepath=Path.GetFullPath("TestFiles/V_AsText.md");
             Vector V = DenseVector.OfArray(new double[] {4,7,1});
             String V_latex = MaTeX.Conv.MathToLatex(V);
             MaTeX.Export.AsText(V_latex, "V_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.MD);
         }else if (textformat=="M_AsText.ltx")
         {
+            comparepath=Path.GetFullPath("TestFiles/M_AsText.ltx");
              Matrix M = DenseMatrix.OfArray(new double[,] {
                 {1,5,0},
                 {0,3,0},
@@ -168,6 +172,7 @@ private bool FileCompare(string file1, string file2)
             MaTeX.Export.AsText(M_latex, "M_AsText.ltx", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TEX_DOCUMENT);
         }else if (textformat=="debug.tex")
         {
+            comparepath=Path.GetFullPath("TestFiles/debug.tex");
             MaTeX.Config.BracketMode = new MaTeX.BracketModes[] {};
             String FileName = "debug.tex";
 
@@ -200,7 +205,7 @@ private bool FileCompare(string file1, string file2)
                 MaTeX.BracketModes.END                
             );
         }
-        string path = Path.Combine(@"D:\Schule\Studium\Software\SWE22_Projekt\src\MaTeX",textformat);
+        string path = Path.Combine(System.IO.Directory.GetParent(@"bin").FullName,textformat);
         Assert.True(FileCompare(path, comparepath));
         File.Delete(path);
     }
