@@ -26,8 +26,16 @@
     <body>
         <div id="content"></div>
         <script type="text/javascript">
-            $(document).ready(function(e) {
-                $("#content").load("docs/Dokumentation.md");
+            $(document).ready(function() {
+
+                $.get("docs/Dokumentation.html", function(data) {
+                    var fileDom = $(data);
+                    var lines = fileDom.split("\n");
+                    console.log(lines);
+                });
+
+                $("#content").load("docs/Dokumentation.html");
+
             });
         </script>
     </body>
