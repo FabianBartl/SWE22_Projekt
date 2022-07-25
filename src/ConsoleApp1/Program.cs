@@ -3,40 +3,40 @@ using System.IO;
 
 using MathNet.Numerics.LinearAlgebra.Double;
 
-//matex funktionen importieren
-using Mtx = MaTeX;
+// MaTeX Funktionen importieren
+using MaTeX;
 
 namespace MyApp
 {
     class Program
     {
-        static void Main(String[] args)
+        static void Main(string[] args)
         {
-            Mtx.Config.PrettyPrinting = (args.Length >= 1 && (args[0] == "-pp" || args[0] == "--PrettyPrinting"));
-            Mtx.Config.SaveLocation = Path.GetFullPath("tmp");
+            Config.PrettyPrinting = (args.Length >= 1 && (args[0] == "-pp" || args[0] == "--PrettyPrinting"));
+            Config.SaveLocation = Path.GetFullPath("tmp");
             
             // ---
 
             /*
-            String S = "f=0=3*3+sqrt(sqrt(a))";
-            Vector V = DenseVector.OfArray(new double[] {1,2,3});
+            string S = "0 = 3*2-sqrt(x)";
+            Vector V = DenseVector.OfArray(new double[] {4,7,1});
             Matrix M = DenseMatrix.OfArray(new double[,] {
-                {1,1,1,5},
-                {1,2,3,5},
-                {4,3,2,5}
+                {1,5,0},
+                {0,3,0},
+                {4,0,1}
             });
 
-            String S_latex = Mtx.Conv.MathToLatex(S);
-            String V_latex = Mtx.Conv.MathToLatex(V);
-            String M_latex = Mtx.Conv.MathToLatex(M);
+            string S_latex = Conv.MathToLatex(S);
+            string V_latex = Conv.MathToLatex(V);
+            string M_latex = Conv.MathToLatex(M);
 
-            Console.Write(S_latex + Mtx.Wrapper.PrettyPrint("\n"));
-            Console.Write(V_latex + Mtx.Wrapper.PrettyPrint("\n"));
+            Console.Write(S_latex + Wrapper.PrettyPrint("\n"));
+            Console.Write(V_latex + Wrapper.PrettyPrint("\n"));
             Console.Write(M_latex + "\n");
 
-            bool S_check = Mtx.Export.AsText(S_latex, "S_AsText",     Mtx.WriteModes.OVERRIDE, Mtx.TextFormats.TXT);
-            bool V_check = Mtx.Export.AsText(V_latex, "V_AsText",     Mtx.WriteModes.OVERRIDE, Mtx.TextFormats.MD);
-            bool M_check = Mtx.Export.AsText(M_latex, "M_AsText.ltx", Mtx.WriteModes.OVERRIDE, Mtx.TextFormats.TEX_WITH_HEADER);
+            bool S_check = Export.AsText(S_latex, "S_AsText",     WriteModes.OVERRIDE, TextFormats.TXT);
+            bool V_check = Export.AsText(V_latex, "V_AsText",     WriteModes.OVERRIDE, TextFormats.MD);
+            bool M_check = Export.AsText(M_latex, "M_AsText.ltx", WriteModes.OVERRIDE, TextFormats.TEX_DOCUMENT);
 
             Console.WriteLine("S: " + Convert.ToString(S_check));
             Console.WriteLine("V: " + Convert.ToString(V_check));
@@ -46,7 +46,50 @@ namespace MyApp
             // ---
 
             // /*
-            Mtx.Config.BracketMode = new Mtx.BracketModes[] {};
+            Config.SaveLocation = Path.GetFullPath(@"../../docs");
+
+            string S = "0 = 3*2-sqrt(x)";
+            Vector V = DenseVector.OfArray(new double[] {4,7,1});
+            Matrix M = DenseMatrix.OfArray(new double[,] {
+                {1,5,0},
+                {0,3,0},
+                {4,0,1}
+            });
+
+            string S_latex = Conv.MathToLatex(S);
+            string V_latex = Conv.MathToLatex(V);
+            string M_latex = Conv.MathToLatex(M);
+
+            Console.WriteLine(S_latex + "\n");
+            Console.WriteLine(M_latex + @"\cdot" + V_latex);
+
+            string FileName = "Beispiel_ExportAsText";
+            Export.AsText(
+                S_latex,
+                FileName,
+                WriteModes.OVERRIDE,
+                TextFormats.TEX_DOCUMENT
+            );
+            Export.AsText(
+                M_latex + @"\cdot",
+                FileName,
+                WriteModes.INSERT_BEFORE_DOCUMENT_END,
+                TextFormats.TEX,
+                new BracketModes[] {BracketModes.BEGIN}
+            );
+            Export.AsText(
+                V_latex,
+                FileName,
+                WriteModes.INSERT_BEFORE_DOCUMENT_END,
+                TextFormats.TEX,
+                new BracketModes[] {BracketModes.END}
+            );
+            // */
+
+            // ---
+
+            /*
+            Config.BracketMode = new BracketModes[] {};
             
             Vector y = DenseVector.OfArray(new double[] {4,7,1});
             Matrix I = DenseMatrix.OfArray(new double[,] {
@@ -61,75 +104,78 @@ namespace MyApp
                 {2,9,9}
             });
 
-            String y_latex = Mtx.Conv.MathToLatex(y);
-            String I_latex = Mtx.Conv.MathToLatex(I);
-            String A_latex = Mtx.Conv.MathToLatex(A);
-            String R_latex = Mtx.Conv.MathToLatex("R");
+            string y_latex = Conv.MathToLatex(y);
+            string I_latex = Conv.MathToLatex(I);
+            string A_latex = Conv.MathToLatex(A);
+            string R_latex = Conv.MathToLatex("R");
 
-            String latex = A_latex + "-" + y_latex + @"\cdot" + I_latex + "=" + R_latex;
+            string latex = A_latex
+                + "-" + Wrapper.PrettyPrint("\n")
+                + y_latex + @"\cdot" + Wrapper.PrettyPrint("\n")
+                + I_latex + "=" + R_latex;
             Console.WriteLine(latex);
 
-            String FileName = "R_AsText";
-            Console.WriteLine("R: " + (Mtx.Export.AsText(
+            string FileName = "R_AsText";
+            Console.WriteLine("R: " + (Export.AsText(
                 latex,
                 FileName,
-                Mtx.WriteModes.OVERRIDE,
-                Mtx.TextFormats.TEX_WITH_HEADER,
-                new Mtx.BracketModes[] {Mtx.BracketModes.BEGIN, Mtx.BracketModes.END}
+                WriteModes.OVERRIDE,
+                TextFormats.TEX_DOCUMENT,
+                new BracketModes[] {BracketModes.BEGIN, BracketModes.END}
             )));
-            // */
+            */
 
             // ---
 
             /*
-            Mtx.Config.BracketMode = new Mtx.BracketModes[] {};
-            String FileName = "debug.tex";
+            Config.BracketMode = new BracketModes[] {};
+            string FileName = "debug.tex";
 
-            Console.WriteLine(Mtx.Export.AsText(
-                Mtx.Wrapper.PrettyPrint("\n")
-                    + @"\text{OVERRIDE TEX_WITH_HEADER}"
-                    + Mtx.Wrapper.PrettyPrint("\n"),
+            Console.WriteLine(Export.AsText(
+                Wrapper.PrettyPrint("\n")
+                    + @"\text{OVERRIDE TEX_DOCUMENT}"
+                    + Wrapper.PrettyPrint("\n"),
                 FileName,
-                Mtx.WriteModes.OVERRIDE,
-                Mtx.TextFormats.TEX_WITH_HEADER
+                WriteModes.OVERRIDE,
+                TextFormats.TEX_DOCUMENT
             ));
 
-            // Console.WriteLine(Mtx.Export.AsText(
-            //     Mtx.Wrapper.PrettyPrint("\n")
+            // Console.WriteLine(Export.AsText(
+            //     Wrapper.PrettyPrint("\n")
             //         + @"\text{APPEND TXT}"
-            //         + Mtx.Wrapper.PrettyPrint("\n"),
+            //         + Wrapper.PrettyPrint("\n"),
             //     FileName,
-            //     Mtx.WriteModes.APPEND,
-            //     Mtx.TextFormats.TXT
+            //     WriteModes.APPEND,
+            //     TextFormats.TXT
             // ));
 
-            // Console.WriteLine(Mtx.Export.AsText(
-            //     Mtx.Wrapper.PrettyPrint("\n")
+            // Console.WriteLine(Export.AsText(
+            //     Wrapper.PrettyPrint("\n")
             //         + @"\text{AT_START TXT}"
-            //         + Mtx.Wrapper.PrettyPrint("\n"),
+            //         + Wrapper.PrettyPrint("\n"),
             //     FileName,
-            //     Mtx.WriteModes.AT_START,
-            //     Mtx.TextFormats.TXT
+            //     WriteModes.AT_START,
+            //     TextFormats.TXT
             // ));
 
-            Console.WriteLine(Mtx.Export.AsText(
-                Mtx.Wrapper.PrettyPrint("\n")
+            Console.WriteLine(Export.AsText(
+                Wrapper.PrettyPrint("\n")
                     + @"\text{INSERT_AFTER_DOCUMENT_START TEX}"
-                    + Mtx.Wrapper.PrettyPrint("\n"),
+                    + Wrapper.PrettyPrint("\n"),
                 FileName,
-                Mtx.WriteModes.INSERT_AFTER_DOCUMENT_START,
-                Mtx.TextFormats.TEX,
-                Mtx.BracketModes.BEGIN
+                WriteModes.INSERT_AFTER_DOCUMENT_START,
+                TextFormats.TEX,
+                BracketModes.BEGIN
             ));
 
-            Console.WriteLine(Mtx.Export.AsText(
-                Mtx.Wrapper.PrettyPrint("\n")
+            Console.WriteLine(Export.AsText(
+                Wrapper.PrettyPrint("\n")
                     + @"\text{INSERT_BEFORE_DOCUMENT_END TEX}"
-                    + Mtx.Wrapper.PrettyPrint("\n"),
+                    + Wrapper.PrettyPrint("\n"),
                 FileName,
-                Mtx.WriteModes.INSERT_BEFORE_DOCUMENT_END,
-                Mtx.TextFormats.TEX,
-                Mtx.BracketModes.END                
+                WriteModes.INSERT_BEFORE_DOCUMENT_END,
+                TextFormats.TEX,
+                BracketModes.END                
             ));
             */
         }
