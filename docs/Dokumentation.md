@@ -1,18 +1,19 @@
 
-# Dokumentation
+# Dokumentation <!-- omit in toc -->
 
-- [Dokumentation](#dokumentation)
-  - [Installation](#installation)
-  - [Funktionen](#funktionen)
-    - [`Conv.MathToLatex()`](#convmathtolatex)
-    - [`Export.AsText()`](#exportastext)
-    - [`Wrapper.PrettyPrint()`](#wrapperprettyprint)
-    - [`Wrapper.PrintBrackets()`](#wrapperprintbrackets)
-  - [Objekte](#objekte)
-    - [`TextFormats`](#textformats)
-    - [`WriteModes`](#writemodes)
-    - [`BracketModes`](#bracketmodes)
-  - [`Config`-Optionen](#config-optionen)
+- [Installation](#installation)
+- [Funktionen](#funktionen)
+  - [`Conv.MathToLatex()`](#convmathtolatex)
+  - [`Export.AsText()`](#exportastext)
+  - [`Export.AsImage()`](#exportasimage)
+  - [`Wrapper.PrettyPrint()`](#wrapperprettyprint)
+  - [`Wrapper.PrintBrackets()`](#wrapperprintbrackets)
+- [Objekte](#objekte)
+  - [`TextFormats`](#textformats)
+  - [`WriteModes`](#writemodes)
+  - [`BracketModes`](#bracketmodes)
+- [Konfiguration](#konfiguration)
+  - [Alle `Config`-Optionen](#alle-config-optionen)
 
 ## Installation
 
@@ -81,11 +82,26 @@ Console.WriteLine(M_latex + "\n");
 
 ### `Export.AsText()`
 
->Speichert LaTeX-Code in Form von `string`'s in unterschiedlichen Dateiformaten aus `TextFormats` in der Datei `filename` ab. Dabei kann der Schreibmodus aus `WriteModes` gewählt werden. Zusätzlich können Klammermodi aus `BracketModes` für *Markdown* bzw. *LaTeX* Formate verwendet werden.
+>Speichert LaTeX-Code in Form von `string`'s in unterschiedlichen Formaten aus `TextFormats` in der Datei `filename` ab. Dabei kann der Schreibmodus aus `WriteModes` gewählt werden. Zusätzlich können Klammermodi aus `BracketModes` für *Markdown* bzw. *LaTeX* Formate verwendet werden.
 
 ```cs
 bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
 ```
+
+**Unterstützte Dateinamen:**
+
+- `filename` darf nur den Dateinamen, keinen Dateipfad enthalten.
+- Der Standard Dateipfad kann in `Config.SaveLocation` festgelegt werden.
+- Wenn `filename` keine Dateiendung enthält, wird diese durch `textFormat` festgelegt:
+
+| `TextFormats`              | Dateiendung |
+| -------------------------- | ----------- |
+| `TextFormats.TXT`          | `.txt`      |
+| `TextFormats.MD`           | `.md`       |
+| `TextFormats.TEX`          | `.tex`      |
+| `TextFormats.TEX_DOCUMENT` | `.tex`      |
+
+<br>
 
 **Unterstützte Schreibmodi aus `WriteModes`:**
 
@@ -118,6 +134,29 @@ bool AsText(string latex, string filename, WriteModes writeMode, TextFormats tex
 | Öffnende Klammer    | `new BracketModes[] {BracketModes.BEGIN}`                   | `\begin{equation*}0=6-\sqrt{x}               ` | `$0=6-\sqrt{x} `                       |
 | Schließende Klammer | `new BracketModes[] {BracketModes.END}`                     | `                 0=6-\sqrt{x}\end{equation*}` | ` 0=6-\sqrt{x}$`                       |
 | Beide Klammern      | `new BracketModes[] {BracketModes.BEGIN, BracketModes.END}` | `\begin{equation*}0=6-\sqrt{x}\end{equation*}` | `$0=6-\sqrt{x}$`                       |
+
+### `Export.AsImage()`
+
+>Rendert LaTeX-Code in Form von `string`'s und speichert ihn als Bild.
+
+```cs
+bool AsImage(string latex, string filename, ImageFormats imageFormat)
+```
+
+**Unterstützte Dateinamen:**
+
+- `filename` darf nur den Dateinamen, keinen Dateipfad enthalten.
+- Der Standard Dateipfad kann in `Config.SaveLocation` festgelegt werden.
+- Die Dateiendung wird durch `imageFormat` festgelegt:
+
+| `ImageFormats`      | Dateiendung |
+| ------------------- | ----------- |
+| `ImageFormats.JPG`  | `.jpg`      |
+| `ImageFormats.JEPG` | `.jepg`     |
+| `ImageFormats.BMP`  | `.bmp`      |
+| `ImageFormats.PNG`  | `.png`      |
+| `ImageFormats.GIF`  | `.gif`      |
+| `ImageFormats.SVG`  | `.svg`      |
 
 ### `Wrapper.PrettyPrint()`
 
@@ -155,7 +194,7 @@ enum WriteModes { OVERRIDE, APPEND, AT_START, INSERT_AFTER_DOCUMENT_START, INSER
 enum BracketModes { BEGIN, END }
 ```
 
-## `Config`-Optionen
+## Konfiguration
 
 In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in `Wrapper`-Funktionen verwendet. Sie können aber auch einfach mit `Config.[OPTION]` abgefragt oder geändert werden.
 
@@ -176,3 +215,15 @@ Export.AsText(
 ```
 
 Die in dieser Kurzform fehlenden Paramter sind `writeMode` und `bracketModes`. Beim Aufruf der vollständigen `Export.AsText()`-Funktion werden für diese fehlenden Parameter die konfigurierten Werte `Config.WriteMode` und `Config.BracketModes` eingesetzt.
+
+### Alle `Config`-Optionen
+
+| Attribut               | Datentyp       | Standardwert                                                | Bsp. Verwendung                                                                                                                                  |
+| ---------------------- | -------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PrettyPrinting`       | `bool`         | `true`                                                      | Fügt beim generieren von LaTeX-Code mit `Conv.MathToLatex()` oder beim Schreiben mit `Export.AsText()` Leerzeichen- und zeilen ein, wenn `true`. |
+| `IgnoreFileExceptions` | `bool`         | `false`                                                     | `Export.AsText()` wirft keine `Exception` wenn bei Lese- oder Schreiboperationen ein Fehler auftritt, sondern gibt `false` zurück, wenn `true`.  |
+| `TextFormat`           | `TextFormats`  | `TextFormats.MD`                                            | Legt das Standard Dateiformat für `Export.AsText()` fest und die Dateiendung, wenn diese nicht schon durch `filename` gesetzt wurde.             |
+| `WriteMode`            | `WriteModes`   | `WriteModes.OVERRIDE`                                       | Legt den Standard Schreibmodus für `Export.AsText()` fest.                                                                                       |
+| `BracketMode`          | `BracketModes` | `new BracketModes[] {BracketModes.BEGIN, BracketModes.END}` | Legt die Standard Klammermodi für `Export.AsText()` fest.                                                                                        | 
+| `LatexHeader`          | `string`       | `@"\documentclass[10pt]{article}"`                          | Legt den Standard LaTeX-Header fest und wird bei `Export.AsText()` mit `TextFormats.TEX_DOCUMENT` vor `\document{begin}` geschrieben.            |
+| `SaveLocation`         | `string`       | `System.IO.Directory.GetCurrentDirectory()`                 | Legt den Standard Ordnerpfad für die mit `Export.AsText()` erstellten bzw. modifizierten Dateien fest.                                           |
