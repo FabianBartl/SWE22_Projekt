@@ -1,9 +1,9 @@
 
 # Softwareentwicklung 2022 - Projekt
 
+[![build](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml)&nbsp;
 [![GitHub License](https://img.shields.io/badge/license-MIT-green)](LICENSE)&nbsp;
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/devlop)&nbsp;
-[![build](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml)
 
 ## Zielstellung
 
