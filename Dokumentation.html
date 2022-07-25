@@ -2,7 +2,7 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>Dokumentation &lt;&excl;-- omit in toc --&gt;</title>
+        <title>Dokumentation</title>
         <style>
 /* From extension vscode.github */
 /*---------------------------------------------------------------------------------------------
@@ -45,7 +45,8 @@
         
     </head>
     <body class="vscode-body vscode-light">
-        <h1 id="dokumentation-">Dokumentation <!-- omit in toc --></h1>
+        <title>Dokumentation</title>
+<h1 id="dokumentation-">Dokumentation <!-- omit in toc --></h1>
 <ul>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#funktionen">Funktionen</a>
@@ -72,7 +73,7 @@
 </li>
 </ul>
 <h2 id="installation">Installation</h2>
-<p>Die Datei <a href="../src/MaTeX/MaTeX.cs">MaTeX.cs</a> im Projektordner speichern. Und mit <code>using MaTeX;</code> importieren.</p>
+<p>Die Datei <a href="https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/blob/main/src/MaTeX/MaTeX.cs">MaTeX.cs</a> im Projektordner speichern. Und mit <code>using MaTeX;</code> importieren.</p>
 <h2 id="funktionen">Funktionen</h2>
 <h3 id="convmathtolatex"><code>Conv.MathToLatex()</code></h3>
 <blockquote>
@@ -417,7 +418,12 @@ Export.AsText(
 <pre><code class="language-cs"><div><span class="hljs-built_in">enum</span> BracketModes { BEGIN, END }
 </div></code></pre>
 <h2 id="konfiguration">Konfiguration</h2>
-<p>In der <code>Config</code>-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in <code>Wrapper</code>-Funktionen verwendet. Sie können aber auch einfach mit <code>Config.[OPTION]</code> abgefragt oder geändert werden.</p>
+<p>In der <code>Config</code>-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in <code>Wrapper</code>-Funktionen verwendet. Sie können aber auch einfach abgefragt oder geändert werden:</p>
+<pre><code class="language-cs"><div>Config.SaveLocation = Path.GetFullPath(<span class="hljs-string">&quot;dein/neuer/Speicherpfad&quot;</span>);
+Config.PrettyPrinting = <span class="hljs-literal">false</span>;
+Config.TextFormat = TextFormats.MD;
+...
+</div></code></pre>
 <p><strong>Vervollständigung fehlender Parameter:</strong></p>
 <p>Hier wird eine definierte Kurzform der <code>Export.AsText()</code>-Funktion verwendet, nämlich:</p>
 <pre><code class="language-cs"><div><span class="hljs-function"><span class="hljs-built_in">bool</span> <span class="hljs-title">AsText</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> latex, <span class="hljs-built_in">string</span> filename, TextFormats textFormat</span>)
