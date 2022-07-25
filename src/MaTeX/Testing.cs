@@ -184,8 +184,8 @@ public class Testings
         string file1Content;
         string file2Content;
         
-        FileRead(file1, out file1Content, true);
-        FileRead(file2, out file2Content, true);
+        FileRead(file1, out file1Content);
+        FileRead(file2, out file2Content);
 
         return file1Content == file2Content;
     }
@@ -201,18 +201,6 @@ public class Testings
             return true;
         }
     }
-    private bool FileRead(string file, out string buffer, bool waitAtException)
-    {
-        if (!waitAtException) return FileRead(file, out buffer);
-        for (int i=0; i < 10; i++)
-        {
-            try { return FileRead(file, out buffer); }
-            catch (System.IO.IOException) { Thread.Sleep(100); }
-            Console.Write(String.Format("{0} ", i));
-        }
-        buffer = null;
-        return false;
-    }
 
     // Datei schreiben
     private bool FileWrite(string file, string buffer)
@@ -224,16 +212,5 @@ public class Testings
             fileStream.Write(bytes, 0, bytes.Length);
             return true;
         }
-    }
-    private bool FileWrite(string file, string buffer, bool waitAtException)
-    {
-        if (!waitAtException) return FileWrite(file, buffer);
-        for (int i=0; i < 10; i++)
-        {
-            try { return FileWrite(file, buffer); }
-            catch (System.IO.IOException) { Thread.Sleep(100); }
-            Console.Write(String.Format("{0} ", i));
-        }
-        return false;
     }
 }
