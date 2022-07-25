@@ -8,93 +8,93 @@ public class Testings
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void MathToLatex_Vector_ReturnLatex(bool prettyPrinting)
+    public void MathToLatex_Vector_ReturnLatex(bool pp)
     {
-        MaTeX.Config.PrettyPrinting = prettyPrinting;
+        MaTeX.Config.PrettyPrinting=pp;
         Vector A = DenseVector.OfArray(new double[] {1,2,3});
-        string Latex = (prettyPrinting   
+        string Latex;
+        Latex = pp   
             ? @"\begin{pmatrix}" + "\n" + @"1 \\" + "\n" + @"2 \\" + "\n" + "3 \n" + @"\end{pmatrix}"
-            : @"\begin{pmatrix}1\\2\\3\end{pmatrix}"
-        );
+            : @"\begin{pmatrix}1\\2\\3\end{pmatrix}";
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(A));
     }
 
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void MathToLatex_Matrix_ReturnLatex(bool prettyPrinting)
+    public void MathToLatex_Matrix_ReturnLatex(bool pp)
     {
-        MaTeX.Config.PrettyPrinting = prettyPrinting;
+        MaTeX.Config.PrettyPrinting=pp;
         Matrix B = DenseMatrix.OfArray(new double[,] {
             {1,1,1},
             {1,2,3},
             {4,3,2}
         });
-        string Latex = (prettyPrinting
+        string Latex;
+        Latex = pp
             ? @"\begin{bmatrix}" + "\n" + @"1 & 1 & 1 \\" + "\n" + @"1 & 2 & 3 \\" + "\n" + "4 & 3 & 2 " + "\n" + @"\end{bmatrix}"
-            : @"\begin{bmatrix}1&1&1\\1&2&3\\4&3&2\end{bmatrix}"
-        ); 
+            : @"\begin{bmatrix}1&1&1\\1&2&3\\4&3&2\end{bmatrix}"; 
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(B));
     }
 
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void MathToLatex_Gleichung_ReturnLatex(bool prettyPrinting)
+    public void MathToLatex_Gleichung_ReturnLatex(bool pp)
     {
-        MaTeX.Config.PrettyPrinting = prettyPrinting;
+        MaTeX.Config.PrettyPrinting=pp;
         string Gleichung = "f=0=3*3+sqrt(sqrt(a))";
-        string Latex = (prettyPrinting   
+        string Latex;
+        Latex = pp   
             ? @"f = 0 = 9 + \sqrt{\sqrt{a}}"
-            : @"f=0=9+\sqrt{\sqrt{a}}"
-        );
+            : @"f=0=9+\sqrt{\sqrt{a}}";
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(Gleichung));
     }
 
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void MathToLatex_Term_ReturnLatex(bool prettyPrinting)
+    public void MathToLatex_Term_ReturnLatex(bool pp)
     {
-        MaTeX.Config.PrettyPrinting = prettyPrinting;
+        MaTeX.Config.PrettyPrinting=pp;
         string Term = @"3*3+sqrt(sqrt(a))";
-        string Latex = (prettyPrinting
+        string Latex;
+        Latex =pp
             ? @"9 + \sqrt{\sqrt{a}}"
-            : @"9+\sqrt{\sqrt{a}}"
-        );
+            : @"9+\sqrt{\sqrt{a}}";
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(Term));
     }
 
     private bool FileCompare(string file1, string file2)
     {
-        int file1Byte;
-        int file2Byte;
-        FileStream fileStream1;
-        FileStream fileStream2;
+        int file1byte;
+        int file2byte;
+        FileStream fs1;
+        FileStream fs2;
 
         if (file1 == file2) return true;
 
-        fileStream1 = new FileStream(file1, FileMode.Open);
-        fileStream2 = new FileStream(file2, FileMode.Open);
+        fs1 = new FileStream(file1, FileMode.Open);
+        fs2 = new FileStream(file2, FileMode.Open);
 
-        if (fileStream1.Length != fileStream2.Length)
+        if (fs1.Length != fs2.Length)
         {
-            fileStream1.Close();
-            fileStream2.Close();
+            fs1.Close();
+            fs2.Close();
             return false;
         }
 
         do
         {
-            file1Byte = fileStream1.ReadByte();
-            file2Byte = fileStream2.ReadByte();
+            file1byte = fs1.ReadByte();
+            file2byte = fs2.ReadByte();
         }
-        while ((file1Byte == file2Byte) && (file1Byte != -1));
+        while ((file1byte == file2byte) && (file1byte != -1));
 
-        fileStream1.Close();
-        fileStream2.Close();
+        fs1.Close();
+        fs2.Close();
 
-        return ((file1Byte - file2Byte) == 0);
+        return ((file1byte - file2byte) == 0);
     }
 
     
@@ -104,16 +104,16 @@ public class Testings
     [InlineData("V_AsText.md")]
     [InlineData("M_AsText.ltx")]
     [InlineData("debug.tex")]
-    public void AsText_Latex_File(string textFormat)
+    public void AsText_Latex_File(string textformat)
     {
         MaTeX.Config.SaveLocation = Directory.GetParent(@"bin").FullName;
-        File.Create(textFormat);
+        File.Create(textformat);
         MaTeX.Config.PrettyPrinting = true;
         
-        string fileName = textFormat;
-        string comparePath = Path.GetFullPath("TestFiles/" + fileName);
+        string FileName = textformat;
+        string comparepath = Path.GetFullPath("TestFiles/" + FileName);
 
-        switch (textFormat)
+        switch (textformat)
         {
             case "R_AsText.tex":
                 Vector y = DenseVector.OfArray(new double[] {4,7,1});
@@ -141,7 +141,7 @@ public class Testings
 
                 MaTeX.Export.AsText(
                     latex,
-                    fileName,
+                    FileName,
                     MaTeX.WriteModes.OVERRIDE,
                     MaTeX.TextFormats.TEX_DOCUMENT,
                     new MaTeX.BracketModes[] {MaTeX.BracketModes.BEGIN, MaTeX.BracketModes.END}
@@ -149,24 +149,23 @@ public class Testings
                 break;
             
             case "S_AsText.txt":
-                string S = "0 = 3*2-sqrt(x)";
-                string S_latex = MaTeX.Conv.MathToLatex(S);
+                String S = "0 = 3*2-sqrt(x)";
+                String S_latex = MaTeX.Conv.MathToLatex(S);
                 MaTeX.Export.AsText(S_latex, "S_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TXT);
                 break;
 
             case "V_AsText.md":
                 Vector V = DenseVector.OfArray(new double[] {4,7,1});
-                string V_latex = MaTeX.Conv.MathToLatex(V);
+                String V_latex = MaTeX.Conv.MathToLatex(V);
                 MaTeX.Export.AsText(V_latex, "V_AsText", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.MD);
                 break;
-            
             case "M_AsText.ltx":
                 Matrix M = DenseMatrix.OfArray(new double[,] {
                     {1,5,0},
                     {0,3,0},
                     {4,0,1}
                 });
-                string M_latex = MaTeX.Conv.MathToLatex(M);
+                String M_latex = MaTeX.Conv.MathToLatex(M);
                 MaTeX.Export.AsText(M_latex, "M_AsText.ltx", MaTeX.WriteModes.OVERRIDE, MaTeX.TextFormats.TEX_DOCUMENT);
                 break;
 
@@ -177,7 +176,7 @@ public class Testings
                     MaTeX.Wrapper.PrettyPrint("\n")
                         + @"\text{OVERRIDE TEX_DOCUMENT}"
                         + MaTeX.Wrapper.PrettyPrint("\n"),
-                    fileName,
+                    FileName,
                     MaTeX.WriteModes.OVERRIDE,
                     MaTeX.TextFormats.TEX_DOCUMENT
                 ));
@@ -186,7 +185,7 @@ public class Testings
                     MaTeX.Wrapper.PrettyPrint("\n")
                         + @"\text{INSERT_AFTER_DOCUMENT_START TEX}"
                         + MaTeX.Wrapper.PrettyPrint("\n"),
-                    fileName,
+                    FileName,
                     MaTeX.WriteModes.INSERT_AFTER_DOCUMENT_START,
                     MaTeX.TextFormats.TEX,
                     MaTeX.BracketModes.BEGIN
@@ -196,16 +195,16 @@ public class Testings
                     MaTeX.Wrapper.PrettyPrint("\n")
                         + @"\text{INSERT_BEFORE_DOCUMENT_END TEX}"
                         + MaTeX.Wrapper.PrettyPrint("\n"),
-                    fileName,
+                    FileName,
                     MaTeX.WriteModes.INSERT_BEFORE_DOCUMENT_END,
                     MaTeX.TextFormats.TEX,
                     MaTeX.BracketModes.END                
                 );
                 break;
         }
-
-        string path = Path.Combine(Directory.GetParent(@"bin").FullName, textFormat);
-        Assert.True(FileCompare(path, comparePath));
+        
+        string path = Path.Combine(Directory.GetParent(@"bin").FullName, textformat);
+        Assert.True(FileCompare(path, comparepath));
         File.Delete(path);
     }
 }
