@@ -1,23 +1,25 @@
+
 # Softwareentwicklung 2022 - Projekt
 
+[![build](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml/badge.svg)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml)&nbsp;
 [![GitHub License](https://img.shields.io/badge/license-MIT-green)](LICENSE)&nbsp;
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/devlop)&nbsp;
-<!-- [![Nuget Package](https://img.shields.io/nuget/v/matex)](https://www.nuget.org/packages/matex)&nbsp; -->
-<!-- ![Nuget Downloads](https://img.shields.io/nuget/dt/matex)&nbsp; -->
 
 ## Zielstellung
 
 >*Transformation von Math.NET Inhalten (Matrizen, Vektoren, Terme usw.) nach Latex*
 
-Das Ergbenis soll ein wiederverwendbare Class-Library (DLL) sein, die dem Programmierer die Möglichkeit gibt, mathematische C#-Objekte der Math.NET Bibliothek in Latex zu transformieren und als Text zu speichern.
+Das Ergbenis soll ein wiederverwendbare Klassenbibliothek sein, die dem Programmierer die Möglichkeit gibt, mathematische C#-Objekte der Math.NET Bibliothek in LaTeX zu transformieren und als Text zu speichern.
 
-Eventuell möchten wir diese Class-Library dann auch als NuGet-Package unter dem Name "MaTeX" zur Verfügung stellen.
+## Aktueller Stand
 
-**Aktuelle MaTeX CodeMap:**
+### CodeMap von [MaTeX.cs](/src/MaTeX/MaTeX.cs)
 
 ![](img/MaTeX_CodeMap.png)
 
-**Dependencies:**
+### [Dokumentation](/docs/Dokumentation.md)
+
+### Dependencies
 
 - [CSharpMath](https://www.nuget.org/packages/CSharpMath)
 - [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
@@ -29,7 +31,7 @@ Eventuell möchten wir diese Class-Library dann auch als NuGet-Package unter dem
 |             Datum | Bemerkung                                                                           |
 | -----------------:| ----------------------------------------------------------------------------------- |
 |     21. Juni 2022 | Rückmeldung der Gruppen zur Teilnahme an der praktischen Prüfungsleistung           |
-|                   | Anlegen eines Repositories und Erläuterung Ihrer Zielstellungen im Wiki             |                   |                   |                                                                                     |
+|                   | Anlegen eines Repositories und Erläuterung Ihrer Zielstellungen im Wiki             |
 |  bis 7. Juli 2022 | Spezifikation einer Fragestellung und zugehöriger Softwareentwurf                   |
 | bis 14. Juli 2022 | Bestätigung der Idee und des Entwurfes                                              |
 |                   | Bearbeitung der Aufgabenstellung in einem GitHub Projekt mit eingeladenen Betreuern |
