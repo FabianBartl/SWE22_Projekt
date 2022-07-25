@@ -282,7 +282,14 @@ enum BracketModes { BEGIN, END }
 
 ## Konfiguration
 
-In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in `Wrapper`-Funktionen verwendet. Sie können aber auch einfach mit `Config.[OPTION]` abgefragt oder geändert werden.
+In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in `Wrapper`-Funktionen verwendet. Sie können aber auch einfach abgefragt oder geändert werden:
+
+```cs
+Config.SaveLocation = Path.GetFullPath("dein/neuer/Speicherpfad");
+Config.PrettyPrinting = false;
+Config.TextFormat = TextFormats.MD;
+...
+```
 
 **Vervollständigung fehlender Parameter:**
 
