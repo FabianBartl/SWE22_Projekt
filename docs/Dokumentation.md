@@ -99,7 +99,7 @@ bool AsText(string latex, string filename, WriteModes writeMode, TextFormats tex
 - Wenn `filename` keine Dateiendung enthält, wird diese durch `textFormat` festgelegt:
 
 | `TextFormats`              | Dateiendung |
-| -------------------------- | ----------- |
+| :------------------------- | :---------- |
 | `TextFormats.TXT`          | `.txt`      |
 | `TextFormats.MD`           | `.md`       |
 | `TextFormats.TEX`          | `.tex`      |
@@ -110,19 +110,19 @@ bool AsText(string latex, string filename, WriteModes writeMode, TextFormats tex
 **Unterstützte Schreibmodi aus `WriteModes`:**
 
 | Dateiformat        | `WriteModes`                             | Aktion                                                                               |
-| ------------------ | ---------------------------------------- | ------------------------------------------------------------------------------------ |
+| :----------------- | :--------------------------------------- | :----------------------------------------------------------------------------------- |
 | alle `TextFormats` | `WriteModes.OVERRIDE`                    | Datei mit `latex` wird erstellt bzw. ersetzt                                         |
 | alle `TextFormats` | `WriteModes.APPEND`                      | `latex` wird an das Ende der Datei angehängt                                         |
 | alle `TextFormats` | `WriteModes.AT_START`                    | `latex` wird am Anfang der Datei eingefügt                                           |
 | `TextFormats.TEX`  | `WriteModes.INSERT_AFTER_DOCUMENT_START` | `latex` wird in der Datei nach dem ersten auftreten von `\begin{document}` eingefügt |
-| `TextFormats.TEX`  | `WriteModes.INSERT_BEFORE_DOCUMENT_END`  | `latex` wird in der Datei vor dem zuletzt aufgetretenem `\end{document}` eingefügt   |
+| `TextFormats.TEX`  | `WriteModes.INSERT_BEFORE_DOCUMENT_END`  | `latex` wird in der Datei vor dem zuletzt aufgetretendem `\end{document}` eingefügt  |
 
 <br>
 
 **Unterstützte Dateiformate aus `TextFormats`:**
 
 | Dateiformat    | `TextFormats`              | Bsp.: Dateiinhalt                                                                                         |
-| -------------- | -------------------------- | --------------------------------------------------------------------------------------------------------- |
+| :------------- | :------------------------- | :-------------------------------------------------------------------------------------------------------- |
 | Text           | `TextFormats.TXT`          | `0=6-\sqrt{x}`                                                                                            |
 | Markdown       | `TextFormats.MD`           | `$0=6-\sqrt{x}$`                                                                                          |
 | LaTeX          | `TextFormats.TEX`          | `\begin{equation*}0=6-\sqrt{x}\end{equation*}`                                                            |
@@ -133,7 +133,7 @@ bool AsText(string latex, string filename, WriteModes writeMode, TextFormats tex
 **Unterstützte Klammermodi aus `BracketModes` für `TextFormats.TEX`, `TextFormats.TEX_DOCUMENT` und `TextFormats.MD`:**
 
 | Klammermodus        | `BracketModes`                                              | Bsp.: Dateiinhalt für `TextFormats.TEX`        | Bsp.: Dateiinhalt für `TextFormats.MD` |
-| ------------------- | ----------------------------------------------------------- | ---------------------------------------------- | -------------------------------------- |
+| :------------------ | :---------------------------------------------------------- | :--------------------------------------------- | :------------------------------------- |
 | Keine Klammern      | `new BracketModes[] {}`                                     | `                 0=6-\sqrt{x}               ` | ` 0=6-\sqrt{x} `                       |
 | Öffnende Klammer    | `new BracketModes[] {BracketModes.BEGIN}`                   | `\begin{equation*}0=6-\sqrt{x}               ` | `$0=6-\sqrt{x} `                       |
 | Schließende Klammer | `new BracketModes[] {BracketModes.END}`                     | `                 0=6-\sqrt{x}\end{equation*}` | ` 0=6-\sqrt{x}$`                       |
@@ -230,7 +230,7 @@ bool AsImage(string latex, string filename, ImageFormats imageFormat)
 - Die Dateiendung wird durch `imageFormat` festgelegt:
 
 | `ImageFormats`      | Dateiendung |
-| ------------------- | ----------- |
+| :------------------ | :---------- |
 | `ImageFormats.JPG`  | `.jpg`      |
 | `ImageFormats.JEPG` | `.jepg`     |
 | `ImageFormats.BMP`  | `.bmp`      |
@@ -240,7 +240,7 @@ bool AsImage(string latex, string filename, ImageFormats imageFormat)
 
 ### `Wrapper.PrettyPrint()`
 
->Gibt `text` aus, wenn `Config.PrettyPrinting` mit `true` konfiguriert ist, sonst `alternative`.
+>Gibt `text` zurück, wenn `Config.PrettyPrinting` mit `true` konfiguriert ist, sonst `alternative`.
 
 ```cs
 string PrettyPrint(string text, string alternative)
@@ -248,7 +248,7 @@ string PrettyPrint(string text, string alternative)
 
 ### `Wrapper.PrintBrackets()`
 
->Gibt `bracketText` aus, wenn der Klammermodus `currentMode` im Array der akzeptierten Klammermodi `compareModes` enthalten ist, sont `alternative`.
+>Gibt `bracketText` zurück, wenn der Klammermodus `currentMode` im Array der akzeptierten Klammermodi `compareModes` enthalten ist, sont `alternative`.
 
 ```cs
 string PrintBrackets(string bracketText, string alternative, BracketModes currentMode, BracketModes[] compareModes)
@@ -282,7 +282,7 @@ enum BracketModes { BEGIN, END }
 
 ## Konfiguration
 
-In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung fehlender Parameter in Kurzformen von verschiedenen Funktionen sowie als Bedingung in `Wrapper`-Funktionen verwendet. Sie können aber auch einfach abgefragt oder geändert werden:
+In der `Config`-Klasse können einheitlich Formate, Modi und Eigenschaften etc. konfiguriert werden. Diese Werte werden zum Beispiel zur Vervollständigung von Überladenen Funktionen sowie als Bedingung in `Wrapper`-Funktionen verwendet. Sie können aber auch einfach abgefragt oder geändert werden:
 
 ```cs
 Config.SaveLocation = Path.GetFullPath("dein/neuer/Speicherpfad");
@@ -291,9 +291,9 @@ Config.TextFormat = TextFormats.MD;
 ...
 ```
 
-**Vervollständigung fehlender Parameter:**
+**Vervollständigung von Überladenen Funktionen:**
 
-Hier wird eine definierte Kurzform der `Export.AsText()`-Funktion verwendet, nämlich:
+Hier wird eine Überladung der [`Export.AsText()`](#exportastext)-Funktion mit weniger Parametern verwendet, nämlich:
 
 ```cs
 bool AsText(string latex, string filename, TextFormats textFormat)
@@ -307,12 +307,12 @@ Export.AsText(
 );
 ```
 
-Die in dieser Kurzform fehlenden Paramter sind `writeMode` und `bracketModes`. Beim Aufruf der vollständigen `Export.AsText()`-Funktion werden für diese fehlenden Parameter die konfigurierten Werte `Config.WriteMode` und `Config.BracketModes` eingesetzt.
+Die in dieser Überladung 'fehlenden Paramter' sind `writeMode` und `bracketModes`. Beim Aufruf der 'vollständigen' `Export.AsText()`-Funktion werden für diese fehlenden Parameter die konfigurierten Werte `Config.WriteMode` und `Config.BracketModes` eingesetzt.
 
 ### Alle `Config`-Optionen
 
 | Attribut               | Datentyp       | Standardwert                                                | Bsp. Verwendung                                                                                                                                  |
-| ---------------------- | -------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| :--------------------- | :------------- | :---------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `PrettyPrinting`       | `bool`         | `true`                                                      | Fügt beim generieren von LaTeX-Code mit `Conv.MathToLatex()` oder beim Schreiben mit `Export.AsText()` Leerzeichen- und zeilen ein, wenn `true`. |
 | `IgnoreFileExceptions` | `bool`         | `false`                                                     | `Export.AsText()` wirft keine `Exception` wenn bei Lese- oder Schreiboperationen ein Fehler auftritt, sondern gibt `false` zurück, wenn `true`.  |
 | `TextFormat`           | `TextFormats`  | `TextFormats.TEX`                                           | Legt das Standard Dateiformat für `Export.AsText()` fest und die Dateiendung, wenn diese nicht schon durch `filename` gesetzt wurde.             |
