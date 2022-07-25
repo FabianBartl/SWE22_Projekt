@@ -13,9 +13,9 @@ public class Testings
         MaTeX.Config.PrettyPrinting=pp;
         Vector A = DenseVector.OfArray(new double[] {1,2,3});
         string Latex;
-        if (pp==false) { Latex = @"\begin{pmatrix}1\\2\\3\end{pmatrix}";}
-        else  {Latex = @"\begin{pmatrix}" + "\n" + @"1 \\" + "\n" + @"2 \\" + "\n" 
-        + "3 \n" + @"\end{pmatrix}";}
+        Latex = pp   
+        ? @"\begin{pmatrix}" + "\n" + @"1 \\" + "\n" + @"2 \\" + "\n" + "3 \n" + @"\end{pmatrix}"
+        : @"\begin{pmatrix}1\\2\\3\end{pmatrix}";
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(A));
     }
 
@@ -31,9 +31,9 @@ public class Testings
             {4,3,2}
         });
         string Latex;
-        if (pp==false)  {Latex = @"\begin{bmatrix}1&1&1\\1&2&3\\4&3&2\end{bmatrix}";}
-        else {Latex = @"\begin{bmatrix}" + "\n" + @"1 & 1 & 1 \\" + "\n" + @"1 & 2 & 3 \\" + "\n" + "4 & 3 & 2 " 
-        + "\n" + @"\end{bmatrix}";}
+        Latex = pp
+        ? @"\begin{bmatrix}" + "\n" + @"1 & 1 & 1 \\" + "\n" + @"1 & 2 & 3 \\" + "\n" + "4 & 3 & 2 " + "\n" + @"\end{bmatrix}"
+        : @"\begin{bmatrix}1&1&1\\1&2&3\\4&3&2\end{bmatrix}"; 
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(B));
     }
 
@@ -45,8 +45,9 @@ public class Testings
         MaTeX.Config.PrettyPrinting=pp;
         string Gleichung = "f=0=3*3+sqrt(sqrt(a))";
         string Latex;
-        if (pp==false) {Latex = @"f=0=9+\sqrt{\sqrt{a}}";}
-        else {Latex = @"f = 0 = 9 + \sqrt{\sqrt{a}}";}
+        Latex = pp   
+        ? @"f = 0 = 9 + \sqrt{\sqrt{a}}"
+        : @"f=0=9+\sqrt{\sqrt{a}}";
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(Gleichung));
     }
 
@@ -58,8 +59,9 @@ public class Testings
         MaTeX.Config.PrettyPrinting=pp;
         string Term = @"3*3+sqrt(sqrt(a))";
         string Latex;
-        if (pp==false) {Latex = @"9+\sqrt{\sqrt{a}}";}
-        else {Latex = @"9 + \sqrt{\sqrt{a}}";}
+        Latex =pp
+        ? @"9 + \sqrt{\sqrt{a}}"
+        : @"9+\sqrt{\sqrt{a}}";
         Assert.Equal(Latex, MaTeX.Conv.MathToLatex(Term));
     }
 
