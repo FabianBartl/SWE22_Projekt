@@ -152,7 +152,7 @@ namespace MaTeX
                 while ((_line = _streamReader.ReadLine()) != null) buffer += _line + "\n";
                 return true;
             }
-        } 
+        }
         static private bool ReadFile(string file, out string buffer, bool ignoreExceptions)
         {
             if (ignoreExceptions) return ReadFile(file, out buffer);
