@@ -1,13 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
-
 using MathNet.Numerics.LinearAlgebra.Double;
 using Expr = MathNet.Symbolics.SymbolicExpression;
-
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-
 
 namespace MaTeX
 {
@@ -25,7 +20,7 @@ namespace MaTeX
     }
 
     // Enum's u.a. zur Config-Optionsauswahl
-    public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTex Header und Document */ TEX_DOCUMENT };
+    public enum TextFormats { TXT, MD, TEX, /* erstellt zusätzlich LaTeX Document mit Header */ TEX_DOCUMENT };
     public enum ImageFormats { JPG, JPEG, BMP, PNG, GIF, SVG };
     public enum WriteModes { OVERRIDE, APPEND, AT_START, /* nur für TextFormats.TEX */ INSERT_AFTER_DOCUMENT_START, INSERT_BEFORE_DOCUMENT_END };
     public enum BracketModes { BEGIN, END };

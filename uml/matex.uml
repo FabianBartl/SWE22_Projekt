@@ -1,0 +1,92 @@
+@startuml
+
+class Wrapper {
+    
+    .. for Config.PrettyPrinting ..
+    {static} + string PrettyPrint(string text)
+    {static} + string NotPrettyPrint(string text)
+    {static} + string PrettyPrint(string text, string alternative)
+    
+    .. for Config.BracketModes  ..
+    {static} + string PrintBrackets(string bracketText, BracketModes currentMode)
+    {static} + string PrintBrackets(string bracketText, BracketModes currentMode, BracketModes compareMode)
+    {static} + string PrintBrackets(string bracketText, BracketModes currentMode, BracketModes[] compareModes)
+    {static} + string PrintBrackets(string bracketText, string alternative, BracketModes currentMode, BracketModes[] compareModes)
+}
+
+class Config {
+    {static} + bool PrettyPrinting
+    {static} + bool IgnoreFileExceptions
+    ..
+    {static} + TextFormats TextFormat
+    {static} + ImageFormats ImageFormat
+    {static} + WriteModes WriteMode
+    {static} + BracketModes[] BracketMode
+    ..
+    {static} + string LatexHeader
+    {static} + string SaveLocation
+}
+
+class Conv {
+    {static} + string MathToLatex(Vector vector)
+    {static} + string MathToLatex(Matrix matrix)
+    {static} + string MathToLatex(string text)
+}
+
+
+class Export {
+    
+    .. as text ..
+    {static} + bool AsText(string latex, string filename)
+    {static} + bool AsText(string latex, string filename, TextFormats textFormat)
+    {static} + bool AsText(string latex, string filename, WriteModes writeMode)
+    {static} + bool AsText(string latex, string filename, BracketModes bracketMode)
+    {static} + bool AsText(string latex, string filename, BracketModes[] bracketModes)
+    {static} + bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat)
+    {static} + bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode)
+    {static} + bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
+    
+    .. as image ..
+    {static} + bool AsImage(string latex, string filename)
+    {static} + bool AsImage(string latex, string filename, ImageFormats imageFormat)
+    
+    -- helper functions --
+    {static} - bool WriteFile(string file, string buffer)
+    {static} - bool WriteFile(string file, string buffer, bool ignoreExceptions)
+    {static} - bool ReadFile(string file, out string buffer)
+    {static} - bool ReadFile(string file, out string buffer, bool ignoreExceptions)
+}
+
+enum WriteModes {
+    + OVERRIDE
+    + APPEND
+    + AT_START
+    .. only for TextFormats.TEX ..
+    + INSERT_AFTER_DOCUMENT_START
+    + INSERT_BEFORE_DOCUMENT_END
+}
+
+enum TextFormats {
+    + TXT
+    + MD
+    + TEX
+    .. creates LaTeX document with header ..
+    + TEX_DOCUMENT
+}
+
+
+enum BracketModes {
+    + BEGIN
+    + END
+}
+
+enum ImageFormats {
+    + JPG
+    + JPEG
+    + BMP
+    + PNG
+    + GIF
+    + SVG
+}
+
+@enduml

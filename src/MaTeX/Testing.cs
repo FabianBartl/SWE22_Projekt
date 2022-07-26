@@ -2,7 +2,6 @@ using Xunit;
 using System;
 using System.IO;
 using System.Text;
-using System.Threading;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 public class Testings
