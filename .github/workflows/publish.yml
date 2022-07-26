@@ -1,0 +1,29 @@
+name: publish
+
+on:
+  release:
+    branches:
+      - nuget-package
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '5.0.x' ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install dependencies
+        run: dotnet restore .\src\MaTeX\
+      - name: Publish
+        run: dotnet nuget push MaTeX.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NuGet_API_Key_MaTeX }} --source https://api.nuget.org/v3/index.json
+
+# https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-dotnet-cli
+# https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package
+
