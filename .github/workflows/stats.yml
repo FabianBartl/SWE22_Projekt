@@ -44,6 +44,6 @@ jobs:
             print(lines, end="")
 
       - name: Save result
-        run: printenv "SCRIPT_STDOUT"
+        run: printenv "stats_lines"
         env:
-          SCRIPT_STDOUT: ${{ steps.script.outputs.stdout }}
+          stats_lines: ${{ steps.script.outputs.stdout }}

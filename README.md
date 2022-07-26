@@ -6,6 +6,8 @@
 [![GitHub License](https://img.shields.io/badge/license-MIT-green)](LICENSE)&nbsp;
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/devlop)&nbsp;
 
+${{ github.env.stats.stats_lines }}
+
 **Übersicht:**
 
 - [Zielstellung](#zielstellung)
