@@ -19,6 +19,7 @@ jobs:
 
             included_files = "cs,uml,txt,ltx,tex,md,yml,csproj,nuspec,gitignore,py".split(",")
             base_path = os.getcwd()
+            print(base_path)
 
             all_files = []
             for file in glob.glob(base_path + r"\**\*.*", recursive=True):
