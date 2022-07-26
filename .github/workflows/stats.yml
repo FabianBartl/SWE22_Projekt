@@ -29,13 +29,14 @@ jobs:
             lines, chars = 0, 0
             for file in all_files:
               chars += os.path.getsize(file)
+              print(file)
               try:
                 with open(file, "r") as fobj:
                   lines += len(fobj.readlines())
               except:
                 pass
 
-            print(lines)
+            print("\n" + lines)
 
       - name: Save result
         run: printenv "SCRIPT_STDOUT"
