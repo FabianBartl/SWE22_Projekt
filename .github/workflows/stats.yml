@@ -34,7 +34,7 @@ jobs:
                 with open(file, "r") as fobj:
                   lines += len(fobj.readlines())
               except:
-                pass
+                print("error")
 
             print("\n" + lines)
 
