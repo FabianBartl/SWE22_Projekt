@@ -19,6 +19,7 @@
   - [`BracketModes`](#bracketmodes)
 - [Konfiguration](#konfiguration)
   - [Alle `Config`-Optionen](#alle-config-optionen)
+- [UML-Diagramm](#uml-diagramm)
 
 ## Installation
 
@@ -325,3 +326,7 @@ Die in dieser Überladung 'fehlenden Paramter' sind `writeMode` und `bracketMode
 | `BracketMode`          | `BracketModes` | `new BracketModes[] {BracketModes.BEGIN, BracketModes.END}` | Legt die Standard Klammermodi für `Export.AsText()` fest.                                                                                        | 
 | `LatexHeader`          | `string`       | `@"\documentclass[10pt]{article}"`                          | Legt den Standard LaTeX-Header fest und wird bei `Export.AsText()` mit `TextFormats.TEX_DOCUMENT` vor `\document{begin}` geschrieben.            |
 | `SaveLocation`         | `string`       | `System.IO.Directory.GetCurrentDirectory()`                 | Legt den Standard Ordnerpfad für die mit `Export.AsText()` erstellten bzw. modifizierten Dateien fest.                                           |
+
+## UML-Diagramm
+
+![matex.uml](http://www.plantuml.com/plantuml/png/lLNHRk8w47tdA_nOLCet55h3vQhGA6JRIgjLPS84h4riv4me5Ug_R-BQO6ThgKihU20pyPbpnkFnvBf4fh0gyaudpLbPaaV5DXjGPDyXzK__zViaauhSI97nLJzIWFWQAIwGYrMzg37xcWTv-aOkIOcgMN1m5-OLmWwx0VXCuZz61E0zkyvo12Nge2rqGviPAfR-1fpA9PGal1SjOh2b5Lky-udMz8ZIIYaGskb-EsDxHHORfk0SMZz_kMhbINA10pevXJVJj-P0oRwTr4BAdFWz-o5aiX9ImOZdG7SfR91BKPg6QUERJOoaAXYMZjr6JGgs0Wjpd3RkKN5ytytHR6Fy4bZN8iDzUySGTly1Mu8A8EPi2tSoPSr-lM9koJuGCcMuJgIcldY05AKYM_teVYAWjXNVaK8_FXFW3OAtZisGxZPIOMjAiLBZQlF38nwKpMbPnhoXF_HYndCGh83koP4zho_mO7-5qUcD5sj-XS_j8tibludJzkR2SRzxww4IdqidNC3pPn0ijtCPU3DrmhT13wLFN8VJGdl-1EH7nydpwegi8T-08babKZrqwtU-w9KMrMNIy_d24JgeBgei0zKzERBt3kNwAt3y0dnC60DR_iqdA_GvJmyE9wHd88YgSDh6JC5BSlz0utXoIuqxY28wkxLEyZnF1d5YsqEA_9LaKhcDra_eKxrc8YQpEOsJvy4eeV7pxVtDZocTMH8FCQIZ-vWU8RMepT9XFwQPF5c2gSsk5hQ9fGeOGadkM09FP2dJgW21v8NZcgprfwn67SCEihMaqVGkgHKTql5aPcmtGQz9BVZ_Q7omg3M7qyXOqSo-6qz6nfe_Z1lEQn3BgiZ_0000)
