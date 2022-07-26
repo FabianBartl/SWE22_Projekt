@@ -29,8 +29,8 @@ jobs:
             all_files = []
             for path in paths:
               for file in os.listdir(os.path.abspath(os.path.join(base_path, path))):
-              if file.lower().split(".")[-1] in included_files:
-                all_files.append(os.path.abspath(os.path.join(base_path, path, file)))
+                if file.lower().split(".")[-1] in included_files:
+                  all_files.append(os.path.abspath(os.path.join(base_path, path, file)))
 
             lines, chars = 0, 0
             for file in all_files:
