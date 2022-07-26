@@ -15,7 +15,7 @@ jobs:
         with:
           fail-on-error: false
           script: |
-            import glob, os, sys
+            import glob, os
 
             included_files = "cs,uml,txt,ltx,tex,md,yml,csproj,nuspec,gitignore,py".split(",")
             base_path = os.getcwd()
@@ -29,20 +29,20 @@ jobs:
             all_files = []
             for path in paths:
               for file in os.listdir(os.path.abspath(os.path.join(base_path, path))):
-                if file.lower().split(".")[-1] in included_files:
-                  all_files.append(os.path.abspath(os.path.join(base_path, path, file)))
+              if file.lower().split(".")[-1] in included_files:
+                all_files.append(os.path.abspath(os.path.join(base_path, path, file)))
 
             lines, chars = 0, 0
             for file in all_files:
               chars += os.path.getsize(file)
-              print(file)
+              print(file.replace(base_path, ""))
               try:
-                with open(file, "r") as fobj:
-                  lines += len(fobj.readlines())
+              with open(file, "r") as fobj:
+                lines += len(fobj.readlines())
               except:
                 print("error")
 
-            print("\n" + lines)
+            print(f"\n{lines}")
 
       - name: Save result
         run: printenv "SCRIPT_STDOUT"
