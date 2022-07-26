@@ -1,7 +1,7 @@
 
-# Dokumentation <!-- omit in toc -->
+[![zurück zum GitHub Repository](https://img.shields.io/badge/zur%C3%BCck-GitHub%20Repository-blue?style=flat-square&logo=github)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt)
 
-*([zurück](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt))*
+# Dokumentation <!-- omit in toc -->
 
 - [Installation](#installation)
 - [Funktionen](#funktionen)
