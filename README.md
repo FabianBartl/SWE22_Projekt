@@ -51,7 +51,6 @@ Das Ergbenis soll ein wiederverwendbare Klassenbibliothek sein, die dem Programm
 - [CSharpMath](https://www.nuget.org/packages/CSharpMath)
 - [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
 - [Math.NET Symbolics](https://www.nuget.org/packages/MathNet.Symbolics)
-- [Microsoft.CodeAnalysis.CSharp.Scripting](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Scripting)  
 
 ## Zeitplan
 
