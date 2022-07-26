@@ -1,13 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
-
 using MathNet.Numerics.LinearAlgebra.Double;
 using Expr = MathNet.Symbolics.SymbolicExpression;
-
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-
 
 namespace MaTeX
 {
