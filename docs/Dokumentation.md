@@ -3,6 +3,8 @@
 
 # Dokumentation <!-- omit in toc -->
 
+**Übersicht:**
+
 - [Installation](#installation)
 - [Funktionen](#funktionen)
   - [`Conv.MathToLatex()`](#convmathtolatex)
