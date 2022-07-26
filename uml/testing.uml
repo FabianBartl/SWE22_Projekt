@@ -1,5 +1,20 @@
 @startuml
 
-class 
+class Testings {
+    
+    .. testing MaTeX.Conv.MathToLatex ..
+    + void MathToLatex_Vector_ReturnLatex(bool prettyPrinting)
+    + void MathToLatex_Matrix_ReturnLatex(bool prettyPrinting)
+    + void MathToLatex_Gleichung_ReturnLatex(bool prettyPrinting)
+    + void MathToLatex_Term_ReturnLatex(bool prettyPrinting)
+    
+    .. testing MaTeX.Export.AsText ..
+    + void AsText_Latex_File(string textFormat)
+    
+    -- helper functions --
+    - bool FileCompare(string file1, string file2)
+    - bool FileRead(string file, out string buffer)
+    - bool FileWrite(string file, string buffer)
+}
 
 @enduml
