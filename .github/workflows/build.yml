@@ -1,6 +1,8 @@
+
 name: build
 
-on: [push]
+on:
+  push:
 
 jobs:
   build:
@@ -20,4 +22,3 @@ jobs:
         run: dotnet restore .\src\MaTeX\
       - name: Build
         run: dotnet build .\src\MaTeX\ --configuration Release --no-restore
-  

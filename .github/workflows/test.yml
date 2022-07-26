@@ -1,6 +1,8 @@
+
 name: test
 
-on: [push]
+on:
+  push:
 
 jobs:
   build:
@@ -20,4 +22,3 @@ jobs:
         run: dotnet restore .\src\MaTeX\
       - name: Test
         run: dotnet test .\src\MaTeX\ --no-restore --verbosity normal
-  
