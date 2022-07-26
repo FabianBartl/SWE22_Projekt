@@ -1,6 +1,8 @@
 
 # Dokumentation <!-- omit in toc -->
 
+*([zurück](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt))*
+
 - [Installation](#installation)
 - [Funktionen](#funktionen)
   - [`Conv.MathToLatex()`](#convmathtolatex)
