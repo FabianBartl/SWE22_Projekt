@@ -3,8 +3,8 @@
 
 [![build](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/build.yml)&nbsp;
 [![test](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/test.yml)&nbsp;
+[![stats](https://img.shields.io/badge/action-stats-orange?logo=github)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/stats.yml)&nbsp;
 [![GitHub License](https://img.shields.io/badge/license-MIT-green)](LICENSE)&nbsp;
-[![stats](https://img.shields.io/badge/action-stats-yellow)](https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/actions/workflows/stats.yml)&nbsp;
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/devlop)&nbsp;
 
 **Übersicht:**
