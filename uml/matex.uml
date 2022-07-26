@@ -53,35 +53,35 @@ class Export {
 }
 
 enum WriteModes {
-    {static} + OVERRIDE
-    {static} + APPEND
-    {static} + AT_START
+    + OVERRIDE
+    + APPEND
+    + AT_START
     .. only for TextFormats.TEX ..
-    {static} + INSERT_AFTER_DOCUMENT_START
-    {static} + INSERT_BEFORE_DOCUMENT_END
+    + INSERT_AFTER_DOCUMENT_START
+    + INSERT_BEFORE_DOCUMENT_END
 }
 
 enum TextFormats {
-    {static} + TXT
-    {static} + MD
-    {static} + TEX
+    + TXT
+    + MD
+    + TEX
     .. creates LaTeX document with header ..
-    {static} + TEX_DOCUMENT
+    + TEX_DOCUMENT
 }
 
 
 enum BracketModes {
-    {static} + BEGIN
-    {static} + END
+    + BEGIN
+    + END
 }
 
 enum ImageFormats {
-    {static} + JPG
-    {static} + JPEG
-    {static} + BMP
-    {static} + PNG
-    {static} + GIF
-    {static} + SVG
+    + JPG
+    + JPEG
+    + BMP
+    + PNG
+    + GIF
+    + SVG
 }
 
 @enduml
