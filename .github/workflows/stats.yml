@@ -43,7 +43,7 @@ jobs:
 
             print(f"code files: {len(all_files):_}")
             print(f"lines of code: {lines:_}")
-            print(f"chars of code: {chars:_}")
+            print(f"total characters: {chars:_}")
 
       - name: Save result
         run: printenv "stats_lines"
