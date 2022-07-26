@@ -10,7 +10,7 @@
 
 - [Zielstellung](#zielstellung)
 - [Aktueller Stand](#aktueller-stand)
-  - [CodeMap von MaTeX.cs](#codemap-von-matexcs)
+  - [UML-Diagramme](#uml-diagramme)
   - [Dokumentation](#dokumentation)
   - [Dependencies](#dependencies)
 - [Zeitplan](#zeitplan)
@@ -25,9 +25,9 @@ Das Ergbenis soll ein wiederverwendbare Klassenbibliothek sein, die dem Programm
 
 ## Aktueller Stand
 
-### CodeMap von [MaTeX.cs](/src/MaTeX/MaTeX.cs)
+### UML-Diagramme
 
-![](img/MaTeX_CodeMap.png)
+![matex.uml](http://www.plantuml.com/plantuml/png/lLNXRk8m3FxFK-Jdq36UOR05ZjDWLUbjaqwdAHG3qRL9bRgC2UtTBmqhIvjIeMw2FqsSpv_jvBEvIP4fpEAe4qOiJScJOaa2YkmxHF_wVRAIYjnAiUBhlgS0ySrJN20NQtreC7lDW3ny9pz8YYe_i71N7oQ47NPFm6SIcptE3T0hpbc4e8HssaAtfewXOk4_mAbSGagQoj3y7zYqYBCux0CJhaGKPag1C9lkjpDMJsISC0MNYFNdhnqjRH_EVPlMARnt3chzU52ohoQra38YPRdMGYPh8HMCU0Hq5qA2N8hK05rHv4MCf8ePfjQwYfh4R0q5pDfKSK-Auw6QpsKLKxu2UwkH3RgzPmYxdy2Me4uWvcmBzp9aURsbozoI_GcNASDD80trrIE4A1NPca_t30UzLdn7OlCvmw4y0zuxHOPqbqY5fTbaC7fT-xo3D7-fWYtAgOywNF4818kXszgpLz847jTVOBHryLeily9dQwXen-_arBfSMDllBlqYLzmGf_a2Bvs1Uzrs8_1ysfpk13ECpcY5TgwzykGpkTXFTNrDDX0beCWg4w6PizfMZdTjufdRCIFvoefn3BZ8LYjGtTQUlGEKvuFV6lhrX3wmfSidConpjdTkIaYFFH1PRAl56SuFZzJt9tUqQXzu7ftTETRWPHuC_A1GZHJHcv6E9Rr-G9zhH3IPpQaVl0n60VLVxXvkVq_fp6PpeKCwUl3f9rRdKvHantDh2fuTogbJYiwog29Km11ISiy2U2PB6MOn22Il73TaO_u5DQh6_vXQaLQfqzoyXdGycLMDTbLs1xZklxonQwAERJZrgYPlvg36ar7LD7ySwqnkG2opEFeF)
 
 ### Dokumentation
 
