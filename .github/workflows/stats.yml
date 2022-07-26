@@ -15,14 +15,15 @@ jobs:
         with:
           fail-on-error: false
           script: |
-            import glob, os
+            import glob, os, sys
 
-            included_files = "cs,uml,txt,ltx,tex,md,yml,csproj,nuspec,gitignore,py".split(",")
+            included_files = sys.argv[1].split(",")
             base_path = os.getcwd()
             print(base_path)
 
             all_files = []
-            for file in glob.glob(base_path + r"\**\*.*", recursive=True):
+            # for file in glob.glob(base_path + r"\**\*.*", recursive=True):
+            for file in os.listdir(base_path):
               if file.lower().split(".")[-1] in included_files:
                 all_files.append(file)
 
