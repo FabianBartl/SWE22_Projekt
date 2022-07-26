@@ -1,10 +1,12 @@
 @startuml
 
 class Wrapper {
+    
     .. for Config.PrettyPrinting ..
     {static} + string PrettyPrint(string text)
     {static} + string NotPrettyPrint(string text)
     {static} + string PrettyPrint(string text, string alternative)
+    
     .. for Config.BracketModes  ..
     {static} + string PrintBrackets(string bracketText, BracketModes currentMode)
     {static} + string PrintBrackets(string bracketText, BracketModes currentMode, BracketModes compareMode)
@@ -33,6 +35,7 @@ class Conv {
 
 
 class Export {
+    
     .. as text ..
     {static} + bool AsText(string latex, string filename)
     {static} + bool AsText(string latex, string filename, TextFormats textFormat)
@@ -42,9 +45,11 @@ class Export {
     {static} + bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat)
     {static} + bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes bracketMode)
     {static} + bool AsText(string latex, string filename, WriteModes writeMode, TextFormats textFormat, BracketModes[] bracketModes)
+    
     .. as image ..
     {static} + bool AsImage(string latex, string filename)
     {static} + bool AsImage(string latex, string filename, ImageFormats imageFormat)
+    
     -- helper functions --
     {static} - bool WriteFile(string file, string buffer)
     {static} - bool WriteFile(string file, string buffer, bool ignoreExceptions)
