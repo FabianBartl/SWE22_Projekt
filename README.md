@@ -14,6 +14,7 @@
   - [UML-Diagramme](#uml-diagramme)
   - [Dokumentation](#dokumentation)
   - [Dependencies](#dependencies)
+  - [Change log](#change-log)
 - [Zeitplan](#zeitplan)
 - [Kriterienkatalog](#kriterienkatalog)
   - [Wichtiger Hinweis](#wichtiger-hinweis)
@@ -52,6 +53,10 @@ Das Ergbenis soll ein wiederverwendbare Klassenbibliothek sein, die dem Programm
 - [CSharpMath](https://www.nuget.org/packages/CSharpMath)
 - [Math.NET Numerics](https://www.nuget.org/packages/MathNet.Numerics)
 - [Math.NET Symbolics](https://www.nuget.org/packages/MathNet.Symbolics)
+
+### Change log
+
+- Change log [öffnen](CHANGELOG.md)
 
 ## Zeitplan
 
