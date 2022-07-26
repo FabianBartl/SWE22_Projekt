@@ -22,8 +22,8 @@ jobs:
             print(base_path)
 
             all_files = []
-            # for file in glob.glob(base_path + r"\**\*.*", recursive=True):
-            for file in os.listdir(base_path):
+            for file in glob.glob(base_path + r"\**\*.*", recursive=True):
+            # for file in os.listdir(base_path):
               if file.lower().split(".")[-1] in included_files:
                 all_files.append(file)
 
