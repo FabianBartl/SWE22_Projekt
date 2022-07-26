@@ -12,7 +12,7 @@
   - [`Export.AsImage()` *(Coming Soon)*](#exportasimage-coming-soon)
   - [`Wrapper.PrettyPrint()`](#wrapperprettyprint)
   - [`Wrapper.PrintBrackets()`](#wrapperprintbrackets)
-- [Objekte](#objekte)
+- [`Enum`-Objekte](#enum-objekte)
   - [`TextFormats`](#textformats)
   - [`ImageFormats`](#imageformats)
   - [`WriteModes`](#writemodes)
@@ -258,7 +258,7 @@ string PrettyPrint(string text, string alternative)
 string PrintBrackets(string bracketText, string alternative, BracketModes currentMode, BracketModes[] compareModes)
 ```
 
-## Objekte
+## `Enum`-Objekte
 
 ### `TextFormats`
 
