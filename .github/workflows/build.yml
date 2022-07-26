@@ -20,6 +20,4 @@ jobs:
         run: dotnet restore .\src\MaTeX\
       - name: Build
         run: dotnet build .\src\MaTeX\ --configuration Release --no-restore
-      - name: Test
-        run: dotnet test .\src\MaTeX\ --no-restore --verbosity normal
   
