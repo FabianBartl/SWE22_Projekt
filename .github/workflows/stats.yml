@@ -35,14 +35,13 @@ jobs:
             lines, chars = 0, 0
             for file in all_files:
               chars += os.path.getsize(file)
-              print(file.replace(base_path, ""))
               try:
                 with open(file, "r") as fobj:
                   lines += len(fobj.readlines())
               except:
-                print("error")
+                pass
 
-            print(f"\n{lines}")
+            print(lines, end="")
 
       - name: Save result
         run: printenv "SCRIPT_STDOUT"
