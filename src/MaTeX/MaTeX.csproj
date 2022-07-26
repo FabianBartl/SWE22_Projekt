@@ -1,15 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <GenerateProgramFile>false</GenerateProgramFile>
+    <GenerateProgramFile>true</GenerateProgramFile>
+
+    <PackageId>MaTeX</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Fabian Bartl, Tom Schubart</Authors>
+
+    <PackageTags>latex; math; charp-library; matex</PackageTags>
+    <Description>
+      C# library for transformation of Math.NET objects to LaTeX
+      - Release Notes: https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/releases
+      - Changelog: https://github.com/Ifi-Softwareentwicklung-SoSe2022/SWE22_Projekt/blob/main/CHANGELOG.md
+      - Documentation: https://ifi-softwareentwicklung-sose2022.github.io/SWE22_Projekt
+    </Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CSharpMath" Version="0.5.1" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="MathNet.Symbolics" Version="0.24.0" />
+
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="xunit" Version="2.4.2-pre.12" />
