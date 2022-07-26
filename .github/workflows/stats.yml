@@ -41,9 +41,9 @@ jobs:
               except:
                 pass
 
-            print(f"{len(all_files)} code files")
-            print(f"{lines} lines of code")
-            print(f"{chars} chars of code")
+            print(f"code files: {len(all_files):_}")
+            print(f"lines of code: {lines:_}")
+            print(f"chars of code: {chars:_}")
 
       - name: Save result
         run: printenv "stats_lines"
